@@ -6,3 +6,23 @@ Foundation::Foundation()
 {
 }
 
+bool Foundation::isOccupied()
+{
+	return occupied;
+}
+
+bool Foundation::isMined()
+{
+	return mined;
+}
+
+void Foundation::setOccupied()
+{
+	occupied = true;
+}
+
+void Foundation::setMined()
+{
+	mined = true;
+}
+
