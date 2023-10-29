@@ -10,10 +10,6 @@ Board::Board(const Board& copy)
     m_board{ copy.m_board }
 {}
 
-Board::~Board()
-{}
-
-
 Foundation Board::getCell(int row, int col) const
 {
     if (row >= 0 && row < m_size && col >= 0 && col < m_size)
@@ -42,10 +38,10 @@ void Board::Initialize()
     for (int i = 0; i < m_size; ++i) {
         for (int j = 0; j < m_size; ++j) {
             if (i % 2 == 0 && j % 2 == 0) {
-                m_board[i][j].setVertical(true);
+                //m_board[i][j].setVertical(true);
             }
             else if (i % 2 == 1 && j % 2 == 1) {
-                m_board[i][j].setHorizontal(true);
+                //m_board[i][j].setHorizontal(true);
             }
         }
     }
