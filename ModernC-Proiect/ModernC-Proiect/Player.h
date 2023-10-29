@@ -14,7 +14,7 @@ public:
 	int getPilonCounter();
 	int getBridgeCounter();
 
-	void setColor();
+	void setColor(char color);
 	void decrementPilons();
 	void decrementBridges();
 };

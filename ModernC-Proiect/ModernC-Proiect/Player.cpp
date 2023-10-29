@@ -23,3 +23,18 @@ int Player::getBridgeCounter()
 {
 	return m_bridgeCounter;
 }
+
+void Player::setColor(char color)
+{
+	m_color = color;
+}
+
+void Player::decrementPilons()
+{
+	m_pilonCounter--;
+}
+
+void Player::decrementBridges()
+{
+	m_bridgeCounter--;
+}
