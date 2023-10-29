@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{fc08bb45-6331-481a-889d-848d89cae28d}</ProjectGuid>
-    <RootNamespace>Project1</RootNamespace>
+    <ProjectGuid>{63d0f1db-4416-4fd2-ab4d-90ab51e79df3}</ProjectGuid>
+    <RootNamespace>ModernCProiect</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Foundation.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Pilon.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
