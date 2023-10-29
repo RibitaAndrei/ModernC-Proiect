@@ -21,7 +21,11 @@
     <ClCompile Include="Foundation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Pilon.cpp">
+=======
+    <ClCompile Include="Board.cpp">
+>>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +33,11 @@
     <ClInclude Include="Foundation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Pilon.h">
+=======
+    <ClInclude Include="Board.h">
+>>>>>>> Stashed changes
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

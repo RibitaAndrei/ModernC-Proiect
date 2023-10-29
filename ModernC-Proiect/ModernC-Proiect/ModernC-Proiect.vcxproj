@@ -128,6 +128,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="Board.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="Foundation.cpp" />
     <ClCompile Include="ModernC-Proiect.cpp" />
     <ClCompile Include="Pilon.cpp" />
@@ -135,6 +139,10 @@
   <ItemGroup>
     <ClInclude Include="Foundation.h" />
     <ClInclude Include="Pilon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Foundation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

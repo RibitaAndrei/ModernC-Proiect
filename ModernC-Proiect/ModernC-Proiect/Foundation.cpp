@@ -1,28 +1,28 @@
 #include "Foundation.h"
 
 Foundation::Foundation()
-	:m_occupied{ false },
-	m_mined{ false }
+	:occupied{ false },
+	mined{ false }
 {
 }
 
 bool Foundation::isOccupied()
 {
-	return m_occupied;
+	return occupied;
 }
 
 bool Foundation::isMined()
 {
-	return m_mined;
+	return mined;
 }
 
 void Foundation::setOccupied()
 {
-	m_occupied = true;
+	occupied = true;
 }
 
 void Foundation::setMined()
 {
-	m_mined = true;
+	mined = true;
 }
 

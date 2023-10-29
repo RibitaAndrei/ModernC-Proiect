@@ -2,8 +2,8 @@
 class Foundation
 {
 private:
-	bool m_occupied;
-	bool m_mined;
+	bool occupied;
+	bool mined;
 public:
 	Foundation();
 	Foundation& operator=(const Foundation& copy) = default;
