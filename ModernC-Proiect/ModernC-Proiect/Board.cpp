@@ -1,4 +1,4 @@
-#include "board.h"
+﻿#include "board.h"
 #include <iostream>
 
 Board::Board(int size)
@@ -27,22 +27,39 @@ void Board::setCell(int row, int col, const Foundation& value)
     }
 }
 
-void Board::Initialize()
+
+void Board::Display() const
 {
-    m_board.clear();
-
-    // Ini?ializeaz? m_board cu un vector de m_size x m_size Foundation-uri.
-    m_board.resize(m_size, std::vector<Foundation>(m_size, Foundation()));
-
-    // Umple tabla de joc 
     for (int i = 0; i < m_size; ++i) {
         for (int j = 0; j < m_size; ++j) {
-            if (i % 2 == 0 && j % 2 == 0) {
-                //m_board[i][j].setVertical(true);
+            if (i == 0 || i == m_size - 1) {
+                // Prima și ultima linie
+                std::cout << ".";
             }
-            else if (i % 2 == 1 && j % 2 == 1) {
-                //m_board[i][j].setHorizontal(true);
+            else if (i == 1 || i == m_size - 2) {
+                // A doua și penultima linie
+                if (j == 0) {
+                    std::cout << ".";
+                }
+                else if (j == m_size - 1) {
+                    std::cout << ".";
+                }
+                else {
+                    std::cout << "-";
+                }
+            }
+            else {
+                if (j == 0 || j == m_size - 1) {
+                    // Marginile stângă și dreaptă cu simbolurile "|"
+                    std::cout << "|";
+                }
+                else {
+                    // Restul tablei, cu liniile de puncte în mijloc
+                    std::cout << ".";
+                }
             }
         }
+        std::cout << std::endl;
     }
 }
+
