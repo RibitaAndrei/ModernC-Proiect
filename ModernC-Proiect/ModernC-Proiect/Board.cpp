@@ -63,3 +63,12 @@ void Board::Display() const
     }
 }
 
+void Board::Reset()
+{
+    // Șterge orice date existente pe tablă
+    for (int i = 0; i < m_size; ++i) {
+        for (int j = 0; j < m_size; ++j) {
+            m_board[i][j] = Foundation(); // Resetarea celulelor la starea inițială.
+        }
+    }
+}

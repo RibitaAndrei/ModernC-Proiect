@@ -12,6 +12,7 @@ public:
     void Display() const;
     Foundation getCell(int row, int col) const;
     void setCell(int row, int col, const Foundation& value);
+    void Reset();
 
 
 private:
