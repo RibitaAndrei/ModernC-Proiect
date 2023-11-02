@@ -1,19 +1,28 @@
 #pragma once
 class Foundation
 {
-private:
-	bool occupied;
-	bool mined;
 public:
 	Foundation();
 	Foundation& operator=(const Foundation& copy) = default;
 	Foundation(const Foundation& copy) = default;
 	~Foundation() = default;
 
-	bool isOccupied();
-	bool isMined();
+	enum class PieceType {
+		None,
+		Pilon,
+		Bridge
+	};
 
-	void setOccupied();
-	void setMined();
+	bool IsOccupied();
+	bool IsMined();
+
+	void SetOccupied();
+	void SetMined();
+
+	void MakePilon();
+private:
+	bool m_occupied;
+	bool m_mined;
+	PieceType m_piece;
 };
 

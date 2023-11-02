@@ -1,28 +1,34 @@
 #include "Foundation.h"
 
 Foundation::Foundation()
-	:occupied{ false },
-	mined{ false }
+	:m_occupied{ false },
+	m_mined{ false },
+	m_piece{PieceType::None}
 {
 }
 
-bool Foundation::isOccupied()
+bool Foundation::IsOccupied()
 {
-	return occupied;
+	return m_occupied;
 }
 
-bool Foundation::isMined()
+bool Foundation::IsMined()
 {
-	return mined;
+	return m_mined;
 }
 
-void Foundation::setOccupied()
+void Foundation::SetOccupied()
 {
-	occupied = true;
+	m_occupied = true;
 }
 
-void Foundation::setMined()
+void Foundation::SetMined()
 {
-	mined = true;
+	m_mined = true;
+}
+
+void Foundation::MakePilon()
+{
+	m_piece = PieceType::Pilon;
 }
 
