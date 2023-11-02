@@ -24,7 +24,6 @@ void Board::setCell(int row, int col, const Foundation& value)
     if (row >= 0 && row < m_size && col >= 0 && col < m_size)
     {
         m_board[row][col] = value;
-        //aici ai putea pune o valoare PieceType(din Foundation)
     }
 }
 

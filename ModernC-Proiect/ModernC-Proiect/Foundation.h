@@ -20,7 +20,6 @@ public:
 	void SetMined();
 
 	void MakePilon();
-	void MakeBridge();
 private:
 	bool m_occupied;
 	bool m_mined;

@@ -32,8 +32,3 @@ void Foundation::MakePilon()
 	m_piece = PieceType::Pilon;
 }
 
-void Foundation::MakeBridge()
-{
-	m_piece = PieceType::Bridge;
-}
-
