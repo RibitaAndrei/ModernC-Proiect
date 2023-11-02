@@ -72,3 +72,33 @@ void Board::Reset()
         }
     }
 }
+
+void Board::PlacePilon(uint8_t xFoundation, uint8_t yFoundation)
+{
+    m_board[xFoundation][yFoundation].MakePilon();
+}
+
+void Board::FillBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2)
+{
+    if (xFoundation1 - xFoundation2 == 2)
+        for (uint8_t indexLine = xFoundation2 + 1; indexLine <= xFoundation1; indexLine++)
+            m_board[indexLine][yFoundation1].MakeBridge();
+   if (xFoundation1 - xFoundation2 == -2)
+        for (uint8_t indexLine = xFoundation2 - 1; indexLine >= xFoundation1; indexLine--)
+            m_board[indexLine][yFoundation1].MakeBridge();
+    if (yFoundation1 - yFoundation2 == 2)
+        for (uint8_t indexCol = yFoundation2 + 1; indexCol <= yFoundation1; indexCol++)
+            m_board[xFoundation1][indexCol].MakeBridge();
+    if (yFoundation1 - yFoundation2 == -2)
+        for (uint8_t indexCol = yFoundation2 - 1; indexCol >= yFoundation1; indexCol--)
+            m_board[xFoundation1][indexCol].MakeBridge();
+}
+
+void Board::PlaceBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2)
+{
+    m_board[xFoundation1][yFoundation1].MakeBridge();
+    m_board[xFoundation2][yFoundation2].MakeBridge();
+    FillBridge(xFoundation1, yFoundation1, xFoundation2, yFoundation2);
+}
+
+
