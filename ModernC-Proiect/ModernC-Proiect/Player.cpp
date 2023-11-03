@@ -1,11 +1,11 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(std::string playerName, char teamColor)
+	:m_pilonCounter{50},
+	m_bridgeCounter{50},
+	m_color{teamColor},
+	m_playerName{playerName}
 {
-	m_pilonCounter = 50;
-	m_bridgeCounter = 50;
-	m_color = 'r';
-
 }
 
 char Player::getColor()
@@ -24,6 +24,11 @@ int Player::getBridgeCounter()
 	return m_bridgeCounter;
 }
 
+std::string Player::GetPlayerName()
+{
+	return m_playerName;
+}
+
 void Player::setColor(char color)
 {
 	m_color = color;
@@ -37,4 +42,9 @@ void Player::decrementPilons()
 void Player::decrementBridges()
 {
 	m_bridgeCounter--;
+}
+
+void Player::SetPlayerName(std::string name)
+{
+	m_playerName = name;
 }

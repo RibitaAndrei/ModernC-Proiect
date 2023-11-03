@@ -18,6 +18,11 @@ Foundation Board::getCell(int row, int col) const
     }
 }
 
+std::vector<std::vector<Foundation>> Board::GetBoard()
+{
+    return m_board;
+}
+
 
 void Board::setCell(int row, int col, const Foundation& value)
 {
