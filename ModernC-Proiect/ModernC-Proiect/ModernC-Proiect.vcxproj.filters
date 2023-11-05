@@ -59,5 +59,8 @@
     <ClCompile Include="Piece.cppm">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
