@@ -16,8 +16,15 @@ public:
 	std::string GetFirstPlayerName();
 	std::string GetSecondPlayerName();
 
+	int GetScorePlayer1() const;
+	int GetScorePlayer2() const;
+
+
 private:
 	Player m_player1, m_player2;
 	Board m_gameBoard;
+
+	int m_scorePlayer1;
+	int m_scorePlayer2;
 };
 

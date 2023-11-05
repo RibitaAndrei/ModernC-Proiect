@@ -1,7 +1,8 @@
 ﻿#include "Game.h"
 // Constructor cu parametri
 Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
-    m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b')
+    m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b'),
+    m_scorePlayer1(0), m_scorePlayer2(0) // Inițializarea scorurilor la zero
 {
 }
 // Constructor de copiere
@@ -49,4 +50,15 @@ std::string Game::GetFirstPlayerName()
 std::string Game::GetSecondPlayerName()
 {
     return m_player2.GetPlayerName();
+
+}
+
+int Game::GetScorePlayer1() const
+{
+    return m_scorePlayer1;
+}
+
+int Game::GetScorePlayer2() const
+{
+    return m_scorePlayer2;
 }
