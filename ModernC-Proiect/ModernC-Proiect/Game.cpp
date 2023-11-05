@@ -18,7 +18,7 @@ Game::~Game()
 // Setează dimensiunea tablei de joc
 void Game::SetBoardSize(int size)
 {
-    m_gameBoard.Initialize(); // Inițializează tabla cu dimensiunea specificată
+    //m_gameBoard.Initialize(); // Inițializează tabla cu dimensiunea specificată
     m_gameBoard.Reset(); // Resetează tabla
 }
 

@@ -9,7 +9,7 @@ public:
     Board(const Board& copy);
     ~Board() = default;
 
-    void Initialize();
+    //void Initialize();
     void Display() const;
     void setCell(int row, int col, const Foundation& value);
     void Reset();
