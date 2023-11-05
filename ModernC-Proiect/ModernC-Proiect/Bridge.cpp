@@ -1,5 +1,16 @@
 #include "Bridge.h"
 
+
+Bridge::Bridge(Pilon pilon1, Pilon pilon2)
+    : pilons{ std::make_pair(pilon1, pilon2) }
+{
+}
+
+Bridge::Bridge(const Bridge& other)
+    : pilons{other.pilons}
+{
+}
+
 Pilon Bridge::getPylon1() const
 {
     return pilons.first;
