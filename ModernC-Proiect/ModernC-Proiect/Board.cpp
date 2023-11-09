@@ -48,6 +48,11 @@ void Board::Display() const
                 else
                     std::cout << ". ";
             }
+            else if (j == 0 || j == m_size - 1)
+            {
+                SetConsoleTextAttribute(hConsole, 9);
+                std::cout << ". ";
+            }
             else
             {
                 SetConsoleTextAttribute(hConsole, 7);
