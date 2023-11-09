@@ -40,30 +40,13 @@ void Board::Display() const
         for (int j = 0; j < m_size; ++j) {
             if (i == 0 || i == m_size - 1) {
                 // Prima și ultima linie
-                std::cout << ".";
+                if (j == 0 || j == m_size - 1)
+                    std::cout << "  ";
+                else
+                    std::cout << ". ";
             }
-            else if (i == 1 || i == m_size - 2) {
-                // A doua și penultima linie
-                if (j == 0) {
-                    std::cout << ".";
-                }
-                else if (j == m_size - 1) {
-                    std::cout << ".";
-                }
-                else {
-                    std::cout << "-";
-                }
-            }
-            else {
-                if (j == 0 || j == m_size - 1) {
-                    // Marginile stângă și dreaptă cu simbolurile "|"
-                    std::cout << "|";
-                }
-                else {
-                    // Restul tablei, cu liniile de puncte în mijloc
-                    std::cout << ".";
-                }
-            }
+            else
+                std::cout << ". ";
         }
         std::cout << std::endl;
     }

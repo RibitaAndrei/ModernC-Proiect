@@ -5,7 +5,7 @@
 
 int main()
 {
-	int boardSize = 10;
+	int boardSize = 24;
 	Board gameBoard(boardSize);
 	gameBoard.Display();
 
