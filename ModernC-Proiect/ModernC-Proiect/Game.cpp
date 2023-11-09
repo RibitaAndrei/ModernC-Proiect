@@ -1,4 +1,10 @@
 ﻿#include "Game.h"
+Game::Game(int boardSize)
+    :m_player1{ 'r' },
+    m_player2{ 'b' },
+    m_gameBoard{ 24 }
+{
+}
 // Constructor cu parametri
 Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
     m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b'),
@@ -18,8 +24,7 @@ Game::~Game()
 // Setează dimensiunea tablei de joc
 void Game::SetBoardSize(int size)
 {
-    //m_gameBoard.Initialize(); // Inițializează tabla cu dimensiunea specificată
-    m_gameBoard.Reset(); // Resetează tabla
+    
 }
 
 // Setează numele primului jucător
@@ -61,4 +66,17 @@ int Game::GetScorePlayer1() const
 int Game::GetScorePlayer2() const
 {
     return m_scorePlayer2;
+}
+
+void Game::StartGame()
+{
+    std::string playerName;
+    std::cout << "Player 1, enter your name: ";
+    std::cin >> playerName;
+    m_player1.SetPlayerName(playerName);
+    std::cout << "Player 2, enter your name: ";
+    std::cin >> playerName;
+    m_player1.SetPlayerName(playerName);
+    system("CLS");
+    m_gameBoard.Display();
 }

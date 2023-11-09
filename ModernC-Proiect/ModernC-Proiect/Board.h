@@ -11,7 +11,7 @@ public:
 
     //void Initialize();
     void Display() const;
-    void setCell(int row, int col, const Foundation& value);
+    void SetCell(int row, int col, const Foundation& value);
     void Reset();
     
     Foundation getCell(int row, int col) const;

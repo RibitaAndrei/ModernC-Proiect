@@ -1,5 +1,6 @@
 ﻿#include "board.h"
 #include <iostream>
+#include <Windows.h>
 
 
 Board::Board(int size) 
@@ -25,7 +26,7 @@ std::vector<std::vector<Foundation>> Board::GetBoard()
 }
 
 
-void Board::setCell(int row, int col, const Foundation& value)
+void Board::SetCell(int row, int col, const Foundation& value)
 {
     if (row >= 0 && row < m_size && col >= 0 && col < m_size)
     {
@@ -36,20 +37,26 @@ void Board::setCell(int row, int col, const Foundation& value)
 
 void Board::Display() const
 {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (int i = 0; i < m_size; ++i) {
         for (int j = 0; j < m_size; ++j) {
             if (i == 0 || i == m_size - 1) {
                 // Prima și ultima linie
+                SetConsoleTextAttribute(hConsole, 12);
                 if (j == 0 || j == m_size - 1)
                     std::cout << "  ";
                 else
                     std::cout << ". ";
             }
             else
+            {
+                SetConsoleTextAttribute(hConsole, 7);
                 std::cout << ". ";
+            }
         }
         std::cout << std::endl;
     }
+    SetConsoleTextAttribute(hConsole, 7);
 }
 
 void Board::Reset()

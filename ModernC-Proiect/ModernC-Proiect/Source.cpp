@@ -1,13 +1,12 @@
 ﻿//#include<iostream>
-#include"Board.h"
+#include"Game.h"
 
 
 
 int main()
 {
-	int boardSize = 24;
-	Board gameBoard(boardSize);
-	gameBoard.Display();
+	Game game(24);
+	game.StartGame();
 
 	return 0;
 }
