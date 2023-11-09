@@ -41,6 +41,16 @@ void pieces::Pilon::setPositionXY(int posX, int posY)
 	m_position.second = posY;
 }
 
+pieces::Bridge::Bridge(Pilon Pilon1, Pilon Pilon2)
+	:pilons{Pilon1,Pilon2}
+{
+}
+
+pieces::Bridge::Bridge(const Bridge& copy)
+	:pilons{copy.pilons}
+{
+}
+
 pieces::Pilon pieces::Bridge::getPylon1() const
 {
 	return pilons.first;
@@ -60,3 +70,4 @@ void pieces::Bridge::setPylon2(Pilon pilon2)
 {
 	pilons.second = pilon2;
 }
+

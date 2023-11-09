@@ -40,6 +40,9 @@ namespace pieces
 
 	public:
 		Bridge(Pilon Pilon1, Pilon Pilon2);
+		Bridge(const Bridge& copy);
+		~Bridge() = default;
+		friend bool operator == (const Bridge& c1, const Bridge& c2);
 
 		Pilon getPylon1() const;
 		Pilon getPylon2() const;

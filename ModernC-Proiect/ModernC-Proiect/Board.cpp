@@ -1,7 +1,8 @@
 ﻿#include "board.h"
 #include <iostream>
 
-Board::Board(int size)
+
+Board::Board(int size) 
     : m_size{ size }
 {}
 
