@@ -28,5 +28,7 @@ private:
 
 	int m_scorePlayer1;
 	int m_scorePlayer2;
+
+	bool m_gameFinished;
 };
 

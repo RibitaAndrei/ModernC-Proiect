@@ -51,22 +51,22 @@ pieces::Bridge::Bridge(const Bridge& copy)
 {
 }
 
-pieces::Pilon pieces::Bridge::getPylon1() const
+pieces::Pilon pieces::Bridge::getPilon1() const
 {
 	return pilons.first;
 }
 
-pieces::Pilon pieces::Bridge::getPylon2() const
+pieces::Pilon pieces::Bridge::getPilon2() const
 {
 	return pilons.second;
 }
 
-void pieces::Bridge::setPylon1(Pilon pilon1)
+void pieces::Bridge::setPilon1(Pilon pilon1)
 {
 	pilons.first = pilon1;
 }
 
-void pieces::Bridge::setPylon2(Pilon pilon2)
+void pieces::Bridge::setPilon2(Pilon pilon2)
 {
 	pilons.second = pilon2;
 }

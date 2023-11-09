@@ -44,11 +44,11 @@ namespace pieces
 		~Bridge() = default;
 		friend bool operator == (const Bridge& c1, const Bridge& c2);
 
-		Pilon getPylon1() const;
-		Pilon getPylon2() const;
+		Pilon getPilon1() const;
+		Pilon getPilon2() const;
 
-		void setPylon1(Pilon pilon1);
-		void setPylon2(Pilon pilon2);
+		void setPilon1(Pilon pilon1);
+		void setPilon2(Pilon pilon2);
 	};//clasa bridge
 
 
