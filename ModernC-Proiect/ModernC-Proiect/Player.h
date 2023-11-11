@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include<vector>
 import piece;
 class Player
 {

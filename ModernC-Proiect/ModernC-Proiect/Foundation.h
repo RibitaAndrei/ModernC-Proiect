@@ -21,6 +21,8 @@ public:
 
 	void MakePilon();
 	void MakeBridge();
+
+	bool IsEmpty()const;
 private:
 	bool m_occupied;
 	bool m_mined;

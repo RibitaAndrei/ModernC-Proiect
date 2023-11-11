@@ -34,6 +34,15 @@ void Board::SetCell(int row, int col, const Foundation& value)
     }
 }
 
+bool Board::IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation)
+{
+    // Verificați dacă coordonatele sunt în limitele tablei
+    if (xFoundation >= 0 && xFoundation < m_size && yFoundation >= 0 && yFoundation < m_size) {
+        // Verificați dacă celula este goală (nu conține deja un pilon)
+        return m_board[xFoundation][yFoundation].IsEmpty();
+    }
+    return false; // Coordonate invalide sau celula deja ocupată
+}
 
 void Board::Display() const
 {

@@ -37,3 +37,8 @@ void Foundation::MakeBridge()
 	m_piece = PieceType::Bridge;
 }
 
+bool Foundation::IsEmpty() const {
+	//consider?m c? un obiect Foundation este gol întotdeauna
+	return true;
+}
+

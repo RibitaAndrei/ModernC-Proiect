@@ -20,6 +20,7 @@ public:
     void PlacePilon(uint8_t xFoundation, uint8_t yFoundation);
     void FillBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2);
     void PlaceBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2);
+    bool IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation);
 private:
     int m_size;
     std::vector<std::vector<Foundation>> m_board;
