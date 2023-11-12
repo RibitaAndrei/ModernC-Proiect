@@ -29,6 +29,9 @@ public:
 
 	void StartGame();
 	bool CheckWinCondition() const;
+
+	void ResetGame();
+
 private:
 	Player m_player1, m_player2;
 	Board m_gameBoard;

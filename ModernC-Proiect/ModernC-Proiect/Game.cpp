@@ -125,3 +125,15 @@ bool Game::CheckWinCondition() const
 {
     return m_gameBoard.HasConnection();
 }
+
+void Game::ResetGame()
+{
+    //Reset();
+    SetScorePlayer1(0);
+    SetScorePlayer2(0);
+    m_player1.SetPilonCounter(50);
+    m_player1.SetBridgeCounter(50);
+    m_player2.SetPilonCounter(50);
+    m_player2.SetBridgeCounter(50);
+    StartGame();
+}
