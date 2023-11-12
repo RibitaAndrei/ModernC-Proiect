@@ -23,6 +23,7 @@ public:
 	void MakeBridge();
 
 	bool IsEmpty()const;
+	bool IsBridge()const;
 private:
 	bool m_occupied;
 	bool m_mined;

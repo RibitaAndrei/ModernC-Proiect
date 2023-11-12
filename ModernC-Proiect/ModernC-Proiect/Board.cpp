@@ -1,6 +1,8 @@
 ﻿#include "board.h"
 #include <iostream>
 #include <Windows.h>
+#include <stack>
+#include <vector>
 
 
 Board::Board(int size) 
@@ -42,6 +44,45 @@ bool Board::IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation)
         return m_board[xFoundation][yFoundation].IsEmpty();
     }
     return false; // Coordonate invalide sau celula deja ocupată
+}
+
+bool Board::HasConnection() const
+{
+    // Matrice pentru a marca celulele vizitate
+    std::vector<std::vector<bool>> visited(m_size, std::vector<bool>(m_size, false));
+
+    // Stiva pentru a efectua DFS
+    std::stack<std::pair<int, int>> stack;
+
+    // Pornim DFS de la prima și ultima coloană
+    for (int i = 0; i < m_size; ++i)
+    {
+        if (!visited[i][0] && m_board[i][0].IsBridge())
+        {
+            stack.push({ i, 0 });
+            visited[i][0] = true;
+        }
+        if (!visited[i][m_size - 1] && m_board[i][m_size - 1].IsBridge())
+        {
+            stack.push({ i, m_size - 1 });
+            visited[i][m_size - 1] = true;
+        }
+    }
+
+    // Pornim DFS de la prima și ultima linie
+    for (int j = 0; j < m_size; ++j)
+    {
+        if (!visited[0][j] && m_board[0][j].IsBridge())
+        {
+            stack.push({ 0, j });
+            visited[0][j] = true;
+        }
+        if (!visited[m_size - 1][j] && m_board[m_size - 1][j].IsBridge())
+        {
+            stack.push({ m_size - 1, j });
+            visited[m_size - 1][j] = true;
+        }
+    }
 }
 
 void Board::Display() const

@@ -42,3 +42,8 @@ bool Foundation::IsEmpty() const {
 	return true;
 }
 
+bool Foundation::IsBridge() const
+{
+	return !IsEmpty();
+}
+
