@@ -27,5 +27,7 @@ public:
 	void decrementPilons();
 	void decrementBridges();
 	void SetPlayerName(std::string name);
+	void SetBridgeCounter(int count);
+	void SetPilonCounter(int count);
 };
 

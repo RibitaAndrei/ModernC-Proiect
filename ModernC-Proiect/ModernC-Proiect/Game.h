@@ -21,6 +21,12 @@ public:
 	int GetScorePlayer1() const;
 	int GetScorePlayer2() const;
 
+	void SetScorePlayer1(int score);
+	void SetScorePlayer2(int score);
+
+	void AddScorePlayer1();
+	void AddScorePlayer2();
+
 	void StartGame();
 	bool CheckWinCondition() const;
 private:

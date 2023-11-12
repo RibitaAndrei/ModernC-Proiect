@@ -53,3 +53,13 @@ void Player::SetPlayerName(std::string name)
 {
 	m_playerName = name;
 }
+
+void Player::SetBridgeCounter(int count)
+{
+	m_bridgeCounter = count;
+}
+
+void Player::SetPilonCounter(int count)
+{
+	m_pilonCounter = count;
+}

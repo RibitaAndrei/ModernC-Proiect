@@ -73,6 +73,26 @@ int Game::GetScorePlayer2() const
     return m_scorePlayer2;
 }
 
+void Game::SetScorePlayer1(int score)
+{
+    m_scorePlayer1 = score;
+}
+
+void Game::SetScorePlayer2(int score)
+{
+    m_scorePlayer2 = score;
+}
+
+void Game::AddScorePlayer1()
+{
+    m_scorePlayer1++;
+}
+
+void Game::AddScorePlayer2()
+{
+    m_scorePlayer2++;
+}
+
 void Game::StartGame()
 {
     int turn = 1;
