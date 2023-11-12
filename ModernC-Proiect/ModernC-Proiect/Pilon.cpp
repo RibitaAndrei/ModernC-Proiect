@@ -1,4 +1,4 @@
-/*#include "Pilon.h"
+#include "Pilon.h"
 
 char Pilon::getColor() const
 {
@@ -39,4 +39,4 @@ void Pilon::setPositionXY(int posX, int posY)
 {
     m_position.first = posX;
     m_position.second = posY;
-}*/
+}

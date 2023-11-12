@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 #include <utility>
 
 class Pilon
@@ -24,4 +24,4 @@ public:
 
 	std::pair<int, int> getPositionXY() const;
 	void setPositionXY(int posX, int posY);
-};*/
+};

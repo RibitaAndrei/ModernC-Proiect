@@ -1,4 +1,4 @@
-module piece;
+/*module piece;
 
 char pieces::Pilon::getColor() const
 {
@@ -69,5 +69,5 @@ void pieces::Bridge::setPilon1(Pilon pilon1)
 void pieces::Bridge::setPilon2(Pilon pilon2)
 {
 	pilons.second = pilon2;
-}
+}*/
 

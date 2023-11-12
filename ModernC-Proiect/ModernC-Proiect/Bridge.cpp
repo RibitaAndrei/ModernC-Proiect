@@ -1,4 +1,4 @@
-/*#include "Bridge.h"
+#include "Bridge.h"
 
 
 Bridge::Bridge(Pilon pilon1, Pilon pilon2)
@@ -29,4 +29,4 @@ void Bridge::setPylon1(Pilon pilon1)
 void Bridge::setPylon2(Pilon pilon2)
 {
     pilons.second = pilon2;
-}*/
+}

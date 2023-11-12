@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 #include <utility>
 #include "Pilon.h"
 
@@ -18,5 +18,5 @@ public:
 	void setPylon1(Pilon pilon1);
 	void setPylon2(Pilon pilon2);
 
-};*/
+};
 

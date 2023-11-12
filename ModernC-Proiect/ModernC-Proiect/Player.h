@@ -1,15 +1,17 @@
 #pragma once
 #include <string>
 #include<vector>
-import piece;
+#include "Pilon.h"
+#include "Bridge.h"
+//import piece;
 class Player
 {
 private:
 	char m_color; //r - red, b - black
 	int m_pilonCounter, m_bridgeCounter;
 	std::string m_playerName;
-	std::vector < pieces::Pilon> m_pilons;
-	std::vector < pieces::Bridge> m_bridges;
+	std::vector <Pilon> m_pilons;
+	std::vector <Bridge> m_bridges;
 
 public:
 	Player(char teamColor);

@@ -1,4 +1,4 @@
-module;
+/*module;
 
 #include <cstdint>
 
@@ -52,4 +52,4 @@ namespace pieces
 	};//clasa bridge
 
 
-}
+}*/
