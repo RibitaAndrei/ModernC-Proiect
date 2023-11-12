@@ -83,6 +83,44 @@ bool Board::HasConnection() const
             visited[m_size - 1][j] = true;
         }
     }
+
+    // Direcții posibile pentru deplasare (sus, jos, stânga, dreapta)
+    const std::vector<std::pair<int, int>> directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+
+    // DFS
+    while (!stack.empty())
+    {
+        auto [x, y] = stack.top();
+        stack.pop();
+
+        // Vizitează toate celulele adiacente
+        for (const auto& dir : directions)
+        {
+            int newX = x + dir.first;
+            int newY = y + dir.second;
+
+            // Verifică dacă celula adiacentă este validă și nu a fost vizitată
+            if (newX >= 0 && newX < m_size && newY >= 0 && newY < m_size && !visited[newX][newY] && m_board[newX][newY].IsBridge())
+            {
+                stack.push({ newX, newY });
+                visited[newX][newY] = true;
+            }
+        }
+    }
+    // Verifică dacă s-au vizitat toate celulele de pe margini
+    for (int i = 0; i < m_size; ++i)
+    {
+        if (visited[i][0] && visited[i][m_size - 1])
+            return true;
+    }
+
+    for (int j = 0; j < m_size; ++j)
+    {
+        if (visited[0][j] && visited[m_size - 1][j])
+            return true;
+    }
+
+    return false;
 }
 
 void Board::Display() const
