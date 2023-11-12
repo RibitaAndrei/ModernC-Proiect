@@ -1,6 +1,6 @@
 ﻿#include "Game.h"
 #include <conio.h>
-
+#include <iostream>
 Game::Game(int boardSize)
     :m_player1{ 'r' },
     m_player2{ 'b' },
@@ -99,4 +99,9 @@ void Game::StartGame()
             std::cin >> coordinates.first >> coordinates.second;
         }
     }
+}
+
+bool Game::CheckWinCondition() const
+{
+    return m_gameBoard.HasConnection();
 }

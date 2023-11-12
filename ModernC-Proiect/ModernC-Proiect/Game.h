@@ -22,6 +22,7 @@ public:
 	int GetScorePlayer2() const;
 
 	void StartGame();
+	bool CheckWinCondition() const;
 private:
 	Player m_player1, m_player2;
 	Board m_gameBoard;
