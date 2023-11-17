@@ -1,46 +1,46 @@
 #include "Pilon.h"
 
-Pilon::Pilon()
+Pilon::Pilon(char color)
+    :m_color{color}
 {
-
 }
 
-char Pilon::getColor() const
+char Pilon::GetColor() const
 {
     return m_color;
 }
 
-void Pilon::setColor(char color)
+void Pilon::SetColor(char color)
 {
     m_color = color;
 }
 
-int Pilon::getPositionX() const
+int Pilon::GetPositionX() const
 {
     return m_position.first;
 }
 
-void Pilon::setPositionX(int posX)
+void Pilon::SetPositionX(int posX)
 {
     m_position.first = posX;
 }
 
-int Pilon::getPositionY() const
+int Pilon::GetPositionY() const
 {
     return m_position.second;
 }
 
-void Pilon::setPositionY(int posY)
+void Pilon::SetPositionY(int posY)
 {
     m_position.second = posY;
 }
 
-std::pair<int, int> Pilon::getPositionXY() const
+std::pair<int, int> Pilon::GetPositionXY() const
 {
     return m_position;
 }
 
-void Pilon::setPositionXY(int posX, int posY)
+void Pilon::SetPositionXY(int posX, int posY)
 {
     m_position.first = posX;
     m_position.second = posY;

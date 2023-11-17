@@ -13,11 +13,11 @@ public:
 	Bridge& operator=(const Bridge& copy) = default;
 	~Bridge() {};
 
-	Pilon getPylon1() const;
-	Pilon getPylon2() const;
+	Pilon GetPylon1() const;
+	Pilon GetPylon2() const;
 
-	void setPylon1(Pilon pilon1);
-	void setPylon2(Pilon pilon2);
+	void SetPylon1(Pilon pilon1);
+	void SetPylon2(Pilon pilon2);
 
 };
 

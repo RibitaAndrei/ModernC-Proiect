@@ -11,22 +11,22 @@ Bridge::Bridge(const Bridge& other)
 {
 }
 
-Pilon Bridge::getPylon1() const
+Pilon Bridge::GetPylon1() const
 {
     return pilons.first;
 }
 
-Pilon Bridge::getPylon2() const
+Pilon Bridge::GetPylon2() const
 {
     return pilons.second;
 }
 
-void Bridge::setPylon1(Pilon pilon1)
+void Bridge::SetPylon1(Pilon pilon1)
 {
     pilons.first = pilon1;
 }
 
-void Bridge::setPylon2(Pilon pilon2)
+void Bridge::SetPylon2(Pilon pilon2)
 {
     pilons.second = pilon2;
 }

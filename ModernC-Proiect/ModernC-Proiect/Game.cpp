@@ -1,6 +1,8 @@
 ﻿#include "Game.h"
+#include "Pilon.h"
 #include <conio.h>
 #include <iostream>
+
 Game::Game(int boardSize)
     :m_player1{ 'r' },
     m_player2{ 'b' },
@@ -29,7 +31,7 @@ Game::~Game()
 // Setează dimensiunea tablei de joc
 void Game::SetBoardSize(int size)
 {
-    
+
 }
 
 // Setează numele primului jucător
@@ -93,33 +95,43 @@ void Game::AddScorePlayer2()
     m_scorePlayer2++;
 }
 
+
+
 void Game::StartGame()
 {
     int turn = 1;
     std::string playerName;
+
     std::cout << "Player 1, enter your name: ";
     std::cin >> playerName;
     m_player1.SetPlayerName(playerName);
+
     std::cout << "Player 2, enter your name: ";
     std::cin >> playerName;
-    m_player1.SetPlayerName(playerName);
-    
+    m_player2.SetPlayerName(playerName);
+
     while (!m_gameFinished)
     {
         system("CLS");
         m_gameBoard.Display();
+
         if (turn % 2 == 1)
             std::cout << m_player1.GetPlayerName() << " enter the type of piece you want to place (p/b): ";
-        else 
+        else
             std::cout << m_player2.GetPlayerName() << " enter the type of piece you want to place (p/b): ";
+
         if (_getch() == 'p')
         {
             std::cout << std::endl << "Enter the coordinates of your pilon: ";
-            std::pair <int, int> coordinates;
+            std::pair<int, int> coordinates;
             std::cin >> coordinates.first >> coordinates.second;
+
         }
+        turn++;
     }
 }
+
+
 
 bool Game::CheckWinCondition() const
 {
@@ -137,3 +149,6 @@ void Game::ResetGame()
     m_player2.SetBridgeCounter(50);
     StartGame();
 }
+
+
+

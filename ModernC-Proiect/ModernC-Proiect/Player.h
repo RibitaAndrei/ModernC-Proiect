@@ -20,14 +20,14 @@ public:
 	Player(const Player& copy) = default;
 	~Player() = default;
 
-	char getColor();
-	int getPilonCounter();
-	int getBridgeCounter();
+	char GetColor();
+	int GetPilonCounter();
+	int GetBridgeCounter();
 	std::string GetPlayerName();
 
-	void setColor(char color);
-	void decrementPilons();
-	void decrementBridges();
+	void SetColor(char color);
+	void DecrementPilons();
+	void DecrementBridges();
 	void SetPlayerName(std::string name);
 	void SetBridgeCounter(int count);
 	void SetPilonCounter(int count);

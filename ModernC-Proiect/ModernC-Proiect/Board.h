@@ -15,7 +15,7 @@ public:
     void SetCell(int row, int col, const Foundation& value);
     void Reset();
     
-    Foundation getCell(int row, int col) const;
+    Foundation GetCell(int row, int col) const;
     std::vector<std::vector<Foundation>> GetBoard();
 
     void PlacePilon(uint8_t xFoundation, uint8_t yFoundation);

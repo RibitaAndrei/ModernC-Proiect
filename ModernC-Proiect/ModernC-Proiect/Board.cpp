@@ -14,7 +14,7 @@ Board::Board(const Board& copy)
     m_board{ copy.m_board }
 {}
 
-Foundation Board::getCell(int row, int col) const
+Foundation Board::GetCell(int row, int col) const
 {
     if (row >= 0 && row < m_size && col >= 0 && col < m_size)
     {
