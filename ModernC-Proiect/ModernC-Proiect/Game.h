@@ -7,6 +7,7 @@ class Game
 public:
 	Game(int boardSize);
 	Game(int boardSize, std::string playerName1, std::string playerName2);
+	Game& operator=(const Game& copy) = default;
 	Game(const Game& copy);
 	~Game();
 

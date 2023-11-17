@@ -1,10 +1,5 @@
 #include "Player.h"
 
-Player::Player(char teamColor)
-	:m_color{teamColor}
-{
-}
-
 Player::Player(std::string playerName, char teamColor)
 	:m_pilonCounter{50},
 	m_bridgeCounter{50},

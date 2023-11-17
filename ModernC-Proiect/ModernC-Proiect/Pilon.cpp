@@ -1,5 +1,10 @@
 #include "Pilon.h"
 
+Pilon::Pilon()
+{
+
+}
+
 char Pilon::getColor() const
 {
     return m_color;

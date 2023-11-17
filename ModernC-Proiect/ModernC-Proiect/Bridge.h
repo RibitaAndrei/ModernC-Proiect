@@ -10,6 +10,7 @@ private:
 public:
 	Bridge(Pilon Pilon1, Pilon Pilon2);
 	Bridge(const Bridge& other);
+	Bridge& operator=(const Bridge& copy) = default;
 	~Bridge() {};
 
 	Pilon getPylon1() const;

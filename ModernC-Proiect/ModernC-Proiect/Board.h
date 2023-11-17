@@ -7,6 +7,7 @@ class Board {
 public:
     Board(int size);
     Board(const Board& copy);
+    Board& operator=(const Board& copy) = default;
     ~Board() = default;
 
     //void Initialize();
