@@ -95,6 +95,15 @@ void Game::AddScorePlayer2()
     m_scorePlayer2++;
 }
 
+void Game::DisplayScore()
+{
+    system("CLS");
+    std::cout << "----- Score -----" << std::endl;
+    std::cout << m_player1.GetPlayerName() << ": " << GetScorePlayer1() << std::endl;
+    std::cout << m_player2.GetPlayerName() << ": " << GetScorePlayer2() << std::endl;
+    std::cout << "------------------" << std::endl;
+}
+
 void Game::PauseMenu()
 {
     char choice;
@@ -145,6 +154,7 @@ void Game::StartGame()
 
     while (!m_gameFinished)
     {
+        DisplayScore();
         system("CLS");
         m_gameBoard.Display();
 
@@ -187,6 +197,8 @@ void Game::ResetGame()
     m_player2.SetBridgeCounter(50);
     StartGame();
 }
+
+
 
 
 

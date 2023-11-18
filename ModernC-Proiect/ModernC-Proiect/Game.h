@@ -45,5 +45,7 @@ private:
 	int m_scorePlayer2;
 
 	bool m_gameFinished;
+
+	void DisplayScore();
 };
 
