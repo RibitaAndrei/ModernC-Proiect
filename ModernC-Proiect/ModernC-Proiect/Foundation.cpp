@@ -47,3 +47,8 @@ bool Foundation::IsBridge() const
 	return !IsEmpty();
 }
 
+Foundation::PieceType Foundation::GetType() const
+{
+	return m_piece;
+}
+

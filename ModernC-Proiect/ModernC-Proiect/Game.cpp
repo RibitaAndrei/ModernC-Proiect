@@ -159,22 +159,20 @@ void Game::StartGame()
         m_gameBoard.Display();
 
         if (turn % 2 == 1)
-            std::cout << m_player1.GetPlayerName() << " enter the type of piece you want to place (p/b): ";
+        {
+            std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
+            uint16_t row, col;
+            std::cin >> row >> col;
+            m_gameBoard.PlacePilon(row, col);
+        }
         else
-            std::cout << m_player2.GetPlayerName() << " enter the type of piece you want to place (p/b): ";
-
-        if (_getch() == 'p')
         {
-            std::cout << std::endl << "Enter the coordinates of your pilon: ";
-            std::pair<int, int> coordinates;
-            std::cin >> coordinates.first >> coordinates.second;
+            std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
+            uint16_t row, col;
+            std::cin >> row >> col;
+            m_gameBoard.PlacePilon(row, col);
+        }
 
-        }
-        else if (_getch() == 'm')
-        {
-            // Enter Pause Menu
-            PauseMenu();
-        }
         turn++;
     }
 }

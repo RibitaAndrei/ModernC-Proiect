@@ -24,6 +24,8 @@ public:
 
 	bool IsEmpty()const;
 	bool IsBridge()const;
+	
+	PieceType GetType() const;
 private:
 	bool m_occupied;
 	bool m_mined;

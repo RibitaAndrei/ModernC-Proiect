@@ -7,7 +7,11 @@
 
 Board::Board(int size) 
     : m_size{ size }
-{}
+{
+    m_board.resize(m_size);
+    for (int index = 0; index < m_size; index++)
+        m_board[index].resize(m_size);
+}
 
 Board::Board(const Board& copy)
     : m_size{ copy.m_size },
@@ -131,7 +135,9 @@ void Board::Display() const
             if (i == 0 || i == m_size - 1) {
                 // Prima și ultima linie
                 SetConsoleTextAttribute(hConsole, 12);
-                if (j == 0 || j == m_size - 1)
+                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
+                    std::cout << "P ";
+                else if (j == 0 || j == m_size - 1)
                     std::cout << "  ";
                 else
                     std::cout << ". ";
@@ -139,12 +145,18 @@ void Board::Display() const
             else if (j == 0 || j == m_size - 1)
             {
                 SetConsoleTextAttribute(hConsole, 9);
-                std::cout << ". ";
+                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
+                    std::cout << "P ";
+                else 
+                    std::cout << ". ";
             }
             else
             {
                 SetConsoleTextAttribute(hConsole, 7);
-                std::cout << ". ";
+                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
+                    std::cout << "P ";
+                else 
+                    std::cout << ". ";
             }
         }
         std::cout << std::endl;
@@ -162,28 +174,28 @@ void Board::Reset()
     }
 }
 
-void Board::PlacePilon(uint8_t xFoundation, uint8_t yFoundation)
+void Board::PlacePilon(uint16_t xFoundation, uint16_t yFoundation)
 {
     m_board[xFoundation][yFoundation].MakePilon();
 }
 
-void Board::FillBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2)
+void Board::FillBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2)
 {
     if (xFoundation1 - xFoundation2 == 2)
-        for (uint8_t indexLine = xFoundation2 + 1; indexLine <= xFoundation1; indexLine++)
+        for (uint16_t indexLine = xFoundation2 + 1; indexLine <= xFoundation1; indexLine++)
             m_board[indexLine][yFoundation1].MakeBridge();
    if (xFoundation1 - xFoundation2 == -2)
-        for (uint8_t indexLine = xFoundation2 - 1; indexLine >= xFoundation1; indexLine--)
+        for (uint16_t indexLine = xFoundation2 - 1; indexLine >= xFoundation1; indexLine--)
             m_board[indexLine][yFoundation1].MakeBridge();
     if (yFoundation1 - yFoundation2 == 2)
-        for (uint8_t indexCol = yFoundation2 + 1; indexCol <= yFoundation1; indexCol++)
+        for (uint16_t indexCol = yFoundation2 + 1; indexCol <= yFoundation1; indexCol++)
             m_board[xFoundation1][indexCol].MakeBridge();
     if (yFoundation1 - yFoundation2 == -2)
-        for (uint8_t indexCol = yFoundation2 - 1; indexCol >= yFoundation1; indexCol--)
+        for (uint16_t indexCol = yFoundation2 - 1; indexCol >= yFoundation1; indexCol--)
             m_board[xFoundation1][indexCol].MakeBridge();
 }
 
-void Board::PlaceBridge(uint8_t xFoundation1, uint8_t yFoundation1, uint8_t xFoundation2, uint8_t yFoundation2)
+void Board::PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2)
 {
     m_board[xFoundation1][yFoundation1].MakeBridge();
     m_board[xFoundation2][yFoundation2].MakeBridge();
