@@ -28,6 +28,8 @@ public:
 	void AddScorePlayer1();
 	void AddScorePlayer2();
 
+	void PauseMenu();
+
 	bool PlacePiece(const std::pair<int, int>& coordinates);
 
 	void StartGame();

@@ -95,7 +95,40 @@ void Game::AddScorePlayer2()
     m_scorePlayer2++;
 }
 
+void Game::PauseMenu()
+{
+    char choice;
+    do
+    {
+        system("CLS");
+        std::cout << "----- Pause Menu -----" << std::endl;
+        std::cout << "1. Continue Game" << std::endl;
+        std::cout << "2. Reset Game" << std::endl;
+        std::cout << "3. Quit to Main Menu" << std::endl;
+        std::cout << "Enter your choice (1-3): ";
+        choice = _getch();
+        switch (choice)
+        {
+        case '1':
+            // Continue game
+            break;
 
+        case '2':
+            // Reset game
+            ResetGame();
+            break;
+
+        case '3':
+            // Quit to main menu or exit the program
+            m_gameFinished = true;
+            break;
+
+        default:
+            std::cout << "Invalid choice. Try again." << std::endl;
+            break;
+        }
+    } while (choice != '1' && choice != '3');
+}
 
 void Game::StartGame()
 {
@@ -126,6 +159,11 @@ void Game::StartGame()
             std::pair<int, int> coordinates;
             std::cin >> coordinates.first >> coordinates.second;
 
+        }
+        else if (_getch() == 'm')
+        {
+            // Enter Pause Menu
+            PauseMenu();
         }
         turn++;
     }
