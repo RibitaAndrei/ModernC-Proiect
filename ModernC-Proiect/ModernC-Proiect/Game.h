@@ -19,15 +19,6 @@ public:
 	std::string GetFirstPlayerName();
 	std::string GetSecondPlayerName();
 
-	int GetScorePlayer1() const;
-	int GetScorePlayer2() const;
-
-	void SetScorePlayer1(int score);
-	void SetScorePlayer2(int score);
-
-	void AddScorePlayer1();
-	void AddScorePlayer2();
-
 	void PauseMenu();
 
 	bool PlacePiece(const std::pair<int, int>& coordinates);
@@ -43,9 +34,6 @@ public:
 private:
 	Player m_player1, m_player2;
 	Board m_gameBoard;
-
-	int m_scorePlayer1;
-	int m_scorePlayer2;
 
 	bool m_gameFinished;
 

@@ -7,15 +7,14 @@ Game::Game(int boardSize)
     :m_player1{ 'r' },
     m_player2{ 'b' },
     m_gameBoard{ 24 },
-    m_scorePlayer1(0),
-    m_scorePlayer2(0),
+    //m_scorePlayer1(0),
+    //m_scorePlayer2(0),
     m_gameFinished(false)
 {
 }
 // Constructor cu parametri
 Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
-    m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b'),
-    m_scorePlayer1(0), m_scorePlayer2(0), m_gameFinished(false) // Inițializarea scorurilor la zero
+    m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b'), m_gameFinished(false) // Inițializarea scorurilor la zero
 {
 }
 // Constructor de copiere
@@ -65,44 +64,14 @@ std::string Game::GetSecondPlayerName()
 
 }
 
-int Game::GetScorePlayer1() const
-{
-    return m_scorePlayer1;
-}
-
-int Game::GetScorePlayer2() const
-{
-    return m_scorePlayer2;
-}
-
-void Game::SetScorePlayer1(int score)
-{
-    m_scorePlayer1 = score;
-}
-
-void Game::SetScorePlayer2(int score)
-{
-    m_scorePlayer2 = score;
-}
-
-void Game::AddScorePlayer1()
-{
-    m_scorePlayer1++;
-}
-
-void Game::AddScorePlayer2()
-{
-    m_scorePlayer2++;
-}
-
-void Game::DisplayScore()
+/*void Game::DisplayScore()
 {
     system("CLS");
     std::cout << "----- Score -----" << std::endl;
     std::cout << m_player1.GetPlayerName() << ": " << GetScorePlayer1() << std::endl;
     std::cout << m_player2.GetPlayerName() << ": " << GetScorePlayer2() << std::endl;
     std::cout << "------------------" << std::endl;
-}
+}*/
 
 void Game::PauseMenu()
 {
@@ -157,8 +126,8 @@ void Game::DisplayRules() const
 void Game::StartGame()
 {
     int turn = 1;
-    SetScorePlayer1(0);
-    SetScorePlayer2(0);
+    //SetScorePlayer1(0);
+    //SetScorePlayer2(0);
     m_player1.SetPilonCounter(50);
     m_player1.SetBridgeCounter(50);
     m_player2.SetPilonCounter(50);
@@ -189,7 +158,7 @@ void Game::StartGame()
             // Start game
             while (!m_gameFinished)
             {
-                DisplayScore();
+                //DisplayScore();
                 system("CLS");
                 m_gameBoard.Display();
 
@@ -232,8 +201,8 @@ void Game::StartGame()
 void Game::StartRound()
 {
     int turn = 1;
-    SetScorePlayer1(0);
-    SetScorePlayer2(0);
+    //SetScorePlayer1(0);
+    //SetScorePlayer2(0);
     m_player1.SetPilonCounter(50);
     m_player1.SetBridgeCounter(50);
     m_player2.SetPilonCounter(50);
@@ -255,7 +224,7 @@ void Game::StartRound()
             // Start game
             while (!m_gameFinished)
             {
-                DisplayScore();
+                //DisplayScore();
                 system("CLS");
                 m_gameBoard.Display();
 
