@@ -28,14 +28,16 @@ void Foundation::SetMined()
 	m_mined = true;
 }
 
-void Foundation::MakePilon()
+void Foundation::MakePilon(Color color)
 {
 	m_piece = PieceType::Pilon;
+	m_color = color;
 }
 
-void Foundation::MakeBridge()
+void Foundation::MakeBridge(Color color)
 {
 	m_piece = PieceType::Bridge;
+	m_color = color;
 }
 
 bool Foundation::IsEmpty() const {

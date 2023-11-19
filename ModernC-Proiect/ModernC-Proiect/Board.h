@@ -21,9 +21,9 @@ public:
     Foundation GetCell(int row, int col) const;
     std::vector<std::vector<Foundation>> GetBoard();
 
-    void PlacePilon(uint16_t xFoundation, uint16_t yFoundation);
-    void FillBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2);
-    void PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2);
+    void PlacePilon(uint16_t xFoundation, uint16_t yFoundation, int currentPlayer);
+    void PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2, Foundation::Color color);
+    bool IsInBoard(const int& row, const int& col) const;
     bool IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation);
     bool HasConnection() const;
 private:

@@ -26,8 +26,8 @@ public:
 	void SetOccupied();
 	void SetMined();
 
-	void MakePilon();
-	void MakeBridge();
+	void MakePilon(Color color);
+	void MakeBridge(Color color);
 
 	bool IsEmpty()const;
 	bool IsBridge()const;

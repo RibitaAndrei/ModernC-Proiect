@@ -158,22 +158,22 @@ void Game::StartGame()
         system("CLS");
         m_gameBoard.Display();
 
-        if (turn % 2 == 1)
+        if (turn == 1)
         {
             std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
             uint16_t row, col;
             std::cin >> row >> col;
-            m_gameBoard.PlacePilon(row, col);
+            m_gameBoard.PlacePilon(row, col, turn);
+            turn = 2;
         }
         else
         {
             std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
             uint16_t row, col;
             std::cin >> row >> col;
-            m_gameBoard.PlacePilon(row, col);
+            m_gameBoard.PlacePilon(row, col, turn);
+            turn = 1;
         }
-
-        turn++;
     }
 }
 

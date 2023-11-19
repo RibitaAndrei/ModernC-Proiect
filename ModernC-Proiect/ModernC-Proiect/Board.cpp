@@ -53,7 +53,7 @@ void Board::SetCell(int row, int col, const Foundation& value)
 bool Board::IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation)
 {
     // Verificați dacă coordonatele sunt în limitele tablei
-    if (xFoundation >= 0 && xFoundation < m_size && yFoundation >= 0 && yFoundation < m_size) {
+    if (xFoundation >= 0 && xFoundation < m_size && yFoundation >= 0 && yFoundation < m_size && !IsCorner(xFoundation, yFoundation)) {
         // Verificați dacă celula este goală (nu conține deja un pilon)
         return m_board[xFoundation][yFoundation].IsEmpty();
     }
@@ -200,32 +200,51 @@ void Board::Reset()
     }
 }
 
-void Board::PlacePilon(uint16_t xFoundation, uint16_t yFoundation)
+void Board::PlacePilon(uint16_t xFoundation, uint16_t yFoundation, int currentPlayer)
 {
-    m_board[xFoundation][yFoundation].MakePilon();
+    Foundation::Color color = Foundation::Color::None;
+    if (currentPlayer == 1)
+        color == Foundation::Color::Red;
+    else
+        color == Foundation::Color::Black;
+    m_board[xFoundation][yFoundation].MakePilon(color); //culorile pieselor nu functioneaza bine
+
+    int vecPosRow[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+    int vecPosCol[] = { -2, -1, 1, 2, 2, 1, -1, -2 }; //vector de pozitii, verifica pozitiile din jurul pilonului la care s-ar putea face pod
+
+    for (int indexPiece = 0; indexPiece < 8; indexPiece++)
+    {
+        if (IsInBoard(xFoundation + vecPosCol[indexPiece], yFoundation + vecPosRow[indexPiece]) &&
+            m_board[xFoundation + vecPosCol[indexPiece]][yFoundation + vecPosRow[indexPiece]].GetType() == Foundation::PieceType::Pilon)
+            PlaceBridge(xFoundation, yFoundation, xFoundation + vecPosCol[indexPiece], yFoundation + vecPosRow[indexPiece], color);
+        // in PlaceBridge ceva nu e bine, nu stiu sigur ce
+    }
 }
 
-void Board::FillBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2)
+void Board::PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2, Foundation::Color color)
 {
     if (xFoundation1 - xFoundation2 == 2)
         for (uint16_t indexLine = xFoundation2 + 1; indexLine <= xFoundation1; indexLine++)
-            m_board[indexLine][yFoundation1].MakeBridge();
+            m_board[indexLine][yFoundation1].MakeBridge(color);
    if (xFoundation1 - xFoundation2 == -2)
         for (uint16_t indexLine = xFoundation2 - 1; indexLine >= xFoundation1; indexLine--)
-            m_board[indexLine][yFoundation1].MakeBridge();
+            m_board[indexLine][yFoundation1].MakeBridge(color);
     if (yFoundation1 - yFoundation2 == 2)
         for (uint16_t indexCol = yFoundation2 + 1; indexCol <= yFoundation1; indexCol++)
-            m_board[xFoundation1][indexCol].MakeBridge();
+            m_board[xFoundation1][indexCol].MakeBridge(color);
     if (yFoundation1 - yFoundation2 == -2)
         for (uint16_t indexCol = yFoundation2 - 1; indexCol >= yFoundation1; indexCol--)
-            m_board[xFoundation1][indexCol].MakeBridge();
+            m_board[xFoundation1][indexCol].MakeBridge(color);
 }
 
-void Board::PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2)
+bool Board::IsInBoard(const int& row, const int& col) const
 {
-    m_board[xFoundation1][yFoundation1].MakeBridge();
-    m_board[xFoundation2][yFoundation2].MakeBridge();
-    FillBridge(xFoundation1, yFoundation1, xFoundation2, yFoundation2);
+    if (row >= 0 && row < m_size &&
+        col >= 0 && col < m_size &&
+        !IsCorner(row, col))
+        return true;
+    return false;
 }
+
 
 
