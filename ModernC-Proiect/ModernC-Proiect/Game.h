@@ -31,6 +31,7 @@ public:
 	void PauseMenu();
 
 	bool PlacePiece(const std::pair<int, int>& coordinates);
+	
 
 	void StartGame();
 	bool CheckWinCondition() const;

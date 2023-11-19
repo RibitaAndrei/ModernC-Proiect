@@ -25,6 +25,9 @@ public:
     void PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2, Foundation::Color color);
     bool IsInBoard(const int& row, const int& col) const;
     bool IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation);
+
+    bool IsCellOccupied(const std::pair<int, int>& coordonate) const;
+
     bool HasConnection() const;
 private:
     int m_size;

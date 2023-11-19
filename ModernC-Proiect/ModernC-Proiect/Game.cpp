@@ -177,6 +177,11 @@ void Game::StartGame()
     }
 }
 
+//bool IsCellOccupied(const std::pair<int, int>& coordinates)
+//{
+//	// Verifica daca celula specificata este ocupata pe tabla de joc
+//	return m_gameBoard.IsCellOccupied(coordinates);
+//}
 
 
 bool Game::CheckWinCondition() const
