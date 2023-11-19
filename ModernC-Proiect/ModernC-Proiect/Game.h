@@ -35,6 +35,7 @@ public:
 	void DisplayRules() const;
 
 	void StartGame();
+	void StartRound();
 	bool CheckWinCondition() const;
 
 	void ResetGame();

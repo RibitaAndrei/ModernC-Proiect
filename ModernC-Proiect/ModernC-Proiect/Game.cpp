@@ -157,6 +157,12 @@ void Game::DisplayRules() const
 void Game::StartGame()
 {
     int turn = 1;
+    SetScorePlayer1(0);
+    SetScorePlayer2(0);
+    m_player1.SetPilonCounter(50);
+    m_player1.SetBridgeCounter(50);
+    m_player2.SetPilonCounter(50);
+    m_player2.SetBridgeCounter(50);
     std::string playerName;
 
     std::cout << "Player 1, enter your name: ";
@@ -167,6 +173,72 @@ void Game::StartGame()
     std::cin >> playerName;
     m_player2.SetPlayerName(playerName);
 
+    char choice;
+    do
+    {
+        system("CLS");
+        std::cout << "----- Main Menu -----" << std::endl;
+        std::cout << "1. Start Game" << std::endl;
+        std::cout << "2. Display Rules" << std::endl;
+        std::cout << "3. Quit" << std::endl;
+        std::cout << "Enter your choice (1-3): ";
+        choice = _getch();
+        switch (choice)
+        {
+        case '1':
+            // Start game
+            while (!m_gameFinished)
+            {
+                DisplayScore();
+                system("CLS");
+                m_gameBoard.Display();
+
+                if (turn == 1)
+                {
+                    std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
+                    uint16_t row, col;
+                    std::cin >> row >> col;
+                    m_gameBoard.PlacePilon(row, col, turn);
+                    turn = 2;
+                }
+                else
+                {
+                    std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
+                    uint16_t row, col;
+                    std::cin >> row >> col;
+                    m_gameBoard.PlacePilon(row, col, turn);
+                    turn = 1;
+                }
+            }
+            break;
+
+        case '2':
+            // Display rules
+            DisplayRules();
+            break;
+
+        case '3':
+            // Quit
+            m_gameFinished = true;
+            break;
+
+        default:
+            std::cout << "Invalid choice. Try again." << std::endl;
+            break;
+        }
+    } while (choice != '3');
+}
+
+void Game::StartRound()
+{
+    int turn = 1;
+    SetScorePlayer1(0);
+    SetScorePlayer2(0);
+    m_player1.SetPilonCounter(50);
+    m_player1.SetBridgeCounter(50);
+    m_player2.SetPilonCounter(50);
+    m_player2.SetBridgeCounter(50);
+    
     char choice;
     do
     {
@@ -237,13 +309,7 @@ bool Game::CheckWinCondition() const
 
 void Game::ResetGame()
 {
-    //Reset();
-    SetScorePlayer1(0);
-    SetScorePlayer2(0);
-    m_player1.SetPilonCounter(50);
-    m_player1.SetBridgeCounter(50);
-    m_player2.SetPilonCounter(50);
-    m_player2.SetBridgeCounter(50);
+    //ResetBoard();
     StartGame();
 }
 

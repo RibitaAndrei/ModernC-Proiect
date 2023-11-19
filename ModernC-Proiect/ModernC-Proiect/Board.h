@@ -16,7 +16,7 @@ public:
     void PrintCell(const Foundation& cell, HANDLE hConsole) const;
     void Display() const;
     void SetCell(int row, int col, const Foundation& value);
-    void Reset();
+    void ResetBoard();
     
     Foundation GetCell(int row, int col) const;
     std::vector<std::vector<Foundation>> GetBoard();

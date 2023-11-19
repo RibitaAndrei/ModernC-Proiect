@@ -190,7 +190,7 @@ void Board::Display() const
     }
 }
 
-void Board::Reset()
+void Board::ResetBoard()
 {
     // Șterge orice date existente pe tablă
     for (int i = 0; i < m_size; ++i) {
