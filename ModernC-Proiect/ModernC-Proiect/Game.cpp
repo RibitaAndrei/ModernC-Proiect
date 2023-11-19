@@ -139,6 +139,21 @@ void Game::PauseMenu()
     } while (choice != '1' && choice != '3');
 }
 
+void Game::DisplayRules() const
+{
+    system("CLS");
+    std::cout << "----- Rules of Twixt -----" << std::endl;
+    std::cout << "1. Players take turns placing pilons on the board." << std::endl;
+    std::cout << "2. Pilons can be connected by building bridges between them." << std::endl;
+    std::cout << "3. The goal is to create a continuous connection from one side of the board to the other." << std::endl;
+    std::cout << "4. The player who first connects their sides wins the game." << std::endl;
+    std::cout << "5. Each player has a limited number of pilons and bridges." << std::endl;
+    std::cout << "6. Use strategic placement to block your opponent's connections." << std::endl;
+    std::cout << "---------------------------" << std::endl;
+    std::cout << "Press any key to return to the main menu." << std::endl;
+    _getch(); // Asteapta apasarea unei taste pentru a reveni la meniu
+}
+
 void Game::StartGame()
 {
     int turn = 1;
@@ -152,29 +167,60 @@ void Game::StartGame()
     std::cin >> playerName;
     m_player2.SetPlayerName(playerName);
 
-    while (!m_gameFinished)
+    char choice;
+    do
     {
-        DisplayScore();
         system("CLS");
-        m_gameBoard.Display();
+        std::cout << "----- Main Menu -----" << std::endl;
+        std::cout << "1. Start Game" << std::endl;
+        std::cout << "2. Display Rules" << std::endl;
+        std::cout << "3. Quit" << std::endl;
+        std::cout << "Enter your choice (1-3): ";
+        choice = _getch();
+        switch (choice)
+        {
+        case '1':
+            // Start game
+            while (!m_gameFinished)
+            {
+                DisplayScore();
+                system("CLS");
+                m_gameBoard.Display();
 
-        if (turn == 1)
-        {
-            std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
-            uint16_t row, col;
-            std::cin >> row >> col;
-            m_gameBoard.PlacePilon(row, col, turn);
-            turn = 2;
+                if (turn == 1)
+                {
+                    std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
+                    uint16_t row, col;
+                    std::cin >> row >> col;
+                    m_gameBoard.PlacePilon(row, col, turn);
+                    turn = 2;
+                }
+                else
+                {
+                    std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
+                    uint16_t row, col;
+                    std::cin >> row >> col;
+                    m_gameBoard.PlacePilon(row, col, turn);
+                    turn = 1;
+                }
+            }
+            break;
+
+        case '2':
+            // Display rules
+            DisplayRules();
+            break;
+
+        case '3':
+            // Quit
+            m_gameFinished = true;
+            break;
+
+        default:
+            std::cout << "Invalid choice. Try again." << std::endl;
+            break;
         }
-        else
-        {
-            std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
-            uint16_t row, col;
-            std::cin >> row >> col;
-            m_gameBoard.PlacePilon(row, col, turn);
-            turn = 1;
-        }
-    }
+    } while (choice != '3');
 }
 
 //bool IsCellOccupied(const std::pair<int, int>& coordinates)

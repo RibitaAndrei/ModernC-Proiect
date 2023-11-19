@@ -32,6 +32,7 @@ public:
 
 	bool PlacePiece(const std::pair<int, int>& coordinates);
 	
+	void DisplayRules() const;
 
 	void StartGame();
 	bool CheckWinCondition() const;
