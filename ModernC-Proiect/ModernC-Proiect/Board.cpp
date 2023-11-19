@@ -11,6 +11,16 @@ Board::Board(int size)
     m_board.resize(m_size);
     for (int index = 0; index < m_size; index++)
         m_board[index].resize(m_size);
+    for (int col = 0; col < m_size; ++col)
+    {
+        m_board[0][col].SetColor(Foundation::Color::Red);
+        m_board[m_size - 1][col].SetColor(Foundation::Color::Red);
+    }
+    for (int row = 0; row < m_size; ++row)
+    {
+        m_board[row][0].SetColor(Foundation::Color::Black);
+        m_board[row][m_size - 1].SetColor(Foundation::Color::Black);
+    }
 }
 
 Board::Board(const Board& copy)
@@ -127,41 +137,57 @@ bool Board::HasConnection() const
     return false;
 }
 
+bool Board::IsCorner(const int &row, const int &col) const
+{
+    if (row == 0 && col == 0 || //colt stanga sus
+        row == 0 && col == m_size - 1 || // colt dreapta sus
+        row == m_size - 1 && col == 0 || // colt stanga jos
+        row == m_size - 1 && col == m_size - 1) // colt dreapta jos
+        return true;
+    return false;
+}
+
+void Board::PrintCell(const Foundation& cell, HANDLE hConsole) const
+{
+    switch (cell.GetColor())
+    {
+    case Foundation::Color::None:
+        SetConsoleTextAttribute(hConsole, 7);
+        break;
+    case Foundation::Color::Red:
+        SetConsoleTextAttribute(hConsole, 12);
+        break;
+    case Foundation::Color::Black: //in consola se afiseaza albastru, negru nu se vede
+        SetConsoleTextAttribute(hConsole, 9);
+        break;
+    }
+    
+    switch (cell.GetType())
+    {
+    case Foundation::PieceType::None:
+        std::cout << ". ";
+        break;
+    case Foundation::PieceType::Pilon:
+        std::cout << "P ";
+        break;
+    case Foundation::PieceType::Bridge:
+        std::cout << "B ";
+        break;
+    }
+}
+
 void Board::Display() const
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    for (int i = 0; i < m_size; ++i) {
-        for (int j = 0; j < m_size; ++j) {
-            if (i == 0 || i == m_size - 1) {
-                // Prima și ultima linie
-                SetConsoleTextAttribute(hConsole, 12);
-                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
-                    std::cout << "P ";
-                else if (j == 0 || j == m_size - 1)
-                    std::cout << "  ";
-                else
-                    std::cout << ". ";
-            }
-            else if (j == 0 || j == m_size - 1)
-            {
-                SetConsoleTextAttribute(hConsole, 9);
-                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
-                    std::cout << "P ";
-                else 
-                    std::cout << ". ";
-            }
+    for (int row = 0; row < m_size; ++row) {
+        for (int col = 0; col < m_size; ++col) {
+            if (IsCorner(row, col))
+                std::cout << "  ";
             else
-            {
-                SetConsoleTextAttribute(hConsole, 7);
-                if (m_board[i][j].GetType() == Foundation::PieceType::Pilon)
-                    std::cout << "P ";
-                else 
-                    std::cout << ". ";
-            }
+                PrintCell(m_board[row][col], hConsole);
         }
         std::cout << std::endl;
     }
-    SetConsoleTextAttribute(hConsole, 7);
 }
 
 void Board::Reset()

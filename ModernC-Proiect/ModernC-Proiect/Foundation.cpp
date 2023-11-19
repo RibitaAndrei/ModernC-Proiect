@@ -3,7 +3,8 @@
 Foundation::Foundation()
 	:m_occupied{ false },
 	m_mined{ false },
-	m_piece{PieceType::None}
+	m_piece{PieceType::None},
+	m_color{Color::None}
 {
 }
 
@@ -50,5 +51,20 @@ bool Foundation::IsBridge() const
 Foundation::PieceType Foundation::GetType() const
 {
 	return m_piece;
+}
+
+void Foundation::SetType(PieceType type)
+{
+	m_piece = type;
+}
+
+void Foundation::SetColor(Color color)
+{
+	m_color = color;
+}
+
+Foundation::Color Foundation::GetColor() const
+{
+	return m_color;
 }
 

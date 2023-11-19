@@ -1,6 +1,7 @@
 #pragma once
 #include"Foundation.h"
 #include <vector>
+#include <Windows.h>
 #include <cstdint>
 
 class Board {
@@ -11,6 +12,8 @@ public:
     ~Board() = default;
 
     //void Initialize();
+    bool IsCorner(const int &row, const int &col) const;
+    void PrintCell(const Foundation& cell, HANDLE hConsole) const;
     void Display() const;
     void SetCell(int row, int col, const Foundation& value);
     void Reset();

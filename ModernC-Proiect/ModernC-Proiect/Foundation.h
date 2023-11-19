@@ -13,6 +13,13 @@ public:
 		Bridge
 	};
 
+	enum class Color
+	{
+		None,
+		Red,
+		Black
+	};
+
 	bool IsOccupied();
 	bool IsMined();
 
@@ -26,9 +33,14 @@ public:
 	bool IsBridge()const;
 	
 	PieceType GetType() const;
+	void SetType(PieceType type);
+
+	void SetColor(Color color);
+	Color GetColor() const;
 private:
 	bool m_occupied;
 	bool m_mined;
+	Color m_color;
 	PieceType m_piece;
 };
 
