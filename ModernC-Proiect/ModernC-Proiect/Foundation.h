@@ -1,11 +1,12 @@
 #pragma once
+#include <utility>
 class Foundation
 {
 public:
 	using Position = std::pair<size_t, size_t>;
 	enum class PlayerColor
 	{
-		None,
+		NoColor,
 		Red,
 		Black
 	};

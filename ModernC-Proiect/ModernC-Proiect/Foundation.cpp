@@ -1,72 +1,49 @@
 #include "Foundation.h"
 
 Foundation::Foundation()
-	:m_occupied{ false },
-	m_mined{ false },
-	m_piece{PieceType::None},
-	m_color{Color::None}
+	:m_position{ std::make_pair(-1, -1) },
+	m_color{ PlayerColor::NoColor }
 {
 }
 
-bool Foundation::IsOccupied()
+Foundation::Foundation(Position position)
+	:m_position{ position }
 {
-	return m_occupied;
 }
 
-bool Foundation::IsMined()
+
+Foundation::Foundation(Position position, PlayerColor color)
+	:m_position{ position },
+	m_color{ color }
 {
-	return m_mined;
 }
 
-void Foundation::SetOccupied()
+Foundation::Position Foundation::GetPosition() const
 {
-	m_occupied = true;
+	return m_position;
 }
 
-void Foundation::SetMined()
+void Foundation::SetPosition(Foundation::Position& position)
 {
-	m_mined = true;
+	m_position = position;
 }
 
-void Foundation::MakePilon(Color color)
+size_t Foundation::GetRow() const
 {
-	m_piece = PieceType::Pilon;
-	m_color = color;
+	return m_position.first;
 }
 
-void Foundation::MakeBridge(Color color)
+void Foundation::SetRow(size_t& row)
 {
-	m_piece = PieceType::Bridge;
-	m_color = color;
+	m_position.first = row;
 }
 
-bool Foundation::IsEmpty() const {
-	//consider?m c? un obiect Foundation este gol întotdeauna
-	return true;
-}
-
-bool Foundation::IsBridge() const
+size_t Foundation::GetColumn() const
 {
-	return !IsEmpty();
+	return m_position.second;
 }
 
-Foundation::PieceType Foundation::GetType() const
+void Foundation::SetColumn(size_t& col)
 {
-	return m_piece;
+	m_position.second = col;
 }
-
-void Foundation::SetType(PieceType type)
-{
-	m_piece = type;
-}
-
-void Foundation::SetColor(Color color)
-{
-	m_color = color;
-}
-
-Foundation::Color Foundation::GetColor() const
-{
-	return m_color;
-}
-
