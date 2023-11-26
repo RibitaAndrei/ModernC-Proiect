@@ -8,19 +8,9 @@
 Board::Board(int size) 
     : m_size{ size }
 {
-    m_board.resize(m_size);
-    for (int index = 0; index < m_size; index++)
-        m_board[index].resize(m_size);
-    for (int col = 0; col < m_size; ++col)
-    {
-        m_board[0][col].SetColor(Foundation::Color::Red);
-        m_board[m_size - 1][col].SetColor(Foundation::Color::Red);
-    }
-    for (int row = 0; row < m_size; ++row)
-    {
-        m_board[row][0].SetColor(Foundation::Color::Black);
-        m_board[row][m_size - 1].SetColor(Foundation::Color::Black);
-    }
+    m_board.resize(size);
+    for (int index = 0; index < size; index++)
+        m_board[index].resize(size);
 }
 
 Board::Board(const Board& copy)
@@ -28,7 +18,7 @@ Board::Board(const Board& copy)
     m_board{ copy.m_board }
 {}
 
-Foundation Board::GetCell(int row, int col) const
+Foundation* Board::GetCell(const int &row, const int &col) const
 {
     if (row >= 0 && row < m_size && col >= 0 && col < m_size)
     {
@@ -36,28 +26,9 @@ Foundation Board::GetCell(int row, int col) const
     }
 }
 
-std::vector<std::vector<Foundation>> Board::GetBoard()
+std::vector<std::vector<Foundation*>> Board::GetBoard() const
 {
     return m_board;
-}
-
-
-void Board::SetCell(int row, int col, const Foundation& value)
-{
-    if (row >= 0 && row < m_size && col >= 0 && col < m_size)
-    {
-        m_board[row][col] = value;
-    }
-}
-
-bool Board::IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation)
-{
-    // Verificați dacă coordonatele sunt în limitele tablei
-    if (xFoundation >= 0 && xFoundation < m_size && yFoundation >= 0 && yFoundation < m_size && !IsCorner(xFoundation, yFoundation)) {
-        // Verificați dacă celula este goală (nu conține deja un pilon)
-        return m_board[xFoundation][yFoundation].IsEmpty();
-    }
-    return false; // Coordonate invalide sau celula deja ocupată
 }
 
 bool Board::HasConnection() const
@@ -71,12 +42,12 @@ bool Board::HasConnection() const
     // Pornim DFS de la prima și ultima coloană
     for (int i = 0; i < m_size; ++i)
     {
-        if (!visited[i][0] && m_board[i][0].IsBridge())
+        if (!visited[i][0] && IsBridge(m_board[i][0]))
         {
             stack.push({ i, 0 });
             visited[i][0] = true;
         }
-        if (!visited[i][m_size - 1] && m_board[i][m_size - 1].IsBridge())
+        if (!visited[i][m_size - 1] && IsBridge(m_board[i][m_size - 1]))
         {
             stack.push({ i, m_size - 1 });
             visited[i][m_size - 1] = true;
@@ -86,12 +57,12 @@ bool Board::HasConnection() const
     // Pornim DFS de la prima și ultima linie
     for (int j = 0; j < m_size; ++j)
     {
-        if (!visited[0][j] && m_board[0][j].IsBridge())
+        if (!visited[0][j] && IsBridge(m_board[0][j]))
         {
             stack.push({ 0, j });
             visited[0][j] = true;
         }
-        if (!visited[m_size - 1][j] && m_board[m_size - 1][j].IsBridge())
+        if (!visited[m_size - 1][j] && IsBridge(m_board[m_size - 1][j]))
         {
             stack.push({ m_size - 1, j });
             visited[m_size - 1][j] = true;
@@ -137,57 +108,49 @@ bool Board::HasConnection() const
     return false;
 }
 
-bool Board::IsCorner(const int &row, const int &col) const
+bool Board::IsCorner(const Foundation::Position& pos) const
 {
-    if (row == 0 && col == 0 || //colt stanga sus
-        row == 0 && col == m_size - 1 || // colt dreapta sus
-        row == m_size - 1 && col == 0 || // colt stanga jos
-        row == m_size - 1 && col == m_size - 1) // colt dreapta jos
+    auto [row, col] = pos;
+    if ((row == 0 && col == 0) ||
+        (row == 0 && col == m_size - 1) ||
+        (row == m_size - 1 && col == 0) ||
+        (row == m_size - 1 && col == m_size - 1))
         return true;
     return false;
 }
 
-void Board::PrintCell(const Foundation& cell, HANDLE hConsole) const
+void Board::PrintCell(Foundation* f, HANDLE &hConsole) const
 {
-    switch (cell.GetColor())
+    if (IsPiece(f))
     {
-    case Foundation::Color::None:
-        SetConsoleTextAttribute(hConsole, 7);
-        break;
-    case Foundation::Color::Red:
-        SetConsoleTextAttribute(hConsole, 12);
-        break;
-    case Foundation::Color::Black: //in consola se afiseaza albastru, negru nu se vede
-        SetConsoleTextAttribute(hConsole, 9);
-        break;
-    }
-    
-    switch (cell.GetType())
-    {
-    case Foundation::PieceType::None:
-        std::cout << ". ";
-        break;
-    case Foundation::PieceType::Pilon:
-        std::cout << "P ";
-        break;
-    case Foundation::PieceType::Bridge:
-        std::cout << "B ";
-        break;
-    }
-}
-
-void Board::Display() const
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    for (int row = 0; row < m_size; ++row) {
-        for (int col = 0; col < m_size; ++col) {
-            if (IsCorner(row, col))
-                std::cout << "  ";
-            else
-                PrintCell(m_board[row][col], hConsole);
+        Foundation::Position cellPos = std::make_pair(f->GetRow(), f->GetColumn());
+        if (IsCorner(cellPos))
+        {
+            std::cout << "  ";
         }
-        std::cout << std::endl;
+        switch (f->GetColor())
+        {
+        case Foundation::PlayerColor::Red:
+            SetConsoleTextAttribute(hConsole, 12);
+            break;
+        case Foundation::PlayerColor::Black:
+            SetConsoleTextAttribute(hConsole, 7);
+            break;
+        }
     }
+    else if (IsRedBase(f))
+        SetConsoleTextAttribute(hConsole, 12);
+    else if (IsBlueBase(f))
+        SetConsoleTextAttribute(hConsole, 7);
+    else
+        SetConsoleTextAttribute(hConsole, 15);
+
+    if (IsPilon(f))
+        std::cout << "P ";
+    else if (IsBridge(f))
+        std::cout << "B ";
+    else
+        std::cout << ". ";
 }
 
 void Board::ResetBoard()
@@ -200,48 +163,59 @@ void Board::ResetBoard()
     }
 }
 
-void Board::PlacePilon(uint16_t xFoundation, uint16_t yFoundation, int currentPlayer)
+void Board::PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer)
 {
-    Foundation::Color color = Foundation::Color::None;
-    if (currentPlayer == 1)
-        color == Foundation::Color::Red;
-    else
-        color == Foundation::Color::Black;
-    m_board[xFoundation][yFoundation].MakePilon(color); //culorile pieselor nu functioneaza bine
+    auto& [row, col] = posPilon;
+    delete m_board[row][col];
+    m_board[row][col] = new Pilon(activePlayer, posPilon);
 
-    int vecPosRow[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
-    int vecPosCol[] = { -2, -1, 1, 2, 2, 1, -1, -2 }; //vector de pozitii, verifica pozitiile din jurul pilonului la care s-ar putea face pod
-
-    for (int indexPiece = 0; indexPiece < 8; indexPiece++)
-    {
-        if (IsInBoard(xFoundation + vecPosCol[indexPiece], yFoundation + vecPosRow[indexPiece]) &&
-            m_board[xFoundation + vecPosCol[indexPiece]][yFoundation + vecPosRow[indexPiece]].GetType() == Foundation::PieceType::Pilon)
-            PlaceBridge(xFoundation, yFoundation, xFoundation + vecPosCol[indexPiece], yFoundation + vecPosRow[indexPiece], color);
-        // in PlaceBridge ceva nu e bine, nu stiu sigur ce
-    }
+    std::vector<Foundation::Position> positions = AdjacentPilons(posPilon, activePlayer);
+    for (int index = 0; index < positions.size(); index++)
+        PlaceBridge(posPilon, positions[index], activePlayer);
 }
 
-void Board::PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2, Foundation::Color color)
+void Board::PlaceBridge(const Foundation::Position& posFirstPilon, const Foundation::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer)
 {
-    if (xFoundation1 - xFoundation2 == 2)
-        for (uint16_t indexLine = xFoundation2 + 1; indexLine <= xFoundation1; indexLine++)
-            m_board[indexLine][yFoundation1].MakeBridge(color);
-   if (xFoundation1 - xFoundation2 == -2)
-        for (uint16_t indexLine = xFoundation2 - 1; indexLine >= xFoundation1; indexLine--)
-            m_board[indexLine][yFoundation1].MakeBridge(color);
-    if (yFoundation1 - yFoundation2 == 2)
-        for (uint16_t indexCol = yFoundation2 + 1; indexCol <= yFoundation1; indexCol++)
-            m_board[xFoundation1][indexCol].MakeBridge(color);
-    if (yFoundation1 - yFoundation2 == -2)
-        for (uint16_t indexCol = yFoundation2 - 1; indexCol >= yFoundation1; indexCol--)
-            m_board[xFoundation1][indexCol].MakeBridge(color);
+    auto& [rowFirstPilon, colFirstPilon] = posFirstPilon;
+    auto& [rowSecondPilon, colSecondPilon] = posSecondPilon;
+
+    if (rowFirstPilon - rowSecondPilon == 2)
+        for (uint8_t indexLine = rowSecondPilon; indexLine < rowFirstPilon; indexLine++)
+        {
+            Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
+            Foundation::Position pos = std::make_pair(indexLine, colFirstPilon);
+            m_board[indexLine][colFirstPilon] = new Bridge(pilons, activePlayer, pos);
+        }
+
+    if (rowFirstPilon - rowSecondPilon == -2)
+        for (uint8_t indexLine = rowSecondPilon; indexLine > rowFirstPilon; indexLine--)
+        {
+            Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
+            Foundation::Position pos = std::make_pair(indexLine, colFirstPilon);
+            m_board[indexLine][colFirstPilon] = new Bridge(pilons, activePlayer, pos);
+        }
+
+    if (colFirstPilon - colSecondPilon == 2)
+        for (uint8_t indexCol = colSecondPilon; indexCol < colFirstPilon; indexCol++)
+        {
+            Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
+            Foundation::Position pos = std::make_pair(rowFirstPilon, indexCol);
+            m_board[rowFirstPilon][indexCol] = new Bridge(pilons, activePlayer, pos); // s-ar putea sa fie gresit
+        }
+
+    if (colFirstPilon - colSecondPilon == -2)
+        for (uint8_t indexCol = colSecondPilon; indexCol > colFirstPilon; indexCol--)
+        {
+            Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
+            Foundation::Position pos = std::make_pair(rowFirstPilon, indexCol);
+            m_board[rowFirstPilon][indexCol] = new Bridge(pilons, activePlayer, pos); // s-ar putea sa fie gresit
+        }
 }
 
-bool Board::IsInBoard(const int& row, const int& col) const
+const bool Board::IsInBoard(const Foundation::Position& pos) const
 {
-    if (row >= 0 && row < m_size &&
-        col >= 0 && col < m_size &&
-        !IsCorner(row, col))
+    auto [row, col] = pos;
+    if (row >= 0 && row < m_size && col >= 0 && col < m_size && !IsCorner(pos))
         return true;
     return false;
 }
