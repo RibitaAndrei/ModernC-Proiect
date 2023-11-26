@@ -20,7 +20,7 @@ public:
 	void SetBoardSize(int size);
 	void SetFirstPlayerName(const std::string& name);
 	void SetSecondPlayerName(const std::string& name);
-
+	
 	int GetBoardSize() const;
 	std::string GetFirstPlayerName() const;
 	std::string GetSecondPlayerName() const;
@@ -34,10 +34,14 @@ public:
 	void AddScorePlayer1();
 	void AddScorePlayer2();
 
+	void PauseMenu();
+
 	bool PlacePiece(const std::pair<int, int>& coordinates);
+	
+	void DisplayRules() const;
 
 	void StartGame();
-	//bool CheckWinCondition() const;
+	bool CheckWinCondition() const;
 
 	void ResetGame();
 
@@ -47,8 +51,11 @@ private:
 
 	int m_scorePlayer1;
 	int m_scorePlayer2;
+	ActivePlayer m_activePlayer;//nou
 
 	bool m_gameFinished;
-	ActivePlayer m_activePlayer;//nou
+
+
+	void DisplayScore();
 };
 

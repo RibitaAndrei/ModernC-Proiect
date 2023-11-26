@@ -7,14 +7,15 @@ Game::Game(int boardSize)
     :m_player1{ 'r' },
     m_player2{ 'b' },
     m_gameBoard{ 24 },
-    //m_scorePlayer1(0),
-    //m_scorePlayer2(0),
-    m_gameFinished(false)
+    m_scorePlayer1{ 0 },
+    m_scorePlayer2{ 0 },
+    m_gameFinished{ false },
+    m_activePlayer{ ActivePlayer::Player1 }
 {
 }
 // Constructor cu parametri
 Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
-    m_gameBoard(boardSize), m_player1(playerName1, 'r'), m_player2(playerName2, 'b'), m_gameFinished(false) // Inițializarea scorurilor la zero
+    m_gameBoard{ boardSize }, m_player1{ playerName1, 'r' }, m_player2{ playerName2, 'b' }, m_gameFinished{ false } // Inițializarea scorurilor la zero
 {
 }
 // Constructor de copiere
@@ -160,22 +161,24 @@ void Game::StartGame()
             {
                 //DisplayScore();
                 system("CLS");
-                m_gameBoard.Display();
+                std::cout << m_gameBoard;
 
                 if (turn == 1)
                 {
-                    std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
-                    uint16_t row, col;
+                    std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+                    Foundation::Position coordinates;
+                    auto& [row, col] = coordinates;
                     std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(row, col, turn);
+                    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
                     turn = 2;
                 }
                 else
                 {
-                    std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
-                    uint16_t row, col;
+                    std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+                    Foundation::Position coordinates;
+                    auto& [row, col] = coordinates;
                     std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(row, col, turn);
+                    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
                     turn = 1;
                 }
             }
@@ -197,79 +200,6 @@ void Game::StartGame()
         }
     } while (choice != '3');
 }
-
-void Game::StartRound()
-{
-    int turn = 1;
-    //SetScorePlayer1(0);
-    //SetScorePlayer2(0);
-    m_player1.SetPilonCounter(50);
-    m_player1.SetBridgeCounter(50);
-    m_player2.SetPilonCounter(50);
-    m_player2.SetBridgeCounter(50);
-    
-    char choice;
-    do
-    {
-        system("CLS");
-        std::cout << "----- Main Menu -----" << std::endl;
-        std::cout << "1. Start Game" << std::endl;
-        std::cout << "2. Display Rules" << std::endl;
-        std::cout << "3. Quit" << std::endl;
-        std::cout << "Enter your choice (1-3): ";
-        choice = _getch();
-        switch (choice)
-        {
-        case '1':
-            // Start game
-            while (!m_gameFinished)
-            {
-                //DisplayScore();
-                system("CLS");
-                m_gameBoard.Display();
-
-                if (turn == 1)
-                {
-                    std::cout << m_player1.GetPlayerName() << " enter the coordinates of your next pilon: ";
-                    uint16_t row, col;
-                    std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(row, col, turn);
-                    turn = 2;
-                }
-                else
-                {
-                    std::cout << m_player2.GetPlayerName() << " enter the coordinates of your next pilon: ";
-                    uint16_t row, col;
-                    std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(row, col, turn);
-                    turn = 1;
-                }
-            }
-            break;
-
-        case '2':
-            // Display rules
-            DisplayRules();
-            break;
-
-        case '3':
-            // Quit
-            m_gameFinished = true;
-            break;
-
-        default:
-            std::cout << "Invalid choice. Try again." << std::endl;
-            break;
-        }
-    } while (choice != '3');
-}
-
-//bool IsCellOccupied(const std::pair<int, int>& coordinates)
-//{
-//	// Verifica daca celula specificata este ocupata pe tabla de joc
-//	return m_gameBoard.IsCellOccupied(coordinates);
-//}
-
 
 bool Game::CheckWinCondition() const
 {

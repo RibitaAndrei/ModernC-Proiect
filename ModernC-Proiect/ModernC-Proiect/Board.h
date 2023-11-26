@@ -1,8 +1,14 @@
 #pragma once
 #include"Foundation.h"
+#include "Pilon.h"
+#include "Bridge.h"
+#include "Enums.h"
+#include <iostream>
+#include <fstream>
+#include <iosfwd>
 #include <vector>
-#include <Windows.h>
 #include <cstdint>
+#include <Windows.h>
 
 class Board {
 public:
@@ -12,24 +18,33 @@ public:
     ~Board() = default;
 
     //void Initialize();
-    bool IsCorner(const int &row, const int &col) const;
-    void PrintCell(const Foundation& cell, HANDLE hConsole) const;
     void Display() const;
-    void SetCell(int row, int col, const Foundation& value);
-    void ResetBoard();
-    
-    Foundation GetCell(int row, int col) const;
-    std::vector<std::vector<Foundation>> GetBoard();
+    //void SetCell(int row, int col, const Foundation& value);
+    void SetBoardSize(const int& size);//facut de mine
+    int GetBoardSize() const;//facut de mine
+    void Reset();
 
-    void PlacePilon(uint16_t xFoundation, uint16_t yFoundation, int currentPlayer);
-    void PlaceBridge(uint16_t xFoundation1, uint16_t yFoundation1, uint16_t xFoundation2, uint16_t yFoundation2, Foundation::Color color);
-    bool IsInBoard(const int& row, const int& col) const;
+    Foundation* GetCell(const int& row, const int& col) const;
+    std::vector<std::vector<Foundation*>> GetBoard()const;
+
+    const bool IsInBoard(const Foundation::Position& pos) const;
+    const bool IsCorner(const Foundation::Position& pos) const;
+    std::vector<Foundation::Position> AdjacentPilons(const Foundation::Position& currentPos, const Foundation::PlayerColor& activePlayer);
+    void PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer);
+    void PlaceBridge(const Foundation::Position& posFirstPilon, const Foundation::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
     bool IsValidPilonPlacement(uint8_t xFoundation, uint8_t yFoundation);
-
-    bool IsCellOccupied(const std::pair<int, int>& coordonate) const;
-
     bool HasConnection() const;
-private:
+
+    bool IsPilon(Foundation* f) const;
+    bool IsBridge(Foundation* f) const;
+    bool IsPiece(Foundation* f) const;
+    bool IsRedBase(Foundation* f) const;
+    bool IsBlueBase(Foundation* f) const;
+
+    void PrintCell(Foundation* f, HANDLE& hConsole) const;
+
+    friend std::ostream& operator<< (std::ostream& out, const Board& b);
+protected:
     int m_size;
-    std::vector<std::vector<Foundation>> m_board;
+    std::vector<std::vector<Foundation*>> m_board;
 };
