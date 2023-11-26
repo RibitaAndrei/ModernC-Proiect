@@ -32,7 +32,7 @@ public:
 
 	virtual PlayerColor GetColor() const = 0;
 	virtual void SetColor(const PlayerColor& color) = 0;
-private:
+protected:
 	Position m_position;
 	PlayerColor m_color;
 };
