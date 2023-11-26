@@ -1,32 +1,43 @@
 #include "Bridge.h"
 
 
-Bridge::Bridge(Pilon pilon1, Pilon pilon2)
-    : pilons{ std::make_pair(pilon1, pilon2) }
+Bridge::Bridge(Bridge::Pilons pilons, Foundation::PlayerColor color, Foundation::Position position)
+    : m_pilons{ pilons },
+    Foundation(position, color)
 {
 }
 
 Bridge::Bridge(const Bridge& other)
-    : pilons{other.pilons}
+    : m_pilons{ other.m_pilons }
 {
 }
 
-Pilon Bridge::GetPylon1() const
+Foundation* Bridge::GetFirstPilon() const
 {
-    return pilons.first;
+    return m_pilons.first;
 }
 
-Pilon Bridge::GetPylon2() const
+Foundation* Bridge::GetSecondPilon() const
 {
-    return pilons.second;
+    return m_pilons.second;
 }
 
-void Bridge::SetPylon1(Pilon pilon1)
+void Bridge::SetFirstPilon(Pilon* pilon)
 {
-    pilons.first = pilon1;
+    m_pilons.first = pilon;
 }
 
-void Bridge::SetPylon2(Pilon pilon2)
+void Bridge::SetSecondPilon(Pilon* pilon)
 {
-    pilons.second = pilon2;
+    m_pilons.second = pilon;
+}
+
+Foundation::PlayerColor Bridge::GetColor() const
+{
+    return m_color;
+}
+
+void Bridge::SetColor(const Foundation::PlayerColor& color)
+{
+    m_color = color;
 }
