@@ -20,7 +20,7 @@ Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
 }
 // Constructor de copiere
 Game::Game(const Game& copy) :
-    m_gameBoard(copy.m_gameBoard), m_player1(copy.m_player1), m_player2(copy.m_player2), m_gameFinished(false)
+    Game(copy.GetBoardSize(), copy.GetFirstPlayerName(), copy.GetSecondPlayerName())
 {
 }
 // Destructor
@@ -35,34 +35,64 @@ void Game::SetBoardSize(int size)
 }
 
 // Setează numele primului jucător
-void Game::SetFirstPlayerName(std::string name)
+void Game::SetFirstPlayerName(const std::string &name)
 {
     m_player1.SetPlayerName(name);
 }
 
 // Setează numele celui de-al doilea jucător
-void Game::SetSecondPlayerName(std::string name)
+void Game::SetSecondPlayerName(const std::string &name)
 {
     m_player2.SetPlayerName(name);
 }
 
 // Obține dimensiunea tablei de joc
-int Game::GetBoardSize()
+int Game::GetBoardSize() const
 {
     return m_gameBoard.GetBoard().size();
 }
 
 // Obține numele primului jucător
-std::string Game::GetFirstPlayerName()
+std::string Game::GetFirstPlayerName() const
 {
     return m_player1.GetPlayerName();
 }
 
 // Obține numele celui de-al doilea jucător
-std::string Game::GetSecondPlayerName()
+std::string Game::GetSecondPlayerName() const
 {
     return m_player2.GetPlayerName();
 
+}
+
+int Game::GetScorePlayer1() const
+{
+    return m_scorePlayer1;
+}
+
+int Game::GetScorePlayer2() const
+{
+    return m_scorePlayer2;
+}
+
+void Game::SetScorePlayer1(const int& score)
+{
+    m_scorePlayer1 = score;
+}
+
+void Game::SetScorePlayer2(const int& score)
+{
+    m_scorePlayer2 = score;
+}
+
+void Game::AddScorePlayer1()
+{
+    m_scorePlayer1++;
+}
+
+void Game::AddScorePlayer2()
+{
+    m_scorePlayer2++;
 }
 
 /*void Game::DisplayScore()
@@ -127,12 +157,6 @@ void Game::DisplayRules() const
 void Game::StartGame()
 {
     int turn = 1;
-    //SetScorePlayer1(0);
-    //SetScorePlayer2(0);
-    m_player1.SetPilonCounter(50);
-    m_player1.SetBridgeCounter(50);
-    m_player2.SetPilonCounter(50);
-    m_player2.SetBridgeCounter(50);
     std::string playerName;
 
     std::cout << "Player 1, enter your name: ";
@@ -143,7 +167,7 @@ void Game::StartGame()
     std::cin >> playerName;
     m_player2.SetPlayerName(playerName);
 
-    char choice;
+    int choice;
     do
     {
         system("CLS");
@@ -155,11 +179,10 @@ void Game::StartGame()
         choice = _getch();
         switch (choice)
         {
-        case '1':
+        case 1:
             // Start game
             while (!m_gameFinished)
             {
-                //DisplayScore();
                 system("CLS");
                 std::cout << m_gameBoard;
 
@@ -184,12 +207,12 @@ void Game::StartGame()
             }
             break;
 
-        case '2':
+        case 2:
             // Display rules
             DisplayRules();
             break;
 
-        case '3':
+        case 3:
             // Quit
             m_gameFinished = true;
             break;
@@ -198,7 +221,7 @@ void Game::StartGame()
             std::cout << "Invalid choice. Try again." << std::endl;
             break;
         }
-    } while (choice != '3');
+    } while (choice != 3);
 }
 
 bool Game::CheckWinCondition() const
