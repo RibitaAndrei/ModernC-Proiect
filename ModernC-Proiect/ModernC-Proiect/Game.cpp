@@ -167,7 +167,7 @@ void Game::StartGame()
     std::cin >> playerName;
     m_player2.SetPlayerName(playerName);
 
-    int choice;
+    char choice;
     do
     {
         system("CLS");
@@ -177,7 +177,7 @@ void Game::StartGame()
         std::cout << "3. Quit" << std::endl;
         std::cout << "Enter your choice (1-3): ";
         choice = _getch();
-        switch (choice)
+        switch (choice - '0')
         {
         case 1:
             // Start game
@@ -218,7 +218,8 @@ void Game::StartGame()
             break;
 
         default:
-            std::cout << "Invalid choice. Try again." << std::endl;
+            std::cout << "Invalid choice. Try again. Press any key to return to menu" << std::endl;
+            _getch();
             break;
         }
     } while (choice != 3);

@@ -85,7 +85,7 @@ bool Board::HasConnection() const
             int newY = y + dir.second;
 
             // Verifică dacă celula adiacentă este validă și nu a fost vizitată
-            if (newX >= 0 && newX < m_size && newY >= 0 && newY < m_size && !visited[newX][newY] && m_board[newX][newY].IsBridge())
+            if (newX >= 0 && newX < m_size && newY >= 0 && newY < m_size && !visited[newX][newY] && IsBridge(m_board[newX][newY]))
             {
                 stack.push({ newX, newY });
                 visited[newX][newY] = true;
@@ -108,7 +108,7 @@ bool Board::HasConnection() const
     return false;
 }
 
-bool Board::IsCorner(const Foundation::Position& pos) const
+const bool Board::IsCorner(const Foundation::Position& pos) const
 {
     auto [row, col] = pos;
     if ((row == 0 && col == 0) ||
@@ -138,7 +138,7 @@ void Board::PrintCell(Foundation* f, HANDLE &hConsole) const
             break;
         }
     }
-    else if (IsRedBase(f))
+    else if (IsRedBase(f)) // chestia asta merge numai la piese, nu si la fundatii, mai e de lucrat
         SetConsoleTextAttribute(hConsole, 12);
     else if (IsBlueBase(f))
         SetConsoleTextAttribute(hConsole, 7);
@@ -153,12 +153,13 @@ void Board::PrintCell(Foundation* f, HANDLE &hConsole) const
         std::cout << ". ";
 }
 
-void Board::ResetBoard()
+void Board::Reset()
 {
-    // Șterge orice date existente pe tablă
+    // sterge orice date existente pe tabla
     for (int i = 0; i < m_size; ++i) {
         for (int j = 0; j < m_size; ++j) {
-            m_board[i][j] = Foundation(); // Resetarea celulelor la starea inițială.
+
+            delete m_board[i][j]; // Resetarea celulelor la starea initiala.
         }
     }
 }
@@ -220,5 +221,86 @@ const bool Board::IsInBoard(const Foundation::Position& pos) const
     return false;
 }
 
+void Board::SetBoardSize(const int& size)
+{
+    m_size = size;
+}
 
+int Board::GetBoardSize() const
+{
+    return m_size;
+}
 
+bool Board::IsPilon(Foundation* f) const // are rost sa fie in clasa?
+{
+    Pilon* p = dynamic_cast<Pilon*>(f);
+    if (p)
+        return true;
+    return false;
+}
+
+bool Board::IsBridge(Foundation* f) const // are rost sa fie in clasa?
+{
+    Bridge* b = dynamic_cast<Bridge*>(f);
+    if (b)
+        return true;
+    return false;
+}
+
+bool Board::IsPiece(Foundation* f) const
+{
+    if (IsPilon(f) || IsBridge(f))
+        return true;
+    return false;
+}
+
+bool Board::IsRedBase(Foundation* f) const
+{
+    if (IsPiece(f))
+        if (f->GetRow() == 0 || f->GetRow() == m_size - 1)
+            return true;
+    return false;
+}
+
+bool Board::IsBlueBase(Foundation* f) const
+{
+    if (IsPiece(f))
+        if (f->GetColumn() == 0 || f->GetColumn() == m_size - 1)
+            return true;
+    return false;
+}
+
+std::ostream& operator<<(std::ostream& out, const Board& b)
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    std::vector<std::vector<Foundation*>> board = b.GetBoard();
+    size_t size = b.GetBoardSize();
+
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            b.PrintCell(board[i][j], hConsole);//schimba cu foundation::position
+        }
+        std::cout << std::endl;
+    }
+    SetConsoleTextAttribute(hConsole, 15);
+
+    return out;
+}
+
+std::vector<Foundation::Position> Board::AdjacentPilons(const Foundation::Position& currentPos, const Foundation::PlayerColor& activePlayer)
+{
+    std::vector<Foundation::Position> positions;
+    int rowVect[] = { -1, -2, -2, -1, 1, 2, 2, 1 };
+    int colVect[] = { -2, -1, 1, 2, 2, 1, -1, -2 };
+    for (int index = 0; index < 8; index++)
+    {
+        if (Foundation::Position cellPos = std::make_pair(rowVect[index], colVect[index]); IsInBoard(cellPos) == true)
+        {
+            Pilon* p = dynamic_cast<Pilon*> (m_board[rowVect[index]][colVect[index]]);
+            if (p && p->GetColor() == activePlayer)
+                positions.push_back({ rowVect[index], colVect[index] });
+        }
+    }
+
+    return positions;
+}
