@@ -2,45 +2,37 @@
 class Foundation
 {
 public:
-	Foundation();
-	Foundation& operator=(const Foundation& copy) = default;
-	Foundation(const Foundation& copy) = default;
-	~Foundation() = default;
-
-	enum class PieceType {
-		None,
-		Pilon,
-		Bridge
-	};
-
-	enum class Color
+	using Position = std::pair<size_t, size_t>;
+	enum class PlayerColor
 	{
 		None,
 		Red,
 		Black
 	};
 
-	bool IsOccupied();
-	bool IsMined();
-
-	void SetOccupied();
-	void SetMined();
-
-	void MakePilon(Color color);
-	void MakeBridge(Color color);
-
-	bool IsEmpty()const;
-	bool IsBridge()const;
+	Foundation();
+	Foundation(Position position);
+	Foundation(Position position, PlayerColor color);
+	Foundation& operator=(const Foundation& copy) = default;
+	Foundation(const Foundation& copy) = default;
+	virtual ~Foundation() = default;
 	
-	PieceType GetType() const;
-	void SetType(PieceType type);
+	virtual Position GetPosition() const;
+	virtual void SetPosition(Position& position);
 
-	void SetColor(Color color);
-	Color GetColor() const;
+	virtual size_t GetRow() const;
+	virtual void SetRow(size_t& row);
+
+	virtual size_t GetColumn() const;
+	virtual void SetColumn(size_t& col);
+
+	virtual PlayerColor GetColor() const = 0;
+	virtual void SetColor(const PlayerColor& color) = 0;
+
+	virtual PlayerColor GetColor() const = 0;
+	virtual void SetColor(const PlayerColor& color) = 0;
 private:
-	bool m_occupied;
-	bool m_mined;
-	Color m_color;
-	PieceType m_piece;
+	Position m_position;
+	PlayerColor m_color;
 };
 
