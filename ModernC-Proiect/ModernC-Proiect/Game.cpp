@@ -186,24 +186,48 @@ void Game::StartGame()
                 system("CLS");
                 std::cout << m_gameBoard;
 
-                if (turn == 1)
+                if (turn % 2 == 1)
                 {
-                    std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
                     Foundation::Position coordinates;
                     auto& [row, col] = coordinates;
-                    std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
-                    turn = 2;
+                    if (turn == 1)
+                    {
+                        std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
+                        std::cin >> row >> col;
+                        while (!m_gameBoard.IsRedBase(coordinates))
+                        {
+                            std::cout << "Try again: ";
+                            std::cin >> row >> col;
+                        }
+                        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                    }
+                    else
+                    {
+                        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+                        std::cin >> row >> col;
+                        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                    }
                 }
                 else
                 {
+                    if (turn == 2)
+                    {
+                        std::cout << m_player2.GetPlayerName() << " press \'s\' to switch sides with your opponent, or \'p\' to place pilon:";
+                        char getChoice = _getch();
+                        if (getChoice == 's')
+                        {
+                            //implementati schimbarea de echipe aici
+                            //ar putea fi doar interschimbarea numelor celor 2 jucatori
+                        }
+                        else{} // nu face nimic, jocul continua normal
+                    }
                     std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
                     Foundation::Position coordinates;
                     auto& [row, col] = coordinates;
                     std::cin >> row >> col;
                     m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
-                    turn = 1;
                 }
+                turn++;
             }
             break;
 
