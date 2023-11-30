@@ -119,35 +119,37 @@ const bool Board::IsCorner(const Foundation::Position& pos) const
     return false;
 }
 
-void Board::PrintCell(Foundation* f, HANDLE &hConsole) const
+void Board::PrintCell(Foundation::Position pos, HANDLE &hConsole) const
 {
-    if (IsPiece(f))
+    auto [row, col] = pos;
+    if (IsCorner(pos))
     {
-        Foundation::Position cellPos = std::make_pair(f->GetRow(), f->GetColumn());
-        if (IsCorner(cellPos))
-        {
-            std::cout << "  ";
-        }
-        switch (f->GetColor())
+        std::cout << "  ";
+        return;
+    }
+    if (IsRedBase(pos))
+        SetConsoleTextAttribute(hConsole, 12);
+    else if (IsBlueBase(pos))
+        SetConsoleTextAttribute(hConsole, 9);
+    else if (IsPiece(m_board[row][col]))
+    {
+        switch (m_board[row][col]->GetColor())
         {
         case Foundation::PlayerColor::Red:
             SetConsoleTextAttribute(hConsole, 12);
             break;
         case Foundation::PlayerColor::Black:
-            SetConsoleTextAttribute(hConsole, 7);
+            SetConsoleTextAttribute(hConsole, 9);
             break;
         }
     }
-    else if (IsRedBase(f)) // chestia asta merge numai la piese, nu si la fundatii, mai e de lucrat
-        SetConsoleTextAttribute(hConsole, 12);
-    else if (IsBlueBase(f))
-        SetConsoleTextAttribute(hConsole, 7);
     else
         SetConsoleTextAttribute(hConsole, 15);
+    
 
-    if (IsPilon(f))
+    if (IsPilon(m_board[row][col]))
         std::cout << "P ";
-    else if (IsBridge(f))
+    else if (IsBridge(m_board[row][col]))
         std::cout << "B ";
     else
         std::cout << ". ";
@@ -254,19 +256,19 @@ bool Board::IsPiece(Foundation* f) const
     return false;
 }
 
-bool Board::IsRedBase(Foundation* f) const
+bool Board::IsRedBase(Foundation::Position pos) const
 {
-    if (IsPiece(f))
-        if (f->GetRow() == 0 || f->GetRow() == m_size - 1)
-            return true;
+    auto& [row, col] = pos;
+    if (row == 0 || row == m_size - 1)
+        return true;
     return false;
 }
 
-bool Board::IsBlueBase(Foundation* f) const
+bool Board::IsBlueBase(Foundation::Position pos) const
 {
-    if (IsPiece(f))
-        if (f->GetColumn() == 0 || f->GetColumn() == m_size - 1)
-            return true;
+    auto& [row, col] = pos;
+    if (col == 0 || col == m_size - 1)
+        return true;
     return false;
 }
 
@@ -278,7 +280,8 @@ std::ostream& operator<<(std::ostream& out, const Board& b)
 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
-            b.PrintCell(board[i][j], hConsole);//schimba cu foundation::position
+            Foundation::Position pos = std::make_pair(i, j);
+            b.PrintCell(pos, hConsole);//schimba cu foundation::position
         }
         std::cout << std::endl;
     }

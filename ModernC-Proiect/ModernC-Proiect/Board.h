@@ -34,10 +34,10 @@ public:
     bool IsPilon(Foundation* f) const;
     bool IsBridge(Foundation* f) const;
     bool IsPiece(Foundation* f) const;
-    bool IsRedBase(Foundation* f) const;
-    bool IsBlueBase(Foundation* f) const;
+    bool IsRedBase(Foundation::Position pos) const;
+    bool IsBlueBase(Foundation::Position pos) const;
 
-    void PrintCell(Foundation* f, HANDLE& hConsole) const;
+    void PrintCell(Foundation::Position pos, HANDLE& hConsole) const;
 
     friend std::ostream& operator<< (std::ostream& out, const Board& b);
 protected:
