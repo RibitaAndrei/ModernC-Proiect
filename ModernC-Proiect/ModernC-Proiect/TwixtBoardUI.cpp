@@ -1,11 +1,21 @@
 //// twixtboardui.cpp
-//
+////
 //#include "twixtboardui.h"
 //
 //TwixtBoardUI::TwixtBoardUI(QWidget* parent)
 //	: QWidget(parent)
 //{
-//	boardSize = 24;  
+//	initializeBoard();
+//}
+//
+//TwixtBoardUI::~TwixtBoardUI()
+//{
+//	clearBoard();
+//}
+//
+//void TwixtBoardUI::initializeBoard()
+//{
+//	boardSize = 24;
 //	gridLayout = new QGridLayout(this);
 //	boardButtons = new QPushButton * *[boardSize];
 //
@@ -18,14 +28,14 @@
 //			boardButtons[i][j] = new QPushButton(this);
 //			gridLayout->addWidget(boardButtons[i][j], i, j);
 //
-//			connect(boardButtons[i][j], SIGNAL(clicked()), this, SLOT(onButtonClicked()));
+//			connect(boardButtons[i][j], &QPushButton::clicked, this, &TwixtBoardUI::onButtonClicked);
 //		}
 //	}
 //
 //	setLayout(gridLayout);
 //}
 //
-//TwixtBoardUI::~TwixtBoardUI()
+//void TwixtBoardUI::clearBoard()
 //{
 //	for (int i = 0; i < boardSize; ++i)
 //	{
@@ -40,5 +50,5 @@
 //
 //void TwixtBoardUI::onButtonClicked()
 //{
-//	
+//	// Handle button click event
 //}
