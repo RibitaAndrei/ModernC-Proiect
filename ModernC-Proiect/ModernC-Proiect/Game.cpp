@@ -237,6 +237,11 @@ void Game::StartGame()
             break;
 
         case 3:
+            // Pause Game
+            PauseMenu();
+            break;
+
+        case 4:
             // Quit
             m_gameFinished = true;
             break;
@@ -246,7 +251,7 @@ void Game::StartGame()
             _getch();
             break;
         }
-    } while (choice != 3);
+    } while (choice != 4);
 }
 
 bool Game::CheckWinCondition() const
