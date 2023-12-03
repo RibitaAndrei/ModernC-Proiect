@@ -1,5 +1,11 @@
 #include "ScoreManager.h"
 
+ScoreManager::ScoreManager()
+{
+    m_scorePlayer1 = 0;
+    m_scorePlayer2 = 0;
+}
+
 int ScoreManager::GetScorePlayer1() const
 {
     return m_scorePlayer1;

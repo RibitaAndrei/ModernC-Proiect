@@ -1,7 +1,9 @@
 #pragma once
 #include "Player.h"
 #include "Board.h"
+#include "ScoreManager.h"
 #include <iostream>
+
 class Game
 {
 public:

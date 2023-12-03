@@ -164,6 +164,7 @@ void Game::SwapPlayers()
 void Game::StartGame()
 {
     int turn = 1;
+    int boardSize;
     std::string playerName;
 
     std::cout << "Player 1, enter your name: ";
@@ -173,6 +174,10 @@ void Game::StartGame()
     std::cout << "Player 2, enter your name: ";
     std::cin >> playerName;
     m_player2.SetPlayerName(playerName);
+
+    std::cout << "Introduce board size: ";
+    std::cin >> boardSize;
+    m_gameBoard.SetBoardSize(boardSize);
 
     char choice;
     do
@@ -191,6 +196,9 @@ void Game::StartGame()
             while (!m_gameFinished)
             {
                 system("CLS");
+                std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
+                std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
+                std::cout << "Score: " << '\n';
                 std::cout << m_gameBoard;
 
                 if (turn % 2 == 1)
@@ -223,17 +231,27 @@ void Game::StartGame()
                         char getChoice = _getch();
                         if (getChoice == 's')
                         {
-                            //implementati schimbarea de echipe aici
-                            //ar putea fi doar interschimbarea numelor celor 2 jucatori
-                            SwapPlayers;
+                            SwapPlayers();
+                            system("CLS");
+                            std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
+                            std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
+                            std::cout << "Score: " << '\n';
+                            std::cout << m_gameBoard;
                         }
-                        else{} // nu face nimic, jocul continua normal
+                        else{
+                            system("CLS");
+                            std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
+                            std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
+                            std::cout << "Score: " << '\n';
+                            std::cout << m_gameBoard;
+                        }
                     }
                     std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
                     Foundation::Position coordinates;
                     auto& [row, col] = coordinates;
                     std::cin >> row >> col;
                     m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+                    
                 }
                 turn++;
             }
