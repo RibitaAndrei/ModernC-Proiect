@@ -40,6 +40,8 @@ public:
 	
 	void DisplayRules() const;
 
+	void SwapPlayers();
+
 	void StartGame();
 	bool CheckWinCondition() const;
 

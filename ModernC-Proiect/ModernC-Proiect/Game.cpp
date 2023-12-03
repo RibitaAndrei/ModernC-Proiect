@@ -154,6 +154,13 @@ void Game::DisplayRules() const
     _getch(); // Asteapta apasarea unei taste pentru a reveni la meniu
 }
 
+void Game::SwapPlayers()
+{
+    std::string temp = m_player1.GetPlayerName();
+    m_player1.SetPlayerName(m_player2.GetPlayerName());
+    m_player2.SetPlayerName(temp);
+}
+
 void Game::StartGame()
 {
     int turn = 1;
@@ -218,6 +225,7 @@ void Game::StartGame()
                         {
                             //implementati schimbarea de echipe aici
                             //ar putea fi doar interschimbarea numelor celor 2 jucatori
+                            SwapPlayers;
                         }
                         else{} // nu face nimic, jocul continua normal
                     }
