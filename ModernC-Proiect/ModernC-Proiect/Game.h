@@ -36,6 +36,12 @@ public:
 
 	void PauseMenu();
 
+	// functie pentru inregistrarea miscarilor
+	void RecordMove(const std::string& playerName, const Foundation::Position& coordinates);
+
+	// functie pentru afisarea istoricului miscarilor
+	void DisplayMoveHistory() const;
+
 	bool PlacePiece(const std::pair<int, int>& coordinates);
 	
 	void DisplayRules() const;
@@ -56,6 +62,17 @@ private:
 	ActivePlayer m_activePlayer;//nou
 
 	bool m_gameFinished;
+
+	// structura pentru a stoca o miscare
+	struct Move {
+		std::string playerName;
+		Foundation::Position coordinates;
+
+		Move(const std::string& name, const Foundation::Position& pos)
+			: playerName(name), coordinates(pos) {}
+	};
+
+	std::vector<Move> moveHistory; // vector pentru a stoca istoricul miscarilor
 
 
 	void DisplayScore();
