@@ -256,7 +256,7 @@ void Game::StartGame()
                             std::cout << "Score: " << '\n';
                             std::cout << m_gameBoard;
                         }
-                        else{
+                        else {
                             system("CLS");
                             std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
                             std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
@@ -269,7 +269,7 @@ void Game::StartGame()
                     auto& [row, col] = coordinates;
                     std::cin >> row >> col;
                     m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
-                    
+
                 }
                 turn++;
             }
