@@ -139,6 +139,24 @@ void Game::PauseMenu()
     } while (choice != '1' && choice != '3');
 }
 
+void Game::RecordMove(const std::string& playerName, const Foundation::Position& coordinates)
+{
+    moveHistory.emplace_back(playerName, coordinates);
+}
+
+void Game::DisplayMoveHistory() const
+{
+    system("CLS"); // curata ecranul pentru a afisa istoricul miscarilor
+
+    std::cout << "----- Move History -----" << std::endl;
+    for (const auto& move : moveHistory) {
+        std::cout << move.playerName << " moved to position (" << move.coordinates.first << ", " << move.coordinates.second << ")" << std::endl;
+    }
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Press any key to return to the main menu." << std::endl;
+    _getch(); // asteapta apasarea unei taste pentru a reveni la meniu
+}
+
 void Game::DisplayRules() const
 {
     system("CLS");
@@ -154,7 +172,7 @@ void Game::DisplayRules() const
     _getch(); // Asteapta apasarea unei taste pentru a reveni la meniu
 }
 
-void Game::SwapPlayers()
+void Game::SwapPlayers() // nu vrea std::swap-ul sa mearga
 {
     std::string temp = m_player1.GetPlayerName();
     m_player1.SetPlayerName(m_player2.GetPlayerName());

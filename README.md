@@ -1,5 +1,5 @@
 # ModernC-Proiect
-Ribță Dragoș Andrei - RibitaAndrei
-Ionescu Matei - mattgorbava
-Popescu Raul Andrei - Popi03
-Popa Alexandru Ioan - alex1popa
+Ribță Dragoș Andrei - RibitaAndrei <br>
+Ionescu Matei - mattgorbava <br>
+Popescu Raul Andrei - Popi03 <br>
+Popa Alexandru Ioan - alex1popa <br>
