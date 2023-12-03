@@ -276,12 +276,29 @@ void Game::StartGame()
                             std::cout << m_gameBoard;
                         }
                     }
-
-                    std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
                     Foundation::Position coordinates;
                     auto& [row, col] = coordinates;
-                    std::cin >> row >> col;
-                    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+                    std::cout << m_player2.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
+                    char option = _getch();
+                    switch (option - '0')
+                    {
+                    case 1:
+                        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+                        std::cin >> row >> col;
+                        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                    case 2:
+                        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+                        std::cin >> row >> col;
+                        m_gameBoard.RemovePilon(coordinates);
+                    default:
+                        break;
+                    }
+
+                    //std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+                    //Foundation::Position coordinates;
+                    //auto& [row, col] = coordinates;
+                    //std::cin >> row >> col;
+                    //m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
 
                 }
                 turn++;
