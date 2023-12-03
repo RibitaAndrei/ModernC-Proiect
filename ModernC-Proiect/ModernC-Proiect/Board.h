@@ -28,6 +28,7 @@ public:
     const bool IsCorner(const Foundation::Position& pos) const;
     std::vector<Foundation::Position> AdjacentPilons(const Foundation::Position& currentPos, const Foundation::PlayerColor& activePlayer);
     void PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer);
+    void RemovePilon(const Foundation::Position& posPilon);
     void PlaceBridge(const Foundation::Position& posFirstPilon, const Foundation::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
     bool HasConnection() const;
 
@@ -38,6 +39,8 @@ public:
     bool IsBlueBase(Foundation::Position pos) const;
 
     void PrintCell(Foundation::Position pos, HANDLE& hConsole) const;
+
+    
 
     friend std::ostream& operator<< (std::ostream& out, const Board& b);
 protected:

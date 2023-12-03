@@ -307,3 +307,13 @@ std::vector<Foundation::Position> Board::AdjacentPilons(const Foundation::Positi
 
     return positions;
 }
+
+void Board::RemovePilon(const Foundation::Position& posPilon)
+{
+    auto& [row, col] = posPilon;
+    if (IsPilon(m_board[row][col]))
+    {
+        delete m_board[row][col];
+        m_board[row][col] = nullptr;
+    }
+}
