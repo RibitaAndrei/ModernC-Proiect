@@ -244,10 +244,12 @@ void Game::StartGame()
                             std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
                             std::cin >> row >> col;
                             m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                            break;
                         case 2:
                             std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
                             std::cin >> row >> col;
                             m_gameBoard.RemovePilon(coordinates);
+                            break;
                         default:
                             break;
                         }
@@ -286,10 +288,12 @@ void Game::StartGame()
                         std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
                         std::cin >> row >> col;
                         m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                        break;
                     case 2:
                         std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
                         std::cin >> row >> col;
                         m_gameBoard.RemovePilon(coordinates);
+                        break;
                     default:
                         break;
                     }
