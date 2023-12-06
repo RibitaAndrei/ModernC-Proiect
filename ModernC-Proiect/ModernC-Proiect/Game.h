@@ -53,6 +53,7 @@ public:
 	void ReadPlayersAndBoard(std::string playerName, int& boardSize);
 	void MainMenu();
 	void StartGame();
+	void DisplayGame();
 	bool CheckWinCondition() const;
 
 	void ResetGame();

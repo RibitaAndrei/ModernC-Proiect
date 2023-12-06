@@ -205,13 +205,21 @@ void Game::MainMenu()
 	std::cout << "Enter your choice (1-3): ";
 }
 
+void Game::DisplayGame()
+{
+    system("CLS");
+    std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
+    std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
+    std::cout << "Score: " << '\n';
+    std::cout << m_gameBoard;
+}
+
 void Game::StartGame()
 {
     int turn = 1;
 	int boardSize;
 	std::string playerName;
     ReadPlayersAndBoard(playerName, boardSize);
-
 
     char choice;
     do
@@ -224,12 +232,7 @@ void Game::StartGame()
             // Start game
             while (!m_gameFinished)
             {
-                system("CLS");
-                std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
-                std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
-                std::cout << "Score: " << '\n';
-                std::cout << m_gameBoard;
-
+                DisplayGame();
                 if (turn % 2 == 1)
                 {
                     Foundation::Position coordinates;
@@ -275,18 +278,10 @@ void Game::StartGame()
                         if (getChoice == 's')
                         {
                             SwapPlayers();
-                            system("CLS");
-                            std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
-                            std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
-                            std::cout << "Score: " << '\n';
-                            std::cout << m_gameBoard;
+                            DisplayGame();
                         }
                         else {
-                            system("CLS");
-                            std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
-                            std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
-                            std::cout << "Score: " << '\n';
-                            std::cout << m_gameBoard;
+                            DisplayGame();
                         }
                     }
                     Foundation::Position coordinates;
@@ -308,13 +303,6 @@ void Game::StartGame()
                     default:
                         break;
                     }
-
-                    //std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
-                    //Foundation::Position coordinates;
-                    //auto& [row, col] = coordinates;
-                    //std::cin >> row >> col;
-                    //m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
-
                 }
                 turn++;
             }
