@@ -57,6 +57,8 @@ public:
 	bool CheckWinCondition() const;
 
 	void ActionPlayer1();
+	void ActionPlayer2();
+
 
 	void ResetGame();
 

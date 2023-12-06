@@ -268,25 +268,7 @@ void Game::StartGame()
                             DisplayGame();
                         }
                     }
-                    Foundation::Position coordinates;
-                    auto& [row, col] = coordinates;
-                    std::cout << m_player2.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
-                    char option = _getch();
-                    switch (option - '0')
-                    {
-                    case 1:
-                        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
-                        std::cin >> row >> col;
-                        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
-                        break;
-                    case 2:
-                        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
-                        std::cin >> row >> col;
-                        m_gameBoard.RemovePilon(coordinates);
-                        break;
-                    default:
-                        break;
-                    }
+                    ActionPlayer2();
                 }
                 turn++;
             }
@@ -330,6 +312,29 @@ void Game::ActionPlayer1()
         break;
     case 2:
         std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cin >> row >> col;
+        m_gameBoard.RemovePilon(coordinates);
+        break;
+    default:
+        break;
+    }
+}
+
+void Game::ActionPlayer2()
+{
+    Foundation::Position coordinates;
+    auto& [row, col] = coordinates;
+    std::cout << m_player2.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
+    char option = _getch();
+    switch (option - '0')
+    {
+    case 1:
+        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cin >> row >> col;
+        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+        break;
+    case 2:
+        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
         m_gameBoard.RemovePilon(coordinates);
         break;
