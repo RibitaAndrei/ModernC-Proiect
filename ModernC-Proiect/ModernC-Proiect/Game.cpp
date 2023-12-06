@@ -179,23 +179,29 @@ void Game::SwapPlayers() // nu vrea std::swap-ul sa mearga
     m_player2.SetPlayerName(temp);
 }
 
+void Game::ReadPlayersAndBoard(std::string playerName, int boardSize)
+{	
+
+	std::cout << "Player 1, enter your name: ";
+	std::cin >> playerName;
+	m_player1.SetPlayerName(playerName);
+
+	std::cout << "Player 2, enter your name: ";
+	std::cin >> playerName;
+	m_player2.SetPlayerName(playerName);
+
+	std::cout << "Introduce board size: ";
+	std::cin >> boardSize;
+	m_gameBoard.SetBoardSize(boardSize);
+}
+
 void Game::StartGame()
 {
     int turn = 1;
-    int boardSize;
-    std::string playerName;
+	int boardSize;
+	std::string playerName;
+    ReadPlayersAndBoard(playerName, boardSize);
 
-    std::cout << "Player 1, enter your name: ";
-    std::cin >> playerName;
-    m_player1.SetPlayerName(playerName);
-
-    std::cout << "Player 2, enter your name: ";
-    std::cin >> playerName;
-    m_player2.SetPlayerName(playerName);
-
-    std::cout << "Introduce board size: ";
-    std::cin >> boardSize;
-    m_gameBoard.SetBoardSize(boardSize);
 
     char choice;
     do
