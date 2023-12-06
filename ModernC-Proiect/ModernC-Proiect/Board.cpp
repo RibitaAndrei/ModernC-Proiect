@@ -169,12 +169,34 @@ void Board::Reset()
 void Board::PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer)
 {
     auto& [row, col] = posPilon;
+
+    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
+        return;
+
     delete m_board[row][col];
+
     m_board[row][col] = new Pilon(activePlayer, posPilon);
 
     std::vector<Foundation::Position> positions = AdjacentPilons(posPilon, activePlayer);
     for (int index = 0; index < positions.size(); index++)
         PlaceBridge(posPilon, positions[index], activePlayer);
+}
+
+void Board::PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer, bool& correctMove)
+{
+    auto& [row, col] = posPilon;
+
+    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
+        return;
+
+    delete m_board[row][col];
+
+    m_board[row][col] = new Pilon(activePlayer, posPilon);
+
+    std::vector<Foundation::Position> positions = AdjacentPilons(posPilon, activePlayer);
+    for (int index = 0; index < positions.size(); index++)
+        PlaceBridge(posPilon, positions[index], activePlayer);
+    correctMove = true;
 }
 
 void Board::PlaceBridge(const Foundation::Position& posFirstPilon, const Foundation::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer)
@@ -233,7 +255,7 @@ int Board::GetBoardSize() const
     return m_size;
 }
 
-bool Board::IsPilon(Foundation* f) const // are rost sa fie in clasa?
+bool Board::IsPilon(Foundation* f) const
 {
     Pilon* p = dynamic_cast<Pilon*>(f);
     if (p)
@@ -241,7 +263,7 @@ bool Board::IsPilon(Foundation* f) const // are rost sa fie in clasa?
     return false;
 }
 
-bool Board::IsBridge(Foundation* f) const // are rost sa fie in clasa?
+bool Board::IsBridge(Foundation* f) const
 {
     Bridge* b = dynamic_cast<Bridge*>(f);
     if (b)

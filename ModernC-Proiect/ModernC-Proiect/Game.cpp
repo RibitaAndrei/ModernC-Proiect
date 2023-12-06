@@ -294,7 +294,7 @@ void Game::ActionPlayer1()
         m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
         break;
     case 2:
-        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
         std::cin >> row >> col;
         m_gameBoard.RemovePilon(coordinates);
         break;
@@ -314,10 +314,11 @@ void Game::ActionPlayer2()
     case 1:
         std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
-        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
         break;
     case 2:
-        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+        
+        std::cout << m_player2.GetPlayerName() << " enter the position of the pilon you wish to remove: ";
         std::cin >> row >> col;
         m_gameBoard.RemovePilon(coordinates);
         break;
@@ -364,8 +365,3 @@ void Game::ResetGame()
     //ResetBoard();
     StartGame();
 }
-
-
-
-
-
