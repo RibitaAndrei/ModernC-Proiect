@@ -250,23 +250,7 @@ void Game::StartGame()
                     }
                     else
                     {
-                        std::cout << m_player1.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
-                        char option = _getch();
-                        switch (option - '0')
-                        {
-                        case 1:
-                            std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
-                            std::cin >> row >> col;
-                            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
-                            break;
-                        case 2:
-                            std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
-                            std::cin >> row >> col;
-                            m_gameBoard.RemovePilon(coordinates);
-                            break;
-                        default:
-                            break;
-                        }
+                        ActionPlayer1();
                     }
                 }
                 else
@@ -329,6 +313,29 @@ void Game::StartGame()
             break;
         }
     } while (choice != 4);
+}
+
+void Game::ActionPlayer1()
+{
+    Foundation::Position coordinates;
+    auto& [row, col] = coordinates;
+    std::cout << m_player1.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
+    char option = _getch();
+    switch (option - '0')
+    {
+    case 1:
+        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cin >> row >> col;
+        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+        break;
+    case 2:
+        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cin >> row >> col;
+        m_gameBoard.RemovePilon(coordinates);
+        break;
+    default:
+        break;
+    }
 }
 
 bool Game::CheckWinCondition() const

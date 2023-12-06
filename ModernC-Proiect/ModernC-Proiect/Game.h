@@ -56,6 +56,8 @@ public:
 	void DisplayGame();
 	bool CheckWinCondition() const;
 
+	void ActionPlayer1();
+
 	void ResetGame();
 
 private:
