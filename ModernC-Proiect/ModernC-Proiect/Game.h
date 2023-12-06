@@ -50,11 +50,12 @@ public:
 
 	void SwapPlayers();
 
+	void ReadPlayersAndBoard(std::string playerName, int& boardSize);
+	void MainMenu();
 	void StartGame();
 	bool CheckWinCondition() const;
 
 	void ResetGame();
-	void ReadPlayersAndBoard(std::string playerName, int boardSize);
 
 private:
 	Player m_player1, m_player2;

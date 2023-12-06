@@ -179,7 +179,7 @@ void Game::SwapPlayers() // nu vrea std::swap-ul sa mearga
     m_player2.SetPlayerName(temp);
 }
 
-void Game::ReadPlayersAndBoard(std::string playerName, int boardSize)
+void Game::ReadPlayersAndBoard(std::string playerName, int& boardSize)
 {	
 
 	std::cout << "Player 1, enter your name: ";
@@ -195,6 +195,16 @@ void Game::ReadPlayersAndBoard(std::string playerName, int boardSize)
 	m_gameBoard.SetBoardSize(boardSize);
 }
 
+void Game::MainMenu()
+{
+	system("CLS");
+	std::cout << "----- Main Menu -----" << std::endl;
+	std::cout << "1. Start Game" << std::endl;
+	std::cout << "2. Display Rules" << std::endl;
+	std::cout << "3. Quit" << std::endl;
+	std::cout << "Enter your choice (1-3): ";
+}
+
 void Game::StartGame()
 {
     int turn = 1;
@@ -206,12 +216,7 @@ void Game::StartGame()
     char choice;
     do
     {
-        system("CLS");
-        std::cout << "----- Main Menu -----" << std::endl;
-        std::cout << "1. Start Game" << std::endl;
-        std::cout << "2. Display Rules" << std::endl;
-        std::cout << "3. Quit" << std::endl;
-        std::cout << "Enter your choice (1-3): ";
+        MainMenu();
         choice = _getch();
         switch (choice - '0')
         {
