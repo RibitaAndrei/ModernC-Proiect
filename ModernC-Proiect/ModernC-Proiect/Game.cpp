@@ -235,18 +235,10 @@ void Game::StartGame()
                 DisplayGame();
                 if (turn % 2 == 1)
                 {
-                    Foundation::Position coordinates;
-                    auto& [row, col] = coordinates;
+                    
                     if (turn == 1)
                     {
-                        std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
-                        std::cin >> row >> col;
-                        while (!m_gameBoard.IsRedBase(coordinates))
-                        {
-                            std::cout << "Try again: ";
-                            std::cin >> row >> col;
-                        }
-                        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+                        FirstTurn();
                     }
                     else
                     {
@@ -257,16 +249,7 @@ void Game::StartGame()
                 {
                     if (turn == 2)
                     {
-                        std::cout << m_player2.GetPlayerName() << " press \'s\' to switch sides with your opponent, or \'p\' to place pilon:";
-                        char getChoice = _getch();
-                        if (getChoice == 's')
-                        {
-                            SwapPlayers();
-                            DisplayGame();
-                        }
-                        else {
-                            DisplayGame();
-                        }
+                        SecondTurn();
                     }
                     ActionPlayer2();
                 }
@@ -340,6 +323,34 @@ void Game::ActionPlayer2()
         break;
     default:
         break;
+    }
+}
+
+void Game::FirstTurn()
+{
+    Foundation::Position coordinates;
+    auto& [row, col] = coordinates;
+    std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
+    std::cin >> row >> col;
+    while (!m_gameBoard.IsRedBase(coordinates))
+    {
+        std::cout << "Try again: ";
+        std::cin >> row >> col;
+    }
+    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+}
+
+void Game::SecondTurn()
+{
+    std::cout << m_player2.GetPlayerName() << " press \'s\' to switch sides with your opponent, or \'p\' to place pilon:";
+    char getChoice = _getch();
+    if (getChoice == 's')
+    {
+        SwapPlayers();
+        DisplayGame();
+    }
+    else {
+        DisplayGame();
     }
 }
 

@@ -58,7 +58,8 @@ public:
 
 	void ActionPlayer1();
 	void ActionPlayer2();
-
+	void FirstTurn();
+	void SecondTurn();
 
 	void ResetGame();
 
