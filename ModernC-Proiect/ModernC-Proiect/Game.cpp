@@ -304,18 +304,18 @@ void Game::ActionPlayer1()
         }
         break;
     case 2:
-        correctMove = false;
+        //correctMove = false;
         std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
         std::cin >> row >> col;
         m_gameBoard.RemovePilon(coordinates);
-        while (!correctMove)
+        /*while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
             std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
             std::cin >> row >> col;
             m_gameBoard.RemovePilon(coordinates);
-        }
+        }*/
         break;
     default:
         break;
@@ -326,20 +326,38 @@ void Game::ActionPlayer2()
 {
     Foundation::Position coordinates;
     auto& [row, col] = coordinates;
+    bool correctMove = false;
     std::cout << m_player2.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
     char option = _getch();
     switch (option - '0')
     {
     case 1:
+        correctMove = false;
         std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
-        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black, correctMove);
+        while (!correctMove)
+        {
+            DisplayGame();
+            std::cout << "Incorrect move!\n";
+            std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+            std::cin >> row >> col;
+            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black, correctMove);
+        }
         break;
     case 2:
-        
+        //correctMove = false;
         std::cout << m_player2.GetPlayerName() << " enter the position of the pilon you wish to remove: ";
         std::cin >> row >> col;
         m_gameBoard.RemovePilon(coordinates);
+        /*while (!correctMove)
+        {
+            DisplayGame();
+            std::cout << "Incorrect move!\n";
+            std::cout << m_player2.GetPlayerName() << " enter the position of the pilon you wish to remove: ";
+            std::cin >> row >> col;
+            m_gameBoard.RemovePilon(coordinates);
+        }*/
         break;
     default:
         break;
