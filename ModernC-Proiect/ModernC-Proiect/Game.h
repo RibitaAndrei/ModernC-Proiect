@@ -17,7 +17,13 @@ public:
 	{
 		Player1,
 		Player2
-	};
+	};//cred totusi ca ar fi mai simplu fara acest enum
+	// ca sa fie nevoie sa facem legatura intre enum-ul asta
+	// si cel de culoare
+	// las asa momentan totusi, mai vedem pe parcurs
+	// ar fi o idee ca m_activePlayer sa fie un pointer catre o clasa Player
+	// sa avem cate una pentru fiecare player
+	ActivePlayer nextPlayer();
 
 	void SetBoardSize(int size);
 	void SetFirstPlayerName(const std::string& name);
@@ -56,10 +62,11 @@ public:
 	void DisplayGame();
 	bool CheckWinCondition() const;
 
+	//void GetMove(Player currentPlayer, int turn);
+
 	void ActionPlayer1();
 	void ActionPlayer2();
 	void FirstTurn();
-	void SecondTurn();
 
 	void ResetGame();
 

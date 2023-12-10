@@ -28,6 +28,14 @@ Game::~Game()
 {
 }
 
+Game::ActivePlayer Game::nextPlayer()
+{
+    if (m_activePlayer == ActivePlayer::Player1)
+        return ActivePlayer::Player2;
+    else
+        return ActivePlayer::Player1;
+}
+
 // Setează dimensiunea tablei de joc
 void Game::SetBoardSize(int size)
 {
@@ -233,7 +241,7 @@ void Game::StartGame()
             while (!m_gameFinished)
             {
                 DisplayGame();
-                if (turn % 2 == 1)
+                if (m_activePlayer == ActivePlayer::Player1)
                 {
                     
                     if (turn == 1)
@@ -249,9 +257,12 @@ void Game::StartGame()
                 {
                     if (turn == 2)
                     {
-                        SecondTurn();
+                        FirstTurn();
                     }
-                    ActionPlayer2();
+                    else
+                    {
+                        ActionPlayer2();
+                    }
                 }
                 turn++;
             }
@@ -290,36 +301,36 @@ void Game::ActionPlayer1()
     switch (option - '0')
     {
     case 1:
-        correctMove = false;
+        correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
         std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
-        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red, correctMove);
         while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
             std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
             std::cin >> row >> col;
-            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red, correctMove);
+            correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
         }
         break;
     case 2:
-        //correctMove = false;
+        correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Red);
         std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
         std::cin >> row >> col;
-        m_gameBoard.RemovePilon(coordinates);
-        /*while (!correctMove)
+        while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
             std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
             std::cin >> row >> col;
-            m_gameBoard.RemovePilon(coordinates);
-        }*/
+            correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Red);
+        }
         break;
     default:
         break;
     }
+
+    m_activePlayer = nextPlayer();
 }
 
 void Game::ActionPlayer2()
@@ -332,70 +343,90 @@ void Game::ActionPlayer2()
     switch (option - '0')
     {
     case 1:
-        correctMove = false;
-        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+        correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
-        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black, correctMove);
         while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
-            std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
+            std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
             std::cin >> row >> col;
-            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black, correctMove);
+            correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
         }
         break;
     case 2:
-        //correctMove = false;
-        std::cout << m_player2.GetPlayerName() << " enter the position of the pilon you wish to remove: ";
+        correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
+        std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
         std::cin >> row >> col;
-        m_gameBoard.RemovePilon(coordinates);
-        /*while (!correctMove)
+        while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
-            std::cout << m_player2.GetPlayerName() << " enter the position of the pilon you wish to remove: ";
+            std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
             std::cin >> row >> col;
-            m_gameBoard.RemovePilon(coordinates);
-        }*/
+            correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
+        }
         break;
     default:
         break;
     }
+
+    m_activePlayer = nextPlayer();
 }
 
 void Game::FirstTurn()
 {
     Pilon::Position coordinates;
     auto& [row, col] = coordinates;
-    std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
-    std::cin >> row >> col;
-    while (!m_gameBoard.IsRedBase(coordinates))
-    {
-        std::cout << "Try again: ";
-        std::cin >> row >> col;
-    }
-    m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
-}
 
-void Game::SecondTurn()
-{
-    std::cout << m_player2.GetPlayerName() << " press \'s\' to switch sides with your opponent, or \'p\' to place pilon:";
-    char getChoice = _getch();
-    if (getChoice == 's')
+    if (m_activePlayer == ActivePlayer::Player2)
     {
-        SwapPlayers();
-        DisplayGame();
+        std::cout << m_player2.GetPlayerName() << " press \'s\' to switch sides with your opponent, or \'p\' to place pilon:";
+        char getChoice = _getch();
+        if (getChoice == 's')
+        {
+            SwapPlayers();
+            DisplayGame();
+        }
+        else {
+            std::cout << m_player2.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
+            std::cin >> row >> col;
+            while (!m_gameBoard.IsBlueBase(coordinates))
+            {
+                std::cout << "Try again: ";
+                std::cin >> row >> col;
+            }
+            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+            // daca m_activePlayer ar fi un pointer catre un Player
+            // codu asta s-ar generaliza pentru ambii playeri
+            // nu s-ar mai repeta mai jos
+        }
     }
-    else {
-        DisplayGame();
+    else
+    {
+        std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
+        std::cin >> row >> col;
+        while (!m_gameBoard.IsRedBase(coordinates))
+        {
+            std::cout << "Try again: ";
+            std::cin >> row >> col;
+        }
+        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
     }
+
+    m_activePlayer = nextPlayer();
 }
 
 bool Game::CheckWinCondition() const
 {
     return m_gameBoard.HasConnection();
 }
+
+//void Game::GetMove(Player currentPlayer, int turn)
+//{
+//
+//}
 
 void Game::ResetGame()
 {

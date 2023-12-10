@@ -27,9 +27,9 @@ public:
     const bool IsInBoard(const Pilon::Position& pos) const;
     const bool IsCorner(const Pilon::Position& pos) const;
     std::vector<Pilon::Position> AdjacentPilons(const Pilon::Position& currentPos, const Foundation::PlayerColor& activePlayer);
-    void PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer);
-    void PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer, bool& correctMove);
-    void RemovePilon(const Pilon::Position& posPilon);
+    //void PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer);
+    bool PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer);
+    bool RemovePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer);
     void PlaceBridge(const Pilon::Position& posFirstPilon, const Pilon::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
     bool HasConnection() const;
 

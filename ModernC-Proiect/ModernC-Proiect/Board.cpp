@@ -166,12 +166,31 @@ void Board::Reset()
     }
 }
 
-void Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
+//void Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
+//{
+//    auto& [row, col] = posPilon;
+//
+//    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
+//        return;
+//
+//    delete m_board[row][col];
+//
+//    m_board[row][col] = new Pilon(activePlayer, posPilon);
+//
+//    std::vector<Pilon::Position> positions = AdjacentPilons(posPilon, activePlayer);
+//    for (int index = 0; index < positions.size(); index++)
+//        PlaceBridge(posPilon, positions[index], activePlayer);
+//}
+
+bool Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
 {
     auto& [row, col] = posPilon;
 
-    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
-        return;
+    if (!IsInBoard(posPilon))
+        return false;
+
+    if (IsPilon(m_board[row][col]))
+        return false;
 
     delete m_board[row][col];
 
@@ -180,23 +199,8 @@ void Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::Player
     std::vector<Pilon::Position> positions = AdjacentPilons(posPilon, activePlayer);
     for (int index = 0; index < positions.size(); index++)
         PlaceBridge(posPilon, positions[index], activePlayer);
-}
-
-void Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer, bool& correctMove)
-{
-    auto& [row, col] = posPilon;
-
-    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
-        return;
-
-    delete m_board[row][col];
-
-    m_board[row][col] = new Pilon(activePlayer, posPilon);
-
-    std::vector<Pilon::Position> positions = AdjacentPilons(posPilon, activePlayer);
-    for (int index = 0; index < positions.size(); index++)
-        PlaceBridge(posPilon, positions[index], activePlayer);
-    correctMove = true;
+    
+    return true;
 }
 
 void Board::PlaceBridge(const Pilon::Position& posFirstPilon, const Pilon::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer)
@@ -326,12 +330,19 @@ std::vector<Pilon::Position> Board::AdjacentPilons(const Pilon::Position& curren
     return positions;
 }
 
-void Board::RemovePilon(const Pilon::Position& posPilon)
+bool Board::RemovePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
 {
     auto& [row, col] = posPilon;
-    if (IsPilon(m_board[row][col]))
+    if (IsInBoard(posPilon))
     {
-        delete m_board[row][col];
-        m_board[row][col] = nullptr;
+        if (IsPilon(m_board[row][col]) && m_board[row][col]->GetColor() == activePlayer)
+        {
+            delete m_board[row][col];
+            m_board[row][col] = nullptr;
+            return true;
+        }
+        else
+            return false;
     }
+    return false;
 }
