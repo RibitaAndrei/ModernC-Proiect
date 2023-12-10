@@ -13,14 +13,14 @@ public:
 	Pilon(const Pilon& copy) = default;
 	~Pilon() = default;
 
-	virtual Position GetPosition() const;
-	virtual void SetPosition(Position& position);
+	Position GetPosition() const;
+	void SetPosition(const Position& position);
 
-	virtual size_t GetRow() const;
-	virtual void SetRow(size_t& row);
+	size_t GetRow() const;
+	void SetRow(const size_t& row);
 
-	virtual size_t GetColumn() const;
-	virtual void SetColumn(size_t& col);
+	size_t GetColumn() const;
+	void SetColumn(const size_t& col);
 
 	virtual Foundation::PlayerColor GetColor() const override;
 	virtual void SetColor(const Foundation::PlayerColor& color) override;

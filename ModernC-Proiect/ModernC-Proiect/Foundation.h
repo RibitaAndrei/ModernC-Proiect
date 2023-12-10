@@ -11,6 +11,7 @@ public:
 	};
 
 	Foundation();
+	Foundation(PlayerColor color);
 	Foundation& operator=(const Foundation& copy) = default;
 	Foundation(const Foundation& copy) = default;
 	virtual ~Foundation() = default;
