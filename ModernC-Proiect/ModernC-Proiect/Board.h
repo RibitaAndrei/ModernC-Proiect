@@ -24,22 +24,22 @@ public:
     Foundation* GetCell(const int& row, const int& col) const;
     std::vector<std::vector<Foundation*>> GetBoard()const;
 
-    const bool IsInBoard(const Foundation::Position& pos) const;
-    const bool IsCorner(const Foundation::Position& pos) const;
-    std::vector<Foundation::Position> AdjacentPilons(const Foundation::Position& currentPos, const Foundation::PlayerColor& activePlayer);
-    void PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer);
-    void PlacePilon(const Foundation::Position& posPilon, const Foundation::PlayerColor& activePlayer, bool& correctMove);
-    void RemovePilon(const Foundation::Position& posPilon);
-    void PlaceBridge(const Foundation::Position& posFirstPilon, const Foundation::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
+    const bool IsInBoard(const Pilon::Position& pos) const;
+    const bool IsCorner(const Pilon::Position& pos) const;
+    std::vector<Pilon::Position> AdjacentPilons(const Pilon::Position& currentPos, const Foundation::PlayerColor& activePlayer);
+    void PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer);
+    void PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer, bool& correctMove);
+    void RemovePilon(const Pilon::Position& posPilon);
+    void PlaceBridge(const Pilon::Position& posFirstPilon, const Pilon::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
     bool HasConnection() const;
 
     bool IsPilon(Foundation* f) const;
     bool IsBridge(Foundation* f) const;
     bool IsPiece(Foundation* f) const;
-    bool IsRedBase(Foundation::Position pos) const;
-    bool IsBlueBase(Foundation::Position pos) const;
+    bool IsRedBase(Pilon::Position pos) const;
+    bool IsBlueBase(Pilon::Position pos) const;
 
-    void PrintCell(Foundation::Position pos, HANDLE& hConsole) const;
+    void PrintCell(Pilon::Position pos, HANDLE& hConsole) const;
 
     
 

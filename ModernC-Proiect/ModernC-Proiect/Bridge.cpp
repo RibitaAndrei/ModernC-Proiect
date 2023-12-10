@@ -1,9 +1,9 @@
 #include "Bridge.h"
 
 
-Bridge::Bridge(Bridge::Pilons pilons, Foundation::PlayerColor color, Foundation::Position position)
+Bridge::Bridge(Bridge::Pilons pilons, Foundation::PlayerColor color)
     : m_pilons{ pilons },
-    Foundation(position, color)
+    Foundation(color)
 {
 }
 

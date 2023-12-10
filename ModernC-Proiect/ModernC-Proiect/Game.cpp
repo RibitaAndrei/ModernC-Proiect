@@ -139,7 +139,7 @@ void Game::PauseMenu()
     } while (choice != '1' && choice != '3');
 }
 
-void Game::RecordMove(const std::string& playerName, const Foundation::Position& coordinates)
+void Game::RecordMove(const std::string& playerName, const Pilon::Position& coordinates)
 {
     moveHistory.emplace_back(playerName, coordinates);
 }
@@ -282,7 +282,7 @@ void Game::StartGame()
 
 void Game::ActionPlayer1()
 {
-    Foundation::Position coordinates;
+    Pilon::Position coordinates;
     auto& [row, col] = coordinates;
     bool correctMove = false;
     std::cout << m_player1.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
@@ -324,7 +324,7 @@ void Game::ActionPlayer1()
 
 void Game::ActionPlayer2()
 {
-    Foundation::Position coordinates;
+    Pilon::Position coordinates;
     auto& [row, col] = coordinates;
     bool correctMove = false;
     std::cout << m_player2.GetPlayerName() << ", would you like to place or remove a pilon? Press 1 to place or press 2 to remove: " << '\n';
@@ -366,7 +366,7 @@ void Game::ActionPlayer2()
 
 void Game::FirstTurn()
 {
-    Foundation::Position coordinates;
+    Pilon::Position coordinates;
     auto& [row, col] = coordinates;
     std::cout << m_player1.GetPlayerName() << " enter the position of your first pilon (needs to be in base): ";
     std::cin >> row >> col;

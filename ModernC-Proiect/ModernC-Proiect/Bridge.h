@@ -7,7 +7,7 @@ class Bridge : public Foundation
 public:
 	using Pilons = std::pair <Foundation*, Foundation*>;
 
-	Bridge(Pilons pilons, Foundation::PlayerColor color, Foundation::Position position);
+	Bridge(Pilons pilons, Foundation::PlayerColor color);
 	Bridge(const Bridge& other);
 	Bridge& operator=(const Bridge& copy) = default;
 	~Bridge() {};
