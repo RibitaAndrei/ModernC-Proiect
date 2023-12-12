@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Bridge.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Foundation.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Pilon.h" />

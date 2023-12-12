@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Board.h"
 #include "ScoreManager.h"
+#include "Constants.h"
 #include <iostream>
 
 class Game

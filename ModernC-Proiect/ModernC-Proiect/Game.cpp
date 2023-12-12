@@ -314,7 +314,7 @@ void Game::ActionPlayer1()
         }
         break;
     case 2:
-        std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
+        std::cout << m_player1.GetPlayerName() << " enter the position the pilon you wish to remove: ";
         std::cin >> row >> col;
         correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Red);
         while (!correctMove)
@@ -344,27 +344,27 @@ void Game::ActionPlayer2()
     {
     case 1:
         
-        std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+        std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
         std::cin >> row >> col;
         correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
         while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
-            std::cout << m_player1.GetPlayerName() << " enter the position of your next pilon: ";
+            std::cout << m_player2.GetPlayerName() << " enter the position of your next pilon: ";
             std::cin >> row >> col;
             correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
         }
         break;
     case 2:
-        std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
+        std::cout << m_player2.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
         std::cin >> row >> col;
         correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
         while (!correctMove)
         {
             DisplayGame();
             std::cout << "Incorrect move!\n";
-            std::cout << m_player1.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
+            std::cout << m_player2.GetPlayerName() << " enter the position the  pilon you wish to remove: ";
             std::cin >> row >> col;
             correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
         }
