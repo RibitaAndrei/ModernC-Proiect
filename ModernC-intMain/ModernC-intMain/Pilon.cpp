@@ -1,13 +1,13 @@
 #include "Pilon.h"
 
 Pilon::Pilon()
-    :Foundation()
+	:Foundation()
 {
 }
 
 Pilon::Pilon(Foundation::PlayerColor color, Position position)
-    :Foundation(color),
-	m_position{position}
+	:Foundation(color),
+	m_position{ position }
 {
 }
 
@@ -43,11 +43,11 @@ void Pilon::SetColumn(const size_t& col)
 
 Foundation::PlayerColor Pilon::GetColor() const
 {
-    return m_color;
+	return m_color;
 }
 
 void Pilon::SetColor(const Foundation::PlayerColor& color)
 {
-    m_color = color;
+	m_color = color;
 }
 

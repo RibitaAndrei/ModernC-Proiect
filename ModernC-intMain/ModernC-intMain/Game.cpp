@@ -43,13 +43,13 @@ void Game::SetBoardSize(int size)
 }
 
 // Setează numele primului jucător
-void Game::SetFirstPlayerName(const std::string &name)
+void Game::SetFirstPlayerName(const std::string& name)
 {
     m_player1.SetPlayerName(name);
 }
 
 // Setează numele celui de-al doilea jucător
-void Game::SetSecondPlayerName(const std::string &name)
+void Game::SetSecondPlayerName(const std::string& name)
 {
     m_player2.SetPlayerName(name);
 }
@@ -179,29 +179,29 @@ void Game::SwapPlayers() // nu vrea std::swap-ul sa mearga
 }
 
 void Game::ReadPlayersAndBoard(std::string playerName, int& boardSize)
-{	
+{
 
-	std::cout << kPlayer1Choice;
-	std::cin >> playerName;
-	m_player1.SetPlayerName(playerName);
+    std::cout << kPlayer1Choice;
+    std::cin >> playerName;
+    m_player1.SetPlayerName(playerName);
 
-	std::cout << kPlayer2Choice;
-	std::cin >> playerName;
-	m_player2.SetPlayerName(playerName);
+    std::cout << kPlayer2Choice;
+    std::cin >> playerName;
+    m_player2.SetPlayerName(playerName);
 
-	std::cout << kBoardChoice;
-	std::cin >> boardSize;
-	m_gameBoard.SetBoardSize(boardSize);
+    std::cout << kBoardChoice;
+    std::cin >> boardSize;
+    m_gameBoard.SetBoardSize(boardSize);
 }
 
 void Game::MainMenu()
 {
-	system("CLS");
-	std::cout << "----- Main Menu -----" << std::endl;
-	std::cout << "1. Start Game" << std::endl;
-	std::cout << "2. Display Rules" << std::endl;
-	std::cout << "3. Quit" << std::endl;
-	std::cout << "Enter your choice (1-3): ";
+    system("CLS");
+    std::cout << "----- Main Menu -----" << std::endl;
+    std::cout << "1. Start Game" << std::endl;
+    std::cout << "2. Display Rules" << std::endl;
+    std::cout << "3. Quit" << std::endl;
+    std::cout << "Enter your choice (1-3): ";
 }
 
 void Game::DisplayGame()
@@ -216,8 +216,8 @@ void Game::DisplayGame()
 void Game::StartGame()
 {
     int turn = 1;
-	int boardSize;
-	std::string playerName;
+    int boardSize;
+    std::string playerName;
     ReadPlayersAndBoard(playerName, boardSize);
 
     char choice;
@@ -234,7 +234,7 @@ void Game::StartGame()
                 DisplayGame();
                 if (m_activePlayer == ActivePlayer::Player1)
                 {
-                    
+
                     if (turn == 1)
                     {
                         FirstTurn();
@@ -334,7 +334,7 @@ void Game::ActionPlayer2()
     switch (option - '0')
     {
     case 1:
-        
+
         std::cout << m_player2.GetPlayerName() << kPlacePilon;
         std::cin >> row >> col;
         correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);

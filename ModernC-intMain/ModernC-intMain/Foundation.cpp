@@ -6,6 +6,6 @@ Foundation::Foundation()
 }
 
 Foundation::Foundation(PlayerColor color)
-	:m_color{color}
+	:m_color{ color }
 {
 }

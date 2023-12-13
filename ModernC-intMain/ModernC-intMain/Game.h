@@ -29,7 +29,7 @@ public:
 	void SetBoardSize(int size);
 	void SetFirstPlayerName(const std::string& name);
 	void SetSecondPlayerName(const std::string& name);
-	
+
 	int GetBoardSize() const;
 	std::string GetFirstPlayerName() const;
 	std::string GetSecondPlayerName() const;
@@ -52,7 +52,7 @@ public:
 	void DisplayMoveHistory() const;
 
 	bool PlacePiece(const std::pair<int, int>& coordinates);
-	
+
 	void DisplayRules() const;
 
 	void SwapPlayers();

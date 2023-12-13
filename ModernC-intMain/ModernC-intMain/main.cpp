@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QtWidgets/QApplication>
+#include "Game.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,3 +9,15 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+
+
+//#include<iostream>
+//#include"Game.h"
+//
+//int main()
+//{
+//	Game game(24);
+//	game.StartGame();
+//
+//	return 0;
+//}

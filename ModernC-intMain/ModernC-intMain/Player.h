@@ -31,8 +31,8 @@ public:
 	void SetColor(const char& color);
 	void DecrementPilons();
 	void DecrementBridges();
-	void SetPlayerName(const std::string &name);
-	void SetBridgeCounter(const int &count);
-	void SetPilonCounter(const int &count);
+	void SetPlayerName(const std::string& name);
+	void SetBridgeCounter(const int& count);
+	void SetPilonCounter(const int& count);
 };
 
