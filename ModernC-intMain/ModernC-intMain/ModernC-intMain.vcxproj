@@ -17,7 +17,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FEBE4271-33C3-4BA4-A686-47B0A4B3971C}</ProjectGuid>
+    <ProjectGuid>{F17AD596-C626-4274-8EBF-072117CCCA34}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
@@ -93,10 +93,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="qt_intMain.qrc"/>
-    <QtUic Include="qt_intMain.ui"/>
-    <QtMoc Include="qt_intMain.h"/>
-    <ClCompile Include="qt_intMain.cpp"/>
+    <QtRcc Include="mainwindow.qrc"/>
+    <QtUic Include="mainwindow.ui"/>
+    <QtMoc Include="mainwindow.h"/>
+    <ClCompile Include="mainwindow.cpp"/>
     <ClCompile Include="main.cpp"/>
 
   </ItemGroup>
