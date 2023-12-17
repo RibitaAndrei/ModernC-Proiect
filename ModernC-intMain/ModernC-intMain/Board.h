@@ -11,6 +11,7 @@
 
 class Board {
 public:
+	Board();
 	Board(int size);
 	Board(const Board& copy);
 	Board& operator=(const Board& copy) = default;
@@ -33,11 +34,13 @@ public:
 	void PlaceBridge(const Pilon::Position& posFirstPilon, const Pilon::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer);
 	bool HasConnection() const;
 
-	bool IsPilon(Foundation* f) const;
+	bool IsPilon(const Pilon::Position& pos) const; //modificat 17.12
 	bool IsBridge(Foundation* f) const;
 	bool IsPiece(Foundation* f) const;
 	bool IsRedBase(Pilon::Position pos) const;
 	bool IsBlueBase(Pilon::Position pos) const;
+
+	Foundation::PlayerColor GetColor(const Pilon::Position& pos);
 
 	void PrintCell(Pilon::Position pos, HANDLE& hConsole) const;
 

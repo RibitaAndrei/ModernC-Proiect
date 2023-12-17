@@ -5,12 +5,16 @@
 #include <vector>
 
 
+Board::Board()
+{
+}
+
 Board::Board(int size)
 	: m_size{ size }
 {
-	m_board.resize(size);
-	for (int index = 0; index < size; index++)
-		m_board[index].resize(size);
+	m_board.resize(m_size);
+	for (int index = 0; index < m_size; index++)
+		m_board[index].resize(m_size);
 }
 
 Board::Board(const Board& copy)
@@ -147,7 +151,7 @@ void Board::PrintCell(Pilon::Position pos, HANDLE& hConsole) const
 		SetConsoleTextAttribute(hConsole, 15);
 
 
-	if (IsPilon(m_board[row][col]))
+	if (IsPilon(pos))
 		std::cout << "P ";
 	else if (IsBridge(m_board[row][col]))
 		std::cout << "B ";
@@ -189,10 +193,8 @@ bool Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::Player
 	if (!IsInBoard(posPilon))
 		return false;
 
-	if (IsPilon(m_board[row][col]))
+	if (IsPilon(posPilon))
 		return false;
-
-	delete m_board[row][col];
 
 	m_board[row][col] = new Pilon(activePlayer, posPilon);
 
@@ -248,6 +250,9 @@ const bool Board::IsInBoard(const Pilon::Position& pos) const
 void Board::SetBoardSize(const int& size)
 {
 	m_size = size;
+	m_board.resize(m_size);
+	for (int index = 0; index < m_size; index++)
+		m_board[index].resize(m_size);
 }
 
 int Board::GetBoardSize() const
@@ -255,9 +260,10 @@ int Board::GetBoardSize() const
 	return m_size;
 }
 
-bool Board::IsPilon(Foundation* f) const
+bool Board::IsPilon(const Pilon::Position& pos) const //modificat 17.12
 {
-	Pilon* p = dynamic_cast<Pilon*>(f);
+	auto& [row, col] = pos;
+	Pilon* p = dynamic_cast<Pilon*>(m_board[row][col]);
 	if (p)
 		return true;
 	return false;
@@ -273,7 +279,7 @@ bool Board::IsBridge(Foundation* f) const
 
 bool Board::IsPiece(Foundation* f) const
 {
-	if (IsPilon(f) || IsBridge(f))
+	if (IsBridge(f))
 		return true;
 	return false;
 }
@@ -292,6 +298,12 @@ bool Board::IsBlueBase(Pilon::Position pos) const
 	if (col == 0 || col == m_size - 1)
 		return true;
 	return false;
+}
+
+Foundation::PlayerColor Board::GetColor(const Pilon::Position& pos)
+{
+	auto& [row, col] = pos;
+	return m_board[row][col]->GetColor();
 }
 
 std::ostream& operator<<(std::ostream& out, const Board& b)
@@ -335,7 +347,7 @@ bool Board::RemovePilon(const Pilon::Position& posPilon, const Foundation::Playe
 	auto& [row, col] = posPilon;
 	if (IsInBoard(posPilon))
 	{
-		if (IsPilon(m_board[row][col]) && m_board[row][col]->GetColor() == activePlayer)
+		if (IsPilon(posPilon) && m_board[row][col]->GetColor() == activePlayer)
 		{
 			delete m_board[row][col];
 			m_board[row][col] = nullptr;
