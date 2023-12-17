@@ -21,6 +21,7 @@ public:
 public:
 	mainwindow(QWidget* parent = nullptr, const int& boardSize = 24);
 	~mainwindow();
+<<<<<<< Updated upstream
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void paintEvent(QPaintEvent* e) override;
 	//virtual void mouseMoveEvent(QMouseEvent* e);
@@ -36,3 +37,10 @@ private:
 	int m_windowHeight;
 	//bool ClickInBoard(const QPoint& click);
 };
+=======
+
+
+private:
+	Ui::mainwindowClass ui;
+};
+>>>>>>> Stashed changes
