@@ -1,9 +1,8 @@
 #include "mainwindow.h"
 
-mainwindow::mainwindow(QWidget *parent)
-    : QMainWindow(parent)
+mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 {
-    ui.setupUi(this);
+
 }
 
 mainwindow::~mainwindow()
