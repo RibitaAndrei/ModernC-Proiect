@@ -8,6 +8,7 @@
 class Game
 {
 public:
+	Game();
 	Game(int boardSize);
 	Game(int boardSize, std::string playerName1, std::string playerName2);
 	Game& operator=(const Game& copy) = default;
@@ -24,9 +25,16 @@ public:
 	// las asa momentan totusi, mai vedem pe parcurs
 	// ar fi o idee ca m_activePlayer sa fie un pointer catre o clasa Player
 	// sa avem cate una pentru fiecare player
-	ActivePlayer nextPlayer();
+
+	Player* GetNextPlayer();
+	Player* GetActivePlayer();
+
+	bool IsPilon(const Pilon::Position& pos); //17.12
+
+	Foundation::PlayerColor GetColor(const Pilon::Position& pos);
 
 	void SetBoardSize(int size);
+	bool IsCorner(const Pilon::Position& pos);
 	void SetFirstPlayerName(const std::string& name);
 	void SetSecondPlayerName(const std::string& name);
 
@@ -51,7 +59,7 @@ public:
 	// functie pentru afisarea istoricului miscarilor
 	void DisplayMoveHistory() const;
 
-	bool PlacePiece(const std::pair<int, int>& coordinates);
+	bool PlacePilon(const Pilon::Position& coordinates);
 
 	void DisplayRules() const;
 
@@ -59,26 +67,24 @@ public:
 
 	void ReadPlayersAndBoard(std::string playerName, int& boardSize);
 	void MainMenu();
-	void StartGame();
+	//void StartGame();
 	void DisplayGame();
 	bool CheckWinCondition() const;
 
 	//void GetMove(Player currentPlayer, int turn);
 
-	void ActionPlayer1();
-	void ActionPlayer2();
-	void FirstTurn();
+	//void ActionPlayer1();
+	//void ActionPlayer2();
+	//void FirstTurn();
 
-	void ResetGame();
+	//void ResetGame();
 
 private:
 	Player m_player1, m_player2;
+	Player* m_activePlayer;
 	Board m_gameBoard;
-
 	int m_scorePlayer1;
-	int m_scorePlayer2;
-	ActivePlayer m_activePlayer;//nou
-
+	int m_scorePlayer2; //scorurile de pus in player
 	bool m_gameFinished;
 
 	// structura pentru a stoca o miscare
@@ -93,6 +99,6 @@ private:
 	std::vector<Move> moveHistory; // vector pentru a stoca istoricul miscarilor
 
 
-	void DisplayScore();
+	//void DisplayScore();
 };
 

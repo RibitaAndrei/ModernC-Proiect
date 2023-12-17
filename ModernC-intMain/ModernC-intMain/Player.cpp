@@ -4,18 +4,18 @@ Player::Player(char teamColor)
 {
 }
 
-Player::Player(std::string playerName, char teamColor)
+Player::Player(std::string playerName, Foundation::PlayerColor teamColor)
 	:m_pilonCounter{ 50 },
 	m_bridgeCounter{ 50 },
-	m_color{ teamColor },
+	m_teamColor{ teamColor },
 	m_playerName{ playerName }
 {
 }
 
-char Player::GetColor() const
+Foundation::PlayerColor Player::GetColor() const
 {
 
-	return m_color;
+	return m_teamColor;
 }
 
 int Player::GetPilonCounter() const
@@ -33,9 +33,9 @@ std::string Player::GetPlayerName() const
 	return m_playerName;
 }
 
-void Player::SetColor(const char& color)
+void Player::SetColor(const Foundation::PlayerColor& color)
 {
-	m_color = color;
+	m_teamColor = color;
 }
 
 void Player::DecrementPilons()
@@ -61,4 +61,14 @@ void Player::SetBridgeCounter(const int& count)
 void Player::SetPilonCounter(const int& count)
 {
 	m_pilonCounter = count;
+}
+
+void Player::SetNextPlayer(Player& player)
+{
+	m_nextPlayer = &player;
+}
+
+Player* Player::GetNextPlayer()
+{
+	return m_nextPlayer;
 }
