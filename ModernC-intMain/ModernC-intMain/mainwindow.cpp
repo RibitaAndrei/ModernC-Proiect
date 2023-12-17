@@ -15,3 +15,13 @@ mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 
 mainwindow::~mainwindow()
 {}
+
+void mainwindow::mouseReleaseEvent(QMouseEvent* e)
+{
+    if (e->button() == Qt::LeftButton)
+    {
+        int rowRect{ (e->x() - kHorizontalMarginSize) / m_boardSizeRects };
+        int colRect{ (e->y() - kVerticalMarginSize) / m_boardSizeRects };
+        Pilon::Position rectPos{ std::make_pair(rowRect, colRect) };
+    }
+}
