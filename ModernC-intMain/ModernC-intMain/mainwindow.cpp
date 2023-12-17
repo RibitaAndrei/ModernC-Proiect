@@ -14,7 +14,6 @@ mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 }
 
 mainwindow::~mainwindow()
-<<<<<<< Updated upstream
 {}
 
 void mainwindow::mouseReleaseEvent(QMouseEvent* e)
@@ -26,6 +25,4 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
         Pilon::Position rectPos{ std::make_pair(rowRect, colRect) };
     }
 }
-=======
-{}
->>>>>>> Stashed changes
+
