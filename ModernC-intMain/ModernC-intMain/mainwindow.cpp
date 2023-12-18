@@ -23,6 +23,18 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
         int rowRect{ (e->x() - kHorizontalMarginSize) / m_boardSizeRects };
         int colRect{ (e->y() - kVerticalMarginSize) / m_boardSizeRects };
         Pilon::Position rectPos{ std::make_pair(rowRect, colRect) };
+		if (rowRect > 0 && colRect > 0 && !m_game.IsCorner(rectPos))
+		{
+			QRect foundation{ kHorizontalMarginSize + kSquareSize * colRect, kVerticalMarginSize + kSquareSize * rowRect, kSquareSize, kSquareSize };
+			if (fabs(foundation.center().x() - e->pos().x()) < kFoundationRadius &&
+				fabs(foundation.center().y() - e->pos().y()) < kFoundationRadius)
+			{
+				//make foundation a red/blue pilon
+				Pilon::Position pos{ std::make_pair(rowRect, colRect) };
+				m_game.PlacePilon(pos);
+				update();
+			}
+		}
     }
 }
 
