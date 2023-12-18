@@ -51,6 +51,15 @@ void mainwindow::paintEvent(QPaintEvent* e)
 			//de adaugat verificarea daca este un pilon pe pozitia curenta
 			//si de adaugat afisarea pilonului pe tabla
 			Pilon::Position foundationCoords = std::make_pair(indexRow, indexCol);
+			if (!m_game.IsCorner(foundationCoords))
+			{
+				std::pair<int, int> foundationCenter;
+				foundationCenter.first = kHorizontalMarginSize + kSquareSize * indexCol + kSquareSize / 2;
+				foundationCenter.second = kVerticalMarginSize + kSquareSize * indexRow + kSquareSize / 2;
+				QPoint center(foundationCenter.first, foundationCenter.second);
+				QRect foundation{ kHorizontalMarginSize + kSquareSize * indexCol, kVerticalMarginSize + kSquareSize * indexRow, kSquareSize, kSquareSize };
+				painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+			}
 
 		}
 
