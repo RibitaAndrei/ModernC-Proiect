@@ -38,3 +38,23 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
     }
 }
 
+void mainwindow::paintEvent(QPaintEvent* e)
+{
+	QPainter painter(this);
+	QPen pen;
+	painter.setPen(pen);
+
+	for (int indexRow = 0; indexRow < m_boardSizeRects; ++indexRow)
+	{
+		for (int indexCol = 0; indexCol < m_boardSizeRects; ++indexCol)
+		{
+			//de adaugat verificarea daca este un pilon pe pozitia curenta
+			//si de adaugat afisarea pilonului pe tabla
+			Pilon::Position foundationCoords = std::make_pair(indexRow, indexCol);
+
+		}
+
+	}
+}
+
+

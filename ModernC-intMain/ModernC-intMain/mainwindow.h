@@ -22,7 +22,7 @@ public:
 	mainwindow(QWidget* parent = nullptr, const int& boardSize = 24);
 	~mainwindow();
 	virtual void mouseReleaseEvent(QMouseEvent* e);
-	//virtual void paintEvent(QPaintEvent* e) override;
+	virtual void paintEvent(QPaintEvent* e) override;
 	//virtual void mouseMoveEvent(QMouseEvent* e);
 	//virtual void mousePressEvent(QMouseEvent* e);
 
