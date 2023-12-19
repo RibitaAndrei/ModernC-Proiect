@@ -59,11 +59,17 @@ void mainwindow::paintEvent(QPaintEvent* e)
 				QPoint center(foundationCenter.first, foundationCenter.second);
 				QRect foundation{ kHorizontalMarginSize + kSquareSize * indexCol, kVerticalMarginSize + kSquareSize * indexRow, kSquareSize, kSquareSize };
 				painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+
+				if (m_game.IsPilon(std::make_pair(indexRow, indexCol)))
+				{
+					if (m_game.GetColor(std::make_pair(indexRow, indexCol)) == Foundation::PlayerColor::Red)
+						painter.fillRect(foundation, Qt::red);
+					else
+						painter.fillRect(foundation, Qt::blue);
+				}
 			}
 
 		}
 
 	}
 }
-
-
