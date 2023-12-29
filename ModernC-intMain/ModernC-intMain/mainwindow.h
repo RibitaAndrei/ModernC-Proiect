@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QTextEdit>
+#include <QLabel>
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 #include "Game.h"
@@ -35,6 +36,13 @@ private:
 	//bool ClickInBoard(const QPoint& click);
 private:
 	Ui::mainwindowClass ui;
+private: //labels
+	QLabel player1, player2;
+	QLabel firstName, secondName;
+	QLabel firstPilons, secondPilons;
+	QLabel firstBridges, secondBridges;
+
+	void SetLabelNames();
 };
 
 
