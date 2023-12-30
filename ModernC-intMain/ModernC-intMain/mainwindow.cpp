@@ -81,4 +81,15 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	QLine redBaseLineRight(topRightCorner, bottomRightCorner);
 	QLine blueBaseLineTop(topLeftCorner, topRightCorner);
 	QLine blueBaseLineBottom(bottomLeftCorner, bottomRightCorner);
+	pen.setWidth(2);
+	pen.setColor(Qt::blue);
+	painter.setPen(pen);
+	painter.drawLine(redBaseLineLeft);
+	painter.drawLine(redBaseLineRight);
+
+
+	pen.setColor(Qt::red);
+	painter.setPen(pen);
+	painter.drawLine(blueBaseLineTop);
+	painter.drawLine(blueBaseLineBottom);
 }
