@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IPiece.cpp" />
     <ClCompile Include="Pilon.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
