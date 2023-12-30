@@ -9,7 +9,7 @@ Board::Board()
 {
 }
 
-Board::Board(int size)
+Board::Board(uint16_t size)
 	: m_size{ size }
 {
 	m_board.resize(m_size);
@@ -22,7 +22,7 @@ Board::Board(const Board& copy)
 	m_board{ copy.m_board }
 {}
 
-Foundation* Board::GetCell(const int& row, const int& col) const
+IPiece* Board::GetCell(const int& row, const int& col) const
 {
 	if (row >= 0 && row < m_size && col >= 0 && col < m_size)
 	{
@@ -30,7 +30,7 @@ Foundation* Board::GetCell(const int& row, const int& col) const
 	}
 }
 
-std::vector<std::vector<Foundation*>> Board::GetBoard() const
+std::vector<std::vector<IPiece*>> Board::GetBoard() const
 {
 	return m_board;
 }
@@ -139,10 +139,10 @@ void Board::PrintCell(Pilon::Position pos, HANDLE& hConsole) const
 	{
 		switch (m_board[row][col]->GetColor())
 		{
-		case Foundation::PlayerColor::Red:
+		case IPiece::PlayerColor::Red:
 			SetConsoleTextAttribute(hConsole, 12);
 			break;
-		case Foundation::PlayerColor::Black:
+		case IPiece::PlayerColor::Black:
 			SetConsoleTextAttribute(hConsole, 9);
 			break;
 		}
@@ -170,7 +170,7 @@ void Board::Reset()
 	}
 }
 
-//void Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
+//void Board::PlacePilon(const Pilon::Position& posPilon, const IPiece::PlayerColor& activePlayer)
 //{
 //    auto& [row, col] = posPilon;
 //
@@ -186,7 +186,7 @@ void Board::Reset()
 //        PlaceBridge(posPilon, positions[index], activePlayer);
 //}
 
-bool Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
+bool Board::PlacePilon(const Pilon::Position& posPilon, Player* activePlayer)
 {
 	auto& [row, col] = posPilon;
 
@@ -196,47 +196,20 @@ bool Board::PlacePilon(const Pilon::Position& posPilon, const Foundation::Player
 	if (IsPilon(posPilon))
 		return false;
 
-	m_board[row][col] = new Pilon(activePlayer, posPilon);
+	m_board[row][col] = new Pilon(activePlayer->GetColor(), posPilon);
+	activePlayer->AddPilon(m_board[row][col]);
 
-	std::vector<Pilon::Position> positions = AdjacentPilons(posPilon, activePlayer);
+	std::vector<IPiece*> positions = AdjacentPilons(posPilon, activePlayer);
 	for (int index = 0; index < positions.size(); index++)
-		PlaceBridge(posPilon, positions[index], activePlayer);
+		PlaceBridge(m_board[row][col], positions[index], activePlayer);
 
 	return true;
 }
 
-void Board::PlaceBridge(const Pilon::Position& posFirstPilon, const Pilon::Position& posSecondPilon, const Foundation::PlayerColor& activePlayer)
+void Board::PlaceBridge(IPiece* firstPilon, IPiece* secondPilon, Player* activePlayer)
 {
-	auto& [rowFirstPilon, colFirstPilon] = posFirstPilon;
-	auto& [rowSecondPilon, colSecondPilon] = posSecondPilon;
-
-	if (rowFirstPilon - rowSecondPilon == 2)
-		for (uint8_t indexLine = rowSecondPilon; indexLine < rowFirstPilon; indexLine++)
-		{
-			Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
-			m_board[indexLine][colFirstPilon] = new Bridge(pilons, activePlayer);
-		}
-
-	if (rowFirstPilon - rowSecondPilon == -2)
-		for (uint8_t indexLine = rowSecondPilon; indexLine > rowFirstPilon; indexLine--)
-		{
-			Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
-			m_board[indexLine][colFirstPilon] = new Bridge(pilons, activePlayer);
-		}
-
-	if (colFirstPilon - colSecondPilon == 2)
-		for (uint8_t indexCol = colSecondPilon; indexCol < colFirstPilon; indexCol++)
-		{
-			Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
-			m_board[rowFirstPilon][indexCol] = new Bridge(pilons, activePlayer); // s-ar putea sa fie gresit
-		}
-
-	if (colFirstPilon - colSecondPilon == -2)
-		for (uint8_t indexCol = colSecondPilon; indexCol > colFirstPilon; indexCol--)
-		{
-			Bridge::Pilons pilons = std::make_pair(m_board[rowFirstPilon][colFirstPilon], m_board[rowSecondPilon][colSecondPilon]);
-			m_board[rowFirstPilon][indexCol] = new Bridge(pilons, activePlayer); // s-ar putea sa fie gresit
-		}
+	activePlayer->AddBridge(firstPilon, secondPilon, activePlayer);
+	m_allBridges.push_back(activePlayer->GetLastBridge());
 }
 
 const bool Board::IsInBoard(const Pilon::Position& pos) const
@@ -247,7 +220,7 @@ const bool Board::IsInBoard(const Pilon::Position& pos) const
 	return false;
 }
 
-void Board::SetBoardSize(const int& size)
+void Board::SetBoardSize(const uint16_t& size)
 {
 	m_size = size;
 	m_board.resize(m_size);
@@ -255,7 +228,7 @@ void Board::SetBoardSize(const int& size)
 		m_board[index].resize(m_size);
 }
 
-int Board::GetBoardSize() const
+uint16_t Board::GetBoardSize() const
 {
 	return m_size;
 }
@@ -269,7 +242,7 @@ bool Board::IsPilon(const Pilon::Position& pos) const //modificat 17.12
 	return false;
 }
 
-bool Board::IsBridge(Foundation* f) const
+bool Board::IsBridge(IPiece* f) const
 {
 	Bridge* b = dynamic_cast<Bridge*>(f);
 	if (b)
@@ -277,7 +250,7 @@ bool Board::IsBridge(Foundation* f) const
 	return false;
 }
 
-bool Board::IsPiece(Foundation* f) const
+bool Board::IsPiece(IPiece* f) const
 {
 	if (IsBridge(f))
 		return true;
@@ -300,7 +273,12 @@ bool Board::IsBlueBase(Pilon::Position pos) const
 	return false;
 }
 
-Foundation::PlayerColor Board::GetColor(const Pilon::Position& pos)
+std::vector<IPiece*> Board::GetBridges() const
+{
+	return m_allBridges;
+}
+
+IPiece::PlayerColor Board::GetColor(const Pilon::Position& pos)
 {
 	auto& [row, col] = pos;
 	return m_board[row][col]->GetColor();
@@ -309,7 +287,7 @@ Foundation::PlayerColor Board::GetColor(const Pilon::Position& pos)
 std::ostream& operator<<(std::ostream& out, const Board& b)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	std::vector<std::vector<Foundation*>> board = b.GetBoard();
+	std::vector<std::vector<IPiece*>> board = b.GetBoard();
 	size_t size = b.GetBoardSize();
 
 	for (int i = 0; i < size; ++i) {
@@ -324,25 +302,26 @@ std::ostream& operator<<(std::ostream& out, const Board& b)
 	return out;
 }
 
-std::vector<Pilon::Position> Board::AdjacentPilons(const Pilon::Position& currentPos, const Foundation::PlayerColor& activePlayer)
+std::vector<IPiece*> Board::AdjacentPilons(const Pilon::Position& currentPos, Player* activePlayer)
 {
-	std::vector<Pilon::Position> positions;
+	auto& [row, col] = currentPos;
+	std::vector<IPiece*> adjacentPilons;
 	int rowVect[] = { -1, -2, -2, -1, 1, 2, 2, 1 };
 	int colVect[] = { -2, -1, 1, 2, 2, 1, -1, -2 };
 	for (int index = 0; index < 8; index++)
 	{
-		if (Pilon::Position cellPos = std::make_pair(rowVect[index], colVect[index]); IsInBoard(cellPos) == true)
+		if (Pilon::Position cellPos = std::make_pair(row + rowVect[index], col + colVect[index]); IsInBoard(cellPos) == true)
 		{
-			Pilon* p = dynamic_cast<Pilon*> (m_board[rowVect[index]][colVect[index]]);
-			if (p && p->GetColor() == activePlayer)
-				positions.push_back({ rowVect[index], colVect[index] });
+			IPiece* pilon = dynamic_cast<Pilon*> (m_board[row + rowVect[index]][col + colVect[index]]);
+			if (pilon && pilon->GetColor() == activePlayer->GetColor())
+				adjacentPilons.push_back(pilon);
 		}
 	}
 
-	return positions;
+	return adjacentPilons;
 }
 
-bool Board::RemovePilon(const Pilon::Position& posPilon, const Foundation::PlayerColor& activePlayer)
+bool Board::RemovePilon(const Pilon::Position& posPilon, const IPiece::PlayerColor& activePlayer)
 {
 	auto& [row, col] = posPilon;
 	if (IsInBoard(posPilon))
