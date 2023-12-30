@@ -93,3 +93,10 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	painter.drawLine(blueBaseLineTop);
 	painter.drawLine(blueBaseLineBottom);
 }
+//bool modernCPersonalQT::ClickInBoard(const QPoint& click)
+//{
+//    if (click.x() > kHorizontalMarginSize && click.x() < m_boardSizePixels + kHorizontalMarginSize
+//        && click.y() > kVerticalMarginSize && click.y() < m_boardSizePixels + kVerticalMarginSize)
+//        return true;
+//    return false;
+//}
