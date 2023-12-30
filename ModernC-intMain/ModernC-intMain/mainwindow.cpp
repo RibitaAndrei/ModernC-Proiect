@@ -72,4 +72,13 @@ void mainwindow::paintEvent(QPaintEvent* e)
 		}
 
 	}
+	QPoint topLeftCorner(kHorizontalMarginSize + kSquareSize, kVerticalMarginSize + kSquareSize);
+	QPoint topRightCorner(kHorizontalMarginSize + kSquareSize * (m_boardSizeRects - 1), kVerticalMarginSize + kSquareSize);
+	QPoint bottomLeftCorner(kHorizontalMarginSize + kSquareSize, kVerticalMarginSize + kSquareSize * (m_boardSizeRects - 1));
+	QPoint bottomRightCorner(kHorizontalMarginSize + kSquareSize * (m_boardSizeRects - 1), kVerticalMarginSize + kSquareSize * (m_boardSizeRects - 1));
+
+	QLine redBaseLineLeft(topLeftCorner, bottomLeftCorner);
+	QLine redBaseLineRight(topRightCorner, bottomRightCorner);
+	QLine blueBaseLineTop(topLeftCorner, topRightCorner);
+	QLine blueBaseLineBottom(bottomLeftCorner, bottomRightCorner);
 }
