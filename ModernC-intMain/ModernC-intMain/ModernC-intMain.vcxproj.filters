@@ -90,5 +90,8 @@
     <ClInclude Include="ScoreManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
