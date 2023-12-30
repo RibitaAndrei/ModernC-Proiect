@@ -2,26 +2,26 @@
 #include <utility>
 #include "Pilon.h"
 
-class Bridge : public Foundation
+class Bridge : public IPiece
 {
 public:
-	using Pilons = std::pair <Foundation*, Foundation*>;
+	using Pilons = std::pair <IPiece*, IPiece*>;
 
-	Bridge(Pilons pilons, Foundation::PlayerColor color);
+	Bridge(IPiece* firstPilon, IPiece* secondPilon, IPiece::PlayerColor color);
+	Bridge(Pilons pilons, IPiece::PlayerColor color);
 	Bridge(const Bridge& other);
 	Bridge& operator=(const Bridge& copy) = default;
-	~Bridge() {};
+	~Bridge() = default;
 
-	Foundation* GetFirstPilon() const;
-	Foundation* GetSecondPilon() const;
+	IPiece* GetFirstPilon() const;
+	IPiece* GetSecondPilon() const;
 
 	void SetFirstPilon(Pilon* pilon);
 	void SetSecondPilon(Pilon* pilon);
 
-	virtual Foundation::PlayerColor GetColor() const override;
-	virtual void SetColor(const Foundation::PlayerColor& color) override;
+	virtual IPiece::PlayerColor GetColor() const override;
+	virtual void SetColor(const IPiece::PlayerColor& color) override;
 
 private:
 	Pilons m_pilons;
 };
-

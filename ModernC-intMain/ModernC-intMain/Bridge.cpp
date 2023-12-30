@@ -1,9 +1,15 @@
 #include "Bridge.h"
 
 
-Bridge::Bridge(Bridge::Pilons pilons, Foundation::PlayerColor color)
+Bridge::Bridge(IPiece* firstPilon, IPiece* secondPilon, IPiece::PlayerColor color)
+	:m_pilons{ std::make_pair(firstPilon, secondPilon) },
+	IPiece(color)
+{
+}
+
+Bridge::Bridge(Bridge::Pilons pilons, IPiece::PlayerColor color)
 	: m_pilons{ pilons },
-	Foundation(color)
+	IPiece(color)
 {
 }
 
@@ -12,12 +18,12 @@ Bridge::Bridge(const Bridge& other)
 {
 }
 
-Foundation* Bridge::GetFirstPilon() const
+IPiece* Bridge::GetFirstPilon() const
 {
 	return m_pilons.first;
 }
 
-Foundation* Bridge::GetSecondPilon() const
+IPiece* Bridge::GetSecondPilon() const
 {
 	return m_pilons.second;
 }
@@ -32,12 +38,13 @@ void Bridge::SetSecondPilon(Pilon* pilon)
 	m_pilons.second = pilon;
 }
 
-Foundation::PlayerColor Bridge::GetColor() const
+IPiece::PlayerColor Bridge::GetColor() const
 {
 	return m_color;
 }
 
-void Bridge::SetColor(const Foundation::PlayerColor& color)
+void Bridge::SetColor(const IPiece::PlayerColor& color)
 {
 	m_color = color;
 }
+
