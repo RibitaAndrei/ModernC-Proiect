@@ -1,14 +1,14 @@
 #pragma once
 #include <utility>
-#include "Foundation.h"
+#include "IPiece.h"
 
-class Pilon : public Foundation
+class Pilon : public IPiece
 {
 public:
 	using Position = std::pair<size_t, size_t>;
 
 	Pilon();
-	Pilon(Foundation::PlayerColor color, Position position);
+	Pilon(IPiece::PlayerColor color, Position position);
 	Pilon& operator=(const Pilon& copy) = default;
 	Pilon(const Pilon& copy) = default;
 	~Pilon() = default;
@@ -22,8 +22,8 @@ public:
 	size_t GetColumn() const;
 	void SetColumn(const size_t& col);
 
-	virtual Foundation::PlayerColor GetColor() const override;
-	virtual void SetColor(const Foundation::PlayerColor& color) override;
+	virtual IPiece::PlayerColor GetColor() const override;
+	virtual void SetColor(const IPiece::PlayerColor& color) override;
 
 private:
 	Position m_position;
