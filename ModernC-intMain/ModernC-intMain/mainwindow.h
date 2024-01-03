@@ -1,5 +1,3 @@
-#pragma once
-
 #include <qpainter.h>
 #include <QMouseEvent>
 #include <QPaintEvent>
