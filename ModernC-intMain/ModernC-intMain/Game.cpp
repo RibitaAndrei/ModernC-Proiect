@@ -4,34 +4,40 @@
 #include <iostream>
 
 Game::Game()
-    :m_player1{ 'r' },
-    m_player2{ 'b' },
+    :m_player1{ IPiece::PlayerColor::Red },
+    m_player2{ IPiece::PlayerColor::Black },
     m_scorePlayer1{ 0 },
     m_scorePlayer2{ 0 },
     m_gameFinished{ false },
     m_activePlayer{ &m_player1 }
-{}
+{
+    m_player1.SetNextPlayer(m_player2);
+    m_player2.SetNextPlayer(m_player1);
+}
 
-Game::Game(int boardSize)
-    :m_player1{ 'r' },
-    m_player2{ 'b' },
+Game::Game(uint16_t boardSize)
+    :m_player1{ IPiece::PlayerColor::Red },
+    m_player2{ IPiece::PlayerColor::Black },
     m_gameBoard{ boardSize },
     m_scorePlayer1{ 0 },
     m_scorePlayer2{ 0 },
     m_gameFinished{ false },
     m_activePlayer{ &m_player1 }
 {
+    m_player1.SetNextPlayer(m_player2);
+    m_player2.SetNextPlayer(m_player1);
 }
 // Constructor cu parametri
-Game::Game(int boardSize, std::string playerName1, std::string playerName2) :
-    m_gameBoard{ boardSize }, m_player1{ playerName1, Foundation::PlayerColor::Red }, m_player2{ playerName2, Foundation::PlayerColor::Black }, m_gameFinished{ false } // Inițializarea scorurilor la zero
+Game::Game(uint16_t boardSize, std::string playerName1, std::string playerName2) :
+    m_gameBoard{ boardSize }, m_player1{ playerName1, IPiece::PlayerColor::Red }, m_player2{ playerName2, IPiece::PlayerColor::Black }, m_gameFinished{ false } // Inițializarea scorurilor la zero
 {
+    m_player1.SetNextPlayer(m_player2);
+    m_player2.SetNextPlayer(m_player1);
 }
 // Constructor de copiere
 Game::Game(const Game& copy) :
-    Game(copy.GetBoardSize(), copy.GetFirstPlayerName(), copy.GetSecondPlayerName())
-{
-}
+    Game(copy.GetBoardSize(), copy.m_player1.GetPlayerName(), copy.m_player2.GetPlayerName())
+{}
 // Destructor
 Game::~Game()
 {
@@ -47,17 +53,21 @@ Player* Game::GetActivePlayer()
     return m_activePlayer;
 }
 
-bool Game::IsPilon(const Pilon::Position& pos)//17.12
+void Game::SetNextPlayer()
+{
+    m_activePlayer = GetNextPlayer();
+}
+
+bool Game::IsPilon(const Pilon::Position& pos)
 {
     return m_gameBoard.IsPilon(pos);
 }
 
-Foundation::PlayerColor Game::GetColor(const Pilon::Position& pos)
+IPiece::PlayerColor Game::GetColor(const Pilon::Position& pos)
 {
     return m_gameBoard.GetColor(pos);
 }
 
-// Setează dimensiunea tablei de joc
 void Game::SetBoardSize(int size)
 {
     m_gameBoard.SetBoardSize(size);
@@ -68,35 +78,9 @@ bool Game::IsCorner(const Pilon::Position& pos)
     return m_gameBoard.IsCorner(pos);
 }
 
-// Setează numele primului jucător
-void Game::SetFirstPlayerName(const std::string& name)
-{
-    m_player1.SetPlayerName(name);
-}
-
-// Setează numele celui de-al doilea jucător
-void Game::SetSecondPlayerName(const std::string& name)
-{
-    m_player2.SetPlayerName(name);
-}
-
-// Obține dimensiunea tablei de joc
 int Game::GetBoardSize() const
 {
     return m_gameBoard.GetBoard().size();
-}
-
-// Obține numele primului jucător
-std::string Game::GetFirstPlayerName() const
-{
-    return m_player1.GetPlayerName();
-}
-
-// Obține numele celui de-al doilea jucător
-std::string Game::GetSecondPlayerName() const
-{
-    return m_player2.GetPlayerName();
-
 }
 
 int Game::GetScorePlayer1() const
@@ -117,6 +101,16 @@ void Game::SetScorePlayer1(const int& score)
 void Game::SetScorePlayer2(const int& score)
 {
     m_scorePlayer2 = score;
+}
+
+Player Game::GetFirstPlayer() const
+{
+    return m_player1;
+}
+
+Player Game::GetSecondPlayer() const
+{
+    return m_player2;
 }
 
 void Game::AddScorePlayer1()
@@ -189,7 +183,7 @@ void Game::DisplayMoveHistory() const
 
 bool Game::PlacePilon(const Pilon::Position& coordinates)
 {
-    return m_gameBoard.PlacePilon(coordinates, m_activePlayer->GetColor());
+    return m_gameBoard.PlacePilon(coordinates, m_activePlayer);
 }
 
 void Game::DisplayRules() const
@@ -325,27 +319,27 @@ void Game::DisplayGame()
 //    case 1:
 //        std::cout << m_player1.GetPlayerName() << kPlacePilon;
 //        std::cin >> row >> col;
-//        correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+//        correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
 //        while (!correctMove)
 //        {
 //            DisplayGame();
 //            std::cout << kIncorrectMove;
 //            std::cout << m_player1.GetPlayerName() << kPlacePilon;
 //            std::cin >> row >> col;
-//            correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+//            correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
 //        }
 //        break;
 //    case 2:
 //        std::cout << m_player1.GetPlayerName() << kRemovePilon;
 //        std::cin >> row >> col;
-//        correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Red);
+//        correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Red);
 //        while (!correctMove)
 //        {
 //            DisplayGame();
 //            std::cout << kIncorrectMove;
 //            std::cout << m_player1.GetPlayerName() << kRemovePilon;
 //            std::cin >> row >> col;
-//            correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Red);
+//            correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Red);
 //        }
 //        break;
 //    default:
@@ -368,27 +362,27 @@ void Game::DisplayGame()
 //
 //        std::cout << m_player2.GetPlayerName() << kPlacePilon;
 //        std::cin >> row >> col;
-//        correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+//        correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
 //        while (!correctMove)
 //        {
 //            DisplayGame();
 //            std::cout << kIncorrectMove;
 //            std::cout << m_player2.GetPlayerName() << kPlacePilon;
 //            std::cin >> row >> col;
-//            correctMove = m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+//            correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
 //        }
 //        break;
 //    case 2:
 //        std::cout << m_player2.GetPlayerName() << kRemovePilon;
 //        std::cin >> row >> col;
-//        correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
+//        correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Black);
 //        while (!correctMove)
 //        {
 //            DisplayGame();
 //            std::cout << kIncorrectMove;
 //            std::cout << m_player2.GetPlayerName() << kRemovePilon;
 //            std::cin >> row >> col;
-//            correctMove = m_gameBoard.RemovePilon(coordinates, Foundation::PlayerColor::Black);
+//            correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Black);
 //        }
 //        break;
 //    default:
@@ -420,7 +414,7 @@ void Game::DisplayGame()
 //                std::cout << "Try again: ";
 //                std::cin >> row >> col;
 //            }
-//            m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Black);
+//            m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
 //            // daca m_activePlayer ar fi un pointer catre un Player
 //            // codu asta s-ar generaliza pentru ambii playeri
 //            // nu s-ar mai repeta mai jos
@@ -435,7 +429,7 @@ void Game::DisplayGame()
 //            std::cout << "Try again: ";
 //            std::cin >> row >> col;
 //        }
-//        m_gameBoard.PlacePilon(coordinates, Foundation::PlayerColor::Red);
+//        m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
 //    }
 //
 //    m_activePlayer = NextPlayer();
@@ -444,6 +438,11 @@ void Game::DisplayGame()
 bool Game::CheckWinCondition() const
 {
     return m_gameBoard.HasConnection();
+}
+
+std::vector<IPiece*> Game::GetBridges() const
+{
+    return m_gameBoard.GetBridges();
 }
 
 //void Game::GetMove(Player currentPlayer, int turn)

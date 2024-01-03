@@ -9,8 +9,8 @@ class Game
 {
 public:
 	Game();
-	Game(int boardSize);
-	Game(int boardSize, std::string playerName1, std::string playerName2);
+	Game(uint16_t boardSize);
+	Game(uint16_t boardSize, std::string playerName1, std::string playerName2);
 	Game& operator=(const Game& copy) = default;
 	Game(const Game& copy);
 	~Game();
@@ -28,25 +28,25 @@ public:
 
 	Player* GetNextPlayer();
 	Player* GetActivePlayer();
+	void SetNextPlayer();
 
 	bool IsPilon(const Pilon::Position& pos); //17.12
 
-	Foundation::PlayerColor GetColor(const Pilon::Position& pos);
+	IPiece::PlayerColor GetColor(const Pilon::Position& pos);
 
 	void SetBoardSize(int size);
 	bool IsCorner(const Pilon::Position& pos);
-	void SetFirstPlayerName(const std::string& name);
-	void SetSecondPlayerName(const std::string& name);
 
 	int GetBoardSize() const;
-	std::string GetFirstPlayerName() const;
-	std::string GetSecondPlayerName() const;
 
 	int GetScorePlayer1() const;
 	int GetScorePlayer2() const;
 
 	void SetScorePlayer1(const int& score);
 	void SetScorePlayer2(const int& score);
+
+	Player GetFirstPlayer() const;
+	Player GetSecondPlayer() const;
 
 	void AddScorePlayer1();
 	void AddScorePlayer2();
@@ -70,6 +70,8 @@ public:
 	//void StartGame();
 	void DisplayGame();
 	bool CheckWinCondition() const;
+
+	std::vector<IPiece*> GetBridges() const;
 
 	//void GetMove(Player currentPlayer, int turn);
 
@@ -101,4 +103,3 @@ private:
 
 	//void DisplayScore();
 };
-
