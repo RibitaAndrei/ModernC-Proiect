@@ -1,10 +1,13 @@
 #include "Player.h"
 
-Player::Player(char teamColor)
+Player::Player(IPiece::PlayerColor teamColor)
+	:m_teamColor{ teamColor },
+	m_pilonCounter{ 50 },
+	m_bridgeCounter{ 50 }
 {
 }
 
-Player::Player(std::string playerName, Foundation::PlayerColor teamColor)
+Player::Player(std::string playerName, IPiece::PlayerColor teamColor)
 	:m_pilonCounter{ 50 },
 	m_bridgeCounter{ 50 },
 	m_teamColor{ teamColor },
@@ -12,7 +15,7 @@ Player::Player(std::string playerName, Foundation::PlayerColor teamColor)
 {
 }
 
-Foundation::PlayerColor Player::GetColor() const
+IPiece::PlayerColor Player::GetColor() const
 {
 
 	return m_teamColor;
@@ -33,7 +36,7 @@ std::string Player::GetPlayerName() const
 	return m_playerName;
 }
 
-void Player::SetColor(const Foundation::PlayerColor& color)
+void Player::SetColor(const IPiece::PlayerColor& color)
 {
 	m_teamColor = color;
 }
@@ -63,12 +66,30 @@ void Player::SetPilonCounter(const int& count)
 	m_pilonCounter = count;
 }
 
+void Player::AddPilon(IPiece* pilon)
+{
+	m_pilons.push_back(pilon);
+	DecrementPilons();
+}
+
+void Player::AddBridge(IPiece* firstPilon, IPiece* secondPilon, Player* activePlayer)
+{
+	m_bridges.push_back(new Bridge(firstPilon, secondPilon, activePlayer->GetColor()));
+	DecrementBridges();
+}
+
+IPiece* Player::GetLastBridge() const
+{
+	if (!m_bridges.empty())
+		return m_bridges[m_bridges.size() - 1];
+}
+
 void Player::SetNextPlayer(Player& player)
 {
 	m_nextPlayer = &player;
 }
 
-Player* Player::GetNextPlayer()
+Player* Player::GetNextPlayer() const
 {
 	return m_nextPlayer;
 }
