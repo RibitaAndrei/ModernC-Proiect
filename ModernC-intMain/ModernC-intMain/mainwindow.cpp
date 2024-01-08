@@ -16,6 +16,19 @@ mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 mainwindow::~mainwindow()
 {}
 
+void DrawProperLine(QPoint& firstNode, QPoint& secondNode, int foundationSize)
+{
+	double angle{ atan2(secondNode.y() - firstNode.y(), secondNode.x() - firstNode.x()) };
+	double offsetX{ cos(angle) * foundationSize };
+	double offsetY{ sin(angle) * foundationSize };
+
+	firstNode.setX(firstNode.x() + offsetX);
+	firstNode.setY(firstNode.y() + offsetY);
+
+	secondNode.setX(secondNode.x() - offsetX);
+	secondNode.setY(secondNode.y() - offsetY);
+}
+
 void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 {
 	if (e->button() == Qt::LeftButton)
