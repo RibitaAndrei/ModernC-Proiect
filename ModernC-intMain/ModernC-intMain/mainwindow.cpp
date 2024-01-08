@@ -106,6 +106,19 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	painter.drawLine(blueBaseLineTop);
 	painter.drawLine(blueBaseLineBottom);
 }
+
+void mainwindow::SetLabelNames()
+{
+	player1.setText("Player 1");
+	player2.setText("Player 2");
+	firstName.setText(QString::fromStdString(m_game.GetFirstPlayer().GetPlayerName()));
+	secondName.setText(QString::fromStdString(m_game.GetSecondPlayer().GetPlayerName()));
+	firstPilons.setText(QString::number(m_game.GetFirstPlayer().GetPilonCounter()));
+	secondPilons.setText(QString::number(m_game.GetSecondPlayer().GetPilonCounter()));
+	firstBridges.setText(QString::number(m_game.GetFirstPlayer().GetBridgeCounter()));
+	secondBridges.setText(QString::number(m_game.GetSecondPlayer().GetBridgeCounter()));
+}
+
 //bool modernCPersonalQT::ClickInBoard(const QPoint& click)
 //{
 //    if (click.x() > kHorizontalMarginSize && click.x() < m_boardSizePixels + kHorizontalMarginSize
