@@ -16,40 +16,70 @@ mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 mainwindow::~mainwindow()
 {}
 
-void DrawProperLine(QPoint& firstNode, QPoint& secondNode, int foundationSize)
-{
-	double angle{ atan2(secondNode.y() - firstNode.y(), secondNode.x() - firstNode.x()) };
-	double offsetX{ cos(angle) * foundationSize };
-	double offsetY{ sin(angle) * foundationSize };
-
-	firstNode.setX(firstNode.x() + offsetX);
-	firstNode.setY(firstNode.y() + offsetY);
-
-	secondNode.setX(secondNode.x() - offsetX);
-	secondNode.setY(secondNode.y() - offsetY);
-}
+//void DrawProperLine(QPoint& firstNode, QPoint& secondNode, int foundationSize)
+//{
+//	double angle{ atan2(secondNode.y() - firstNode.y(), secondNode.x() - firstNode.x()) };
+//	double offsetX{ cos(angle) * foundationSize };
+//	double offsetY{ sin(angle) * foundationSize };
+//
+//	firstNode.setX(firstNode.x() + offsetX);
+//	firstNode.setY(firstNode.y() + offsetY);
+//
+//	secondNode.setX(secondNode.x() - offsetX);
+//	secondNode.setY(secondNode.y() - offsetY);
+//}
+//
+//void mainwindow::mouseReleaseEvent(QMouseEvent* e)
+//{
+//	if (e->button() == Qt::LeftButton)
+//	{
+//		int colRect{ (e->x() - kHorizontalMarginSize) / kSquareSize };
+//		int rowRect{ (e->y() - kVerticalMarginSize) / kSquareSize };
+//		Pilon::Position rectPos{ std::make_pair(rowRect, colRect) };
+//		if (rowRect > 0 && colRect > 0 && !m_game.IsCorner(rectPos))
+//		{
+//			QRect foundation{ kHorizontalMarginSize + kSquareSize * colRect, kVerticalMarginSize + kSquareSize * rowRect, kSquareSize, kSquareSize };
+//			if (fabs(foundation.center().x() - e->pos().x()) < kFoundationRadius &&
+//				fabs(foundation.center().y() - e->pos().y()) < kFoundationRadius)
+//			{
+//				//make foundation a red/blue pilon
+//				Pilon::Position pos{ std::make_pair(rowRect, colRect) };
+//				m_game.PlacePilon(pos);
+//				m_game.SetNextPlayer();
+//				update();
+//			}
+//		}
+//	}
+//}
 
 void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 {
 	if (e->button() == Qt::LeftButton)
 	{
-		int rowRect{ (e->x() - kHorizontalMarginSize) / m_boardSizeRects };
-		int colRect{ (e->y() - kVerticalMarginSize) / m_boardSizeRects };
+		int colRect{ (e->x() - kHorizontalMarginSize) / kSquareSize };
+		int rowRect{ (e->y() - kVerticalMarginSize) / kSquareSize };
 		Pilon::Position rectPos{ std::make_pair(rowRect, colRect) };
-		if (rowRect > 0 && colRect > 0 && !m_game.IsCorner(rectPos))
+		if (rowRect >= 0 && colRect >= 0 && rowRect < m_boardSizeRects && colRect < m_boardSizeRects)
 		{
-			QRect foundation{ kHorizontalMarginSize + kSquareSize * colRect, kVerticalMarginSize + kSquareSize * rowRect, kSquareSize, kSquareSize };
-			if (fabs(foundation.center().x() - e->pos().x()) < kFoundationRadius &&
-				fabs(foundation.center().y() - e->pos().y()) < kFoundationRadius)
-			{
-				//make foundation a red/blue pilon
-				Pilon::Position pos{ std::make_pair(rowRect, colRect) };
-				m_game.PlacePilon(pos);
-				update();
-			}
+			Pilon::Position pos{ std::make_pair(rowRect, colRect) };
+			m_game.PlacePilon(pos);
+			m_game.SetNextPlayer();
+			update();
 		}
 	}
 }
+
+void DrawProperLine(QPoint& firstNode, QPoint& secondNode, int foundationSize)
+{
+	QLineF line(firstNode, secondNode);
+	QPointF arrowP1 = line.p1() + QPointF((line.dx() * 0.1), (line.dy() * 0.1));
+	QPointF arrowP2 = line.p2() - QPointF((line.dx() * 0.1), (line.dy() * 0.1));
+
+	firstNode = arrowP1.toPoint();
+	secondNode = arrowP2.toPoint();
+}
+
+
 
 void mainwindow::paintEvent(QPaintEvent* e)
 {
