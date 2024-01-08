@@ -61,8 +61,6 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	{
 		for (int indexCol = 0; indexCol < m_boardSizeRects; ++indexCol)
 		{
-			//de adaugat verificarea daca este un pilon pe pozitia curenta
-			//si de adaugat afisarea pilonului pe tabla
 			Pilon::Position foundationCoords = std::make_pair(indexRow, indexCol);
 			if (!m_game.IsCorner(foundationCoords))
 			{
@@ -71,20 +69,49 @@ void mainwindow::paintEvent(QPaintEvent* e)
 				foundationCenter.second = kVerticalMarginSize + kSquareSize * indexRow + kSquareSize / 2;
 				QPoint center(foundationCenter.first, foundationCenter.second);
 				QRect foundation{ kHorizontalMarginSize + kSquareSize * indexCol, kVerticalMarginSize + kSquareSize * indexRow, kSquareSize, kSquareSize };
-				painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
-
 				if (m_game.IsPilon(std::make_pair(indexRow, indexCol)))
 				{
 					if (m_game.GetColor(std::make_pair(indexRow, indexCol)) == IPiece::PlayerColor::Red)
-						painter.fillRect(foundation, Qt::red);
+					{
+						painter.setBrush(Qt::red);
+						painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+					}
 					else
-						painter.fillRect(foundation, Qt::blue);
+					{
+						painter.setBrush(Qt::blue);
+						painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+					}
+				}
+				else
+				{
+					painter.setBrush(Qt::white);
+					painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
 				}
 			}
-
 		}
-
 	}
+
+	std::vector<IPiece*> bridges = m_game.GetBridges();
+	for (auto& bridge : bridges)
+	{
+		Bridge* b = dynamic_cast<Bridge*>(bridge);
+		Pilon* first = dynamic_cast<Pilon*>(b->GetFirstPilon());
+		Pilon* second = dynamic_cast<Pilon*>(b->GetSecondPilon());
+
+		uint16_t row = kVerticalMarginSize + kSquareSize * first->GetRow() + kSquareSize / 2;
+		uint16_t col = kHorizontalMarginSize + kSquareSize * first->GetColumn() + kSquareSize / 2;
+		QPoint firstCenter{ col, row };
+
+		row = kVerticalMarginSize + kSquareSize * second->GetRow() + kSquareSize / 2;
+		col = kHorizontalMarginSize + kSquareSize * second->GetColumn() + kSquareSize / 2;
+		QPoint secondCenter{ col, row };
+
+		DrawProperLine(firstCenter, secondCenter, kFoundationRadius);
+		pen.setWidth(2);
+		painter.setPen(pen);
+		painter.drawLine(firstCenter, secondCenter);
+	}
+
 	QPoint topLeftCorner(kHorizontalMarginSize + kSquareSize, kVerticalMarginSize + kSquareSize);
 	QPoint topRightCorner(kHorizontalMarginSize + kSquareSize * (m_boardSizeRects - 1), kVerticalMarginSize + kSquareSize);
 	QPoint bottomLeftCorner(kHorizontalMarginSize + kSquareSize, kVerticalMarginSize + kSquareSize * (m_boardSizeRects - 1));
@@ -94,17 +121,20 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	QLine redBaseLineRight(topRightCorner, bottomRightCorner);
 	QLine blueBaseLineTop(topLeftCorner, topRightCorner);
 	QLine blueBaseLineBottom(bottomLeftCorner, bottomRightCorner);
+
 	pen.setWidth(2);
-	pen.setColor(Qt::blue);
+
+	pen.setColor(Qt::black);
 	painter.setPen(pen);
 	painter.drawLine(redBaseLineLeft);
 	painter.drawLine(redBaseLineRight);
-
 
 	pen.setColor(Qt::red);
 	painter.setPen(pen);
 	painter.drawLine(blueBaseLineTop);
 	painter.drawLine(blueBaseLineBottom);
+
+
 }
 
 void mainwindow::SetLabelNames()
@@ -119,7 +149,7 @@ void mainwindow::SetLabelNames()
 	secondBridges.setText(QString::number(m_game.GetSecondPlayer().GetBridgeCounter()));
 }
 
-//bool modernCPersonalQT::ClickInBoard(const QPoint& click)
+//bool mainwindow::ClickInBoard(const QPoint& click)
 //{
 //    if (click.x() > kHorizontalMarginSize && click.x() < m_boardSizePixels + kHorizontalMarginSize
 //        && click.y() > kVerticalMarginSize && click.y() < m_boardSizePixels + kVerticalMarginSize)
