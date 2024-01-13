@@ -30,3 +30,25 @@ PromptDialog::PromptDialog(QWidget* parent) : QDialog(parent)
 
     setLayout(mainLayout);
 }
+
+std::string PromptDialog::GetPlayer1Name() const
+{
+    return m_player1Name;
+}
+
+std::string PromptDialog::GetPlayer2Name() const
+{
+    return m_player2Name;
+}
+
+int PromptDialog::GetBoardSize() const
+{
+    return m_boardSize;
+}
+
+void PromptDialog::getInfo()
+{
+    m_player1Name = m_player1LineEdit->text().toStdString();
+    m_player2Name = m_player2LineEdit->text().toStdString();
+    m_boardSize = m_boardSizeLineEdit->text().toInt();
+}

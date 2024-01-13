@@ -21,4 +21,6 @@ private:
     std::string m_player1Name;
     std::string m_player2Name;
     int m_boardSize;
+private slots:
+    void getInfo();
 };
