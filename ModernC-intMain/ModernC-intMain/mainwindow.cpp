@@ -187,6 +187,67 @@ void mainwindow::DrawMainMenu(QPaintEvent* e)
 	painter.drawText(quitButton, Qt::AlignCenter, "Quit");
 }
 
+void mainwindow::DrawBoard(QPaintEvent* e)
+{
+	QPainter painter(this);
+	QPen pen;
+
+	for (int indexRow = 0; indexRow < m_boardSizeRects; ++indexRow)
+	{
+		for (int indexCol = 0; indexCol < m_boardSizeRects; ++indexCol)
+		{
+			Pilon::Position foundationCoords = std::make_pair(indexRow, indexCol);
+			if (!m_game.IsCorner(foundationCoords))
+			{
+				std::pair<int, int> foundationCenter;
+				foundationCenter.first = kHorizontalMarginSize + kSquareSize * indexCol + kSquareSize / 2;
+				foundationCenter.second = kVerticalMarginSize + kSquareSize * indexRow + kSquareSize / 2;
+				QPoint center(foundationCenter.first, foundationCenter.second);
+				QRect foundation{ kHorizontalMarginSize + kSquareSize * indexCol, kVerticalMarginSize + kSquareSize * indexRow, kSquareSize, kSquareSize };
+				if (m_game.IsPilon(std::make_pair(indexRow, indexCol)))
+				{
+					if (m_game.GetColor(std::make_pair(indexRow, indexCol)) == IPiece::PlayerColor::Red)
+					{
+						painter.setBrush(Qt::red);
+						painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+					}
+					else
+					{
+						painter.setBrush(Qt::blue);
+						painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+					}
+				}
+				else
+				{
+					painter.setBrush(Qt::white);
+					painter.drawEllipse(center, kFoundationRadius, kFoundationRadius);
+				}
+			}
+		}
+	}
+
+	std::vector<IPiece*> bridges = m_game.GetBridges();
+	for (auto& bridge : bridges)
+	{
+		Bridge* b = dynamic_cast<Bridge*>(bridge);
+		Pilon* first = dynamic_cast<Pilon*>(b->GetFirstPilon());
+		Pilon* second = dynamic_cast<Pilon*>(b->GetSecondPilon());
+
+		uint16_t row = kVerticalMarginSize + kSquareSize * first->GetRow() + kSquareSize / 2;
+		uint16_t col = kHorizontalMarginSize + kSquareSize * first->GetColumn() + kSquareSize / 2;
+		QPoint firstCenter{ col, row };
+
+		row = kVerticalMarginSize + kSquareSize * second->GetRow() + kSquareSize / 2;
+		col = kHorizontalMarginSize + kSquareSize * second->GetColumn() + kSquareSize / 2;
+		QPoint secondCenter{ col, row };
+
+		DrawProperLine(firstCenter, secondCenter, kFoundationRadius);
+		pen.setWidth(2);
+		painter.setPen(pen);
+		painter.drawLine(firstCenter, secondCenter);
+	}
+}
+
 void mainwindow::SetLabelNames()
 {
 	player1.setText("Player 1");

@@ -32,6 +32,7 @@ private:
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void paintEvent(QPaintEvent* e) override;
 	void DrawMainMenu(QPaintEvent* e);
+	void DrawBoard(QPaintEvent* e);
 	//virtual void mouseMoveEvent(QMouseEvent* e);
 	//virtual void mousePressEvent(QMouseEvent* e);
 private:
