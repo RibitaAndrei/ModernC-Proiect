@@ -31,6 +31,7 @@ public:
 private:
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void paintEvent(QPaintEvent* e) override;
+	void DrawMainMenu(QPaintEvent* e);
 	//virtual void mouseMoveEvent(QMouseEvent* e);
 	//virtual void mousePressEvent(QMouseEvent* e);
 private:
@@ -49,6 +50,11 @@ private: //labels
 	QLabel firstName, secondName;
 	QLabel firstPilons, secondPilons;
 	QLabel firstBridges, secondBridges;
+
+	QRect titleText;
+	QRect playButton;
+	QRect quitButton;
+	QRect setGameOptions;
 
 	void SetLabelNames();
 };

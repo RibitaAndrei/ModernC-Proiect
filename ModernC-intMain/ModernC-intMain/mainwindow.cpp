@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include <QlineEdit>
+#include "PromptDialog.h"
 
 mainwindow::mainwindow(QWidget* parent, const int& boardSize)
 	: QMainWindow(parent),
@@ -165,6 +167,24 @@ void mainwindow::paintEvent(QPaintEvent* e)
 	painter.drawLine(blueBaseLineBottom);
 
 
+}
+
+void mainwindow::DrawMainMenu(QPaintEvent* e)
+{
+	QPainter painter(this);
+
+	painter.setFont(QFont("comic sans", 50));
+	painter.setBrush(Qt::black);
+	painter.drawText(titleText, Qt::AlignCenter, "Twixt");
+	painter.setFont(QFont("comic sans", 20));
+	painter.setBrush(Qt::darkRed);
+	painter.drawRect(playButton);
+	painter.setBrush(Qt::black);
+	painter.drawText(playButton, Qt::AlignCenter, "Start");
+	painter.setBrush(Qt::darkRed);
+	painter.drawRect(quitButton);
+	painter.setBrush(Qt::black);
+	painter.drawText(quitButton, Qt::AlignCenter, "Quit");
 }
 
 void mainwindow::SetLabelNames()
