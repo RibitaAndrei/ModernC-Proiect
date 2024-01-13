@@ -96,5 +96,8 @@
     <ClInclude Include="IPiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PromptDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

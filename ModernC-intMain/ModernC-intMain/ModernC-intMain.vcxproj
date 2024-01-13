@@ -113,6 +113,7 @@
     <ClInclude Include="IPiece.h" />
     <ClInclude Include="Pilon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PromptDialog.h" />
     <ClInclude Include="ScoreManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
