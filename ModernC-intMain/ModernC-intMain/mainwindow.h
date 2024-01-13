@@ -16,21 +16,31 @@ public:
 	const int kSquareSize = 20;
 	const int kHorizontalMarginSize = 170;
 	const int kVerticalMarginSize = 40;
+	const int kStartMenuItemsWidth = 200;
+	const int kStartMenuItemsHeight = 80;
+	const int kStartMenuItemsYOffset = 50;
+	const int kInfoLabelsXOffset = 50;
+	const int kInfoLabelsYOffset = 20;
+	const int kInfoLabelsHeight = 50;
+	const int kInfoLabelsWidth = 100;
 
 public:
 	mainwindow(QWidget* parent = nullptr, const int& boardSize = 24);
 	~mainwindow();
+	
+private:
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void paintEvent(QPaintEvent* e) override;
 	//virtual void mouseMoveEvent(QMouseEvent* e);
 	//virtual void mousePressEvent(QMouseEvent* e);
-
 private:
 	Game m_game;
 	int m_boardSizeRects;
 	int m_boardSizePixels;
 	int m_windowWidth;
 	int m_windowHeight;
+	bool m_gameStarted;
+	bool m_userInfoPrompted;
 	//bool ClickInBoard(const QPoint& click);
 private:
 	Ui::mainwindowClass ui;
