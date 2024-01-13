@@ -92,6 +92,7 @@
     <ClCompile Include="IPiece.cpp" />
     <ClCompile Include="Pilon.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PromptDialog.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <QtRcc Include="mainwindow.qrc" />
     <QtUic Include="mainwindow.ui" />
