@@ -257,7 +257,8 @@ void Game::SetPilonsAndBridges(const int& nPilons, const int& nBridges)
 bool Game::IncorrectValues() const
 {
     if (m_gameBoard.GetBoardSize() < 5 || m_player1Ptr.get()->GetPlayerName().size() == 0 || m_player2Ptr.get()->GetPlayerName().size() == 0
-        || m_player1Ptr.get()->GetPilonCounter() < 5 || m_player1Ptr.get()->GetBridgeCounter() < 5)
+        || m_player1Ptr.get()->GetPilonCounter() < 5 || m_player1Ptr.get()->GetBridgeCounter() < 5
+        || m_player1Ptr.get()->GetPlayerName().compare(m_player2Ptr.get()->GetPlayerName()) == 0)
         return true;
 
 }
