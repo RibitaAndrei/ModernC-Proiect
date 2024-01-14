@@ -166,7 +166,7 @@ void Game::SaveGame(const std::string& fileName)
         fout << " " << std::setw(2) << std::setfill('0') << p->GetColumn() << std::endl;
     }
 
-    fout << m_player1Ptr.get()->GetPlayerName() << std::endl;
+    fout << m_player2Ptr.get()->GetPlayerName() << std::endl;
     pilons = m_player2Ptr->GetPilons();
     fout << pilons.size() << std::endl;
     for (auto& pilon : pilons)
