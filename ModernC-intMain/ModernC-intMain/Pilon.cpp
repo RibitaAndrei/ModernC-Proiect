@@ -5,9 +5,10 @@ Pilon::Pilon()
 {
 }
 
-Pilon::Pilon(IPiece::PlayerColor color, Position position)
+Pilon::Pilon(const IPiece::PlayerColor& color, const Position& position, const int& index)
 	:IPiece(color),
-	m_position{ position }
+	m_position{ position },
+	m_index{ index }
 {
 }
 
@@ -49,4 +50,48 @@ IPiece::PlayerColor Pilon::GetColor() const
 void Pilon::SetColor(const IPiece::PlayerColor& color)
 {
 	m_color = color;
+}
+
+std::vector<int> Pilon::GetAdjacentPilons() const
+{
+	return m_adjacentPilonsIndexes;
+}
+
+void Pilon::AddAdjacentPilon(const int& pilonIndex)
+{
+	m_adjacentPilonsIndexes.push_back(pilonIndex);
+}
+
+int Pilon::GetIndex() const
+{
+	return m_index;
+}
+
+void Pilon::SetIndex(const int& index)
+{
+	m_index = index;
+}
+
+bool Pilon::IsInRedBaseTop()
+{
+	auto& [row, col] = m_position;
+	return row == 0;
+}
+
+bool Pilon::IsInRedBaseBottom(int boardSize)
+{
+	auto& [row, col] = m_position;
+	return row == boardSize - 1;
+}
+
+bool Pilon::IsInBlueBaseLeft()
+{
+	auto& [row, col] = m_position;
+	return col == 0;
+}
+
+bool Pilon::IsInBlueBaseRight(int boardSize)
+{
+	auto& [row, col] = m_position;
+	return col == boardSize - 1;
 }

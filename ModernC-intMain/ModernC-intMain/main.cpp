@@ -2,22 +2,10 @@
 #include <QtWidgets/QApplication>
 #include "Game.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    mainwindow w;
+    mainwindow w("saveGame.txt");
     w.show();
     return a.exec();
 }
-
-
-//#include<iostream>
-//#include"Game.h"
-//
-//int main()
-//{
-//	Game game(24);
-//	game.StartGame();
-//
-//	return 0;
-//}

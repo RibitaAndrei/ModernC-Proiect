@@ -123,93 +123,59 @@ const bool Board::IsCorner(const Pilon::Position& pos) const
 	return false;
 }
 
-void Board::PrintCell(Pilon::Position pos, HANDLE& hConsole) const
-{
-	auto [row, col] = pos;
-	if (IsCorner(pos))
-	{
-		std::cout << "  ";
-		return;
-	}
-	if (IsRedBase(pos))
-		SetConsoleTextAttribute(hConsole, 12);
-	else if (IsBlueBase(pos))
-		SetConsoleTextAttribute(hConsole, 9);
-	else if (IsPiece(m_board[row][col]))
-	{
-		switch (m_board[row][col]->GetColor())
-		{
-		case IPiece::PlayerColor::Red:
-			SetConsoleTextAttribute(hConsole, 12);
-			break;
-		case IPiece::PlayerColor::Black:
-			SetConsoleTextAttribute(hConsole, 9);
-			break;
-		}
-	}
-	else
-		SetConsoleTextAttribute(hConsole, 15);
-
-
-	if (IsPilon(pos))
-		std::cout << "P ";
-	else if (IsBridge(m_board[row][col]))
-		std::cout << "B ";
-	else
-		std::cout << ". ";
-}
-
 void Board::Reset()
 {
-	// sterge orice date existente pe tabla
 	for (int i = 0; i < m_size; ++i) {
 		for (int j = 0; j < m_size; ++j) {
-
-			delete m_board[i][j]; // Resetarea celulelor la starea initiala.
+			delete m_board[i][j];
 		}
 	}
 }
 
-//void Board::PlacePilon(const Pilon::Position& posPilon, const IPiece::PlayerColor& activePlayer)
-//{
-//    auto& [row, col] = posPilon;
-//
-//    if (IsInBoard(posPilon) && IsPilon(m_board[row][col]))
-//        return;
-//
-//    delete m_board[row][col];
-//
-//    m_board[row][col] = new Pilon(activePlayer, posPilon);
-//
-//    std::vector<Pilon::Position> positions = AdjacentPilons(posPilon, activePlayer);
-//    for (int index = 0; index < positions.size(); index++)
-//        PlaceBridge(posPilon, positions[index], activePlayer);
-//}
-
-bool Board::PlacePilon(const Pilon::Position& posPilon, Player* activePlayer)
+int Board::PlacePilon(const Pilon::Position& posPilon, std::reference_wrapper<Player> pickingPlayer)
 {
 	auto& [row, col] = posPilon;
 
 	if (!IsInBoard(posPilon))
-		return false;
+		return 0;
 
 	if (IsPilon(posPilon))
-		return false;
+		return 0;
 
-	m_board[row][col] = new Pilon(activePlayer->GetColor(), posPilon);
-	activePlayer->AddPilon(m_board[row][col]);
+	m_board[row][col] = new Pilon(pickingPlayer.get().GetColor(), posPilon, pickingPlayer.get().GetPilons().size());
+	pickingPlayer.get().AddPilon(m_board[row][col]);
 
-	std::vector<IPiece*> positions = AdjacentPilons(posPilon, activePlayer);
+	std::vector<IPiece*> positions = AdjacentPilons(posPilon, pickingPlayer);
 	for (int index = 0; index < positions.size(); index++)
-		PlaceBridge(m_board[row][col], positions[index], activePlayer);
+		PlaceBridge(m_board[row][col], positions[index], pickingPlayer);
 
-	return true;
+	return positions.size();
 }
 
-void Board::PlaceBridge(IPiece* firstPilon, IPiece* secondPilon, Player* activePlayer)
+bool DoBridgesIntersect(const QPoint& p1, const QPoint& p2, const QPoint& p3, const QPoint& p4)
 {
-	activePlayer->AddBridge(firstPilon, secondPilon, activePlayer);
-	m_allBridges.push_back(activePlayer->GetLastBridge());
+	QPoint vectorBridge1 = p2 - p1;
+	QPoint vectorBridge2 = p3 - p4;
+	QPoint diff = p1 - p3;
+
+	float crossProduct1 = vectorBridge2.x() * diff.y() - vectorBridge2.y() * diff.x();
+	float crossProduct2 = vectorBridge2.x() * vectorBridge1.y() - vectorBridge2.y() * vectorBridge1.x();
+
+	float t1 = crossProduct1 / crossProduct2;
+	float t2 = (diff.x() * vectorBridge1.y() - diff.y() * vectorBridge1.x()) / crossProduct2;
+
+	if (t1 >= -1 && t1 <= 0 && t2 >= -1 && t2 <= 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void Board::PlaceBridge(IPiece* firstPilon, IPiece* secondPilon, std::reference_wrapper<Player> pickingPlayer)
+{
+	pickingPlayer.get().AddBridge(firstPilon, secondPilon);
+	m_allBridges.push_back(pickingPlayer.get().GetLastBridge());
 }
 
 const bool Board::IsInBoard(const Pilon::Position& pos) const
@@ -284,25 +250,14 @@ IPiece::PlayerColor Board::GetColor(const Pilon::Position& pos)
 	return m_board[row][col]->GetColor();
 }
 
-std::ostream& operator<<(std::ostream& out, const Board& b)
+bool BridgesSharePilon(const QPoint& p1, const QPoint& p2, const QPoint& q1, const QPoint& q2)
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	std::vector<std::vector<IPiece*>> board = b.GetBoard();
-	size_t size = b.GetBoardSize();
-
-	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < size; ++j) {
-			Pilon::Position pos = std::make_pair(i, j);
-			b.PrintCell(pos, hConsole);//schimba cu Pilon::Position
-		}
-		std::cout << std::endl;
-	}
-	SetConsoleTextAttribute(hConsole, 15);
-
-	return out;
+	if (p1 == q1 || p1 == q2 || p2 == q1 || p2 == q2)
+		return true;
+	return false;
 }
 
-std::vector<IPiece*> Board::AdjacentPilons(const Pilon::Position& currentPos, Player* activePlayer)
+std::vector<IPiece*> Board::AdjacentPilons(const Pilon::Position& currentPos, std::reference_wrapper<Player> activePlayer) const
 {
 	auto& [row, col] = currentPos;
 	std::vector<IPiece*> adjacentPilons;
@@ -312,28 +267,31 @@ std::vector<IPiece*> Board::AdjacentPilons(const Pilon::Position& currentPos, Pl
 	{
 		if (Pilon::Position cellPos = std::make_pair(row + rowVect[index], col + colVect[index]); IsInBoard(cellPos) == true)
 		{
-			IPiece* pilon = dynamic_cast<Pilon*> (m_board[row + rowVect[index]][col + colVect[index]]);
-			if (pilon && pilon->GetColor() == activePlayer->GetColor())
-				adjacentPilons.push_back(pilon);
+			Pilon* pilon = dynamic_cast<Pilon*> (m_board[row + rowVect[index]][col + colVect[index]]);
+			if (pilon && pilon->GetColor() == activePlayer.get().GetColor())
+			{
+				bool collidesWithOtherBridge{ false };
+				for (auto& bridge : m_allBridges)
+				{
+					Bridge* currentBridge = dynamic_cast<Bridge*>(bridge);
+					Pilon* pilon1 = dynamic_cast<Pilon*>(currentBridge->GetFirstPilon());
+					Pilon* pilon2 = dynamic_cast<Pilon*>(currentBridge->GetSecondPilon());
+					QPoint p1(pilon1->GetColumn(), pilon1->GetRow());
+					QPoint p2(pilon2->GetColumn(), pilon2->GetRow());
+					QPoint q1(col, row);
+					QPoint q2(cellPos.second, cellPos.first);
+					if (DoBridgesIntersect(p1, p2, q1, q2) && !BridgesSharePilon(p1, p2, q1, q2))
+						collidesWithOtherBridge = true;
+				}
+				if (!collidesWithOtherBridge)
+				{
+					adjacentPilons.push_back(pilon);
+					Pilon* p = dynamic_cast<Pilon*>(m_board[row][col]);
+					activePlayer.get().MakeAdjacent(p->GetIndex(), pilon->GetIndex());
+				}
+			}
 		}
 	}
 
 	return adjacentPilons;
-}
-
-bool Board::RemovePilon(const Pilon::Position& posPilon, const IPiece::PlayerColor& activePlayer)
-{
-	auto& [row, col] = posPilon;
-	if (IsInBoard(posPilon))
-	{
-		if (IsPilon(posPilon) && m_board[row][col]->GetColor() == activePlayer)
-		{
-			delete m_board[row][col];
-			m_board[row][col] = nullptr;
-			return true;
-		}
-		else
-			return false;
-	}
-	return false;
 }

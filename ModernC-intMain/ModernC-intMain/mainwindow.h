@@ -15,49 +15,54 @@ public:
 	const int kFoundationRadius = 6;
 	const int kSquareSize = 20;
 	const int kHorizontalMarginSize = 170;
-	const int kVerticalMarginSize = 40;
-	const int kStartMenuItemsWidth = 200;
-	const int kStartMenuItemsHeight = 80;
+	const int kVerticalMarginSize = 70;
+	const int kStartMenuItemsWidth = 150;
+	const int kStartMenuItemsHeight = 50;
 	const int kStartMenuItemsYOffset = 50;
 	const int kInfoLabelsXOffset = 50;
 	const int kInfoLabelsYOffset = 20;
 	const int kInfoLabelsHeight = 50;
 	const int kInfoLabelsWidth = 100;
+	const QSize kStartMenuSize = QSize(820, 620);
 
 public:
-	mainwindow(QWidget* parent = nullptr, const int& boardSize = 24);
-	~mainwindow();
+	mainwindow(std::string fileName, QWidget* parent = nullptr, const int& boardSize = 24);
+	~mainwindow() = default;
 	
 private:
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void paintEvent(QPaintEvent* e) override;
 	void DrawMainMenu(QPaintEvent* e);
 	void DrawBoard(QPaintEvent* e);
-	//virtual void mouseMoveEvent(QMouseEvent* e);
-	//virtual void mousePressEvent(QMouseEvent* e);
+	void DrawGui(QPaintEvent* e);
+
 private:
-	Game m_game;
+	Game* m_game;
 	int m_boardSizeRects;
 	int m_boardSizePixels;
 	int m_windowWidth;
 	int m_windowHeight;
 	bool m_gameStarted;
-	bool m_userInfoPrompted;
-	//bool ClickInBoard(const QPoint& click);
+	std::string m_saveFilePath;
+
 private:
-	Ui::mainwindowClass ui;
-private: //labels
-	QLabel player1, player2;
-	QLabel firstName, secondName;
-	QLabel firstPilons, secondPilons;
-	QLabel firstBridges, secondBridges;
+	Ui::mainwindowClass* ui;
+private: 
+	QRect player1Name, player2Name;
+	QRect player1Pilons, player2Pilons;
+	QRect player1Bridges, player2Bridges;
 
 	QRect titleText;
 	QRect playButton;
 	QRect quitButton;
-	QRect setGameOptions;
+	QRect backToMainButton;
+	QRect saveGameButton;
+	QRect loadGameButton;
+	QRect switchSidesButton;
+	QRect turnText;
 
-	void SetLabelNames();
+	void SetGuiItems();
+	void SetBoardSize(const int& size);
 };
 
 

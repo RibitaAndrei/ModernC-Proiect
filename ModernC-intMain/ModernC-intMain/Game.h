@@ -4,10 +4,18 @@
 #include "ScoreManager.h"
 #include "Constants.h"
 #include <iostream>
+#include <fstream>
 
 class Game
 {
 public:
+	enum class GameState
+	{
+		Win,
+		Draw,
+		None
+	};
+
 	Game();
 	Game(uint16_t boardSize);
 	Game(uint16_t boardSize, std::string playerName1, std::string playerName2);
@@ -15,22 +23,7 @@ public:
 	Game(const Game& copy);
 	~Game();
 
-	enum class ActivePlayer//nou
-	{
-		Player1,
-		Player2
-	};//cred totusi ca ar fi mai simplu fara acest enum
-	// ca sa fie nevoie sa facem legatura intre enum-ul asta
-	// si cel de culoare
-	// las asa momentan totusi, mai vedem pe parcurs
-	// ar fi o idee ca m_activePlayer sa fie un pointer catre o clasa Player
-	// sa avem cate una pentru fiecare player
-
-	Player* GetNextPlayer();
-	Player* GetActivePlayer();
-	void SetNextPlayer();
-
-	bool IsPilon(const Pilon::Position& pos); //17.12
+	bool IsPilon(const Pilon::Position& pos);
 
 	IPiece::PlayerColor GetColor(const Pilon::Position& pos);
 
@@ -39,57 +32,49 @@ public:
 
 	int GetBoardSize() const;
 
-	int GetScorePlayer1() const;
-	int GetScorePlayer2() const;
-
-	void SetScorePlayer1(const int& score);
-	void SetScorePlayer2(const int& score);
-
 	Player GetFirstPlayer() const;
 	Player GetSecondPlayer() const;
 
-	void AddScorePlayer1();
-	void AddScorePlayer2();
-
-	void PauseMenu();
-
-	// functie pentru inregistrarea miscarilor
 	void RecordMove(const std::string& playerName, const Pilon::Position& coordinates);
 
-	// functie pentru afisarea istoricului miscarilor
-	void DisplayMoveHistory() const;
-
-	bool PlacePilon(const Pilon::Position& coordinates);
-
-	void DisplayRules() const;
+	void PlacePilon(const Pilon::Position& coordinates);
+	void PlacePilon(Pilon* p, std::unique_ptr<Player>& player);
 
 	void SwapPlayers();
 
 	void ReadPlayersAndBoard(std::string playerName, int& boardSize);
-	void MainMenu();
-	//void StartGame();
-	void DisplayGame();
 	bool CheckWinCondition() const;
+	bool NoMorePilons() const;
 
 	std::vector<IPiece*> GetBridges() const;
 
-	//void GetMove(Player currentPlayer, int turn);
+	std::reference_wrapper<Player> GetPickingPlayer() const;
+	std::reference_wrapper<Player> GetWaitingPlayer() const;
 
-	//void ActionPlayer1();
-	//void ActionPlayer2();
-	//void FirstTurn();
+	void SetPickingPlayer(const std::reference_wrapper<Player>& pickingPlayer);
+	void SetWaitingPlayer(const std::reference_wrapper<Player>& waitingPlayer);
 
-	//void ResetGame();
+	void SaveGame(const std::string& fileName);
+	void LoadGame(const std::string& fileName);
+
+	void SetPilonsAndBridges(const int& nPilons, const int& nBridges);
+
+	bool IncorrectValues() const;
+
+	int GetTurn() const;
+
+	void SwitchSides();
 
 private:
-	Player m_player1, m_player2;
-	Player* m_activePlayer;
+	std::unique_ptr<Player> m_player1Ptr;
+	std::unique_ptr<Player> m_player2Ptr;
+	std::reference_wrapper<Player> m_pickingPlayer;
+	std::reference_wrapper<Player> m_waitingPlayer;
 	Board m_gameBoard;
-	int m_scorePlayer1;
-	int m_scorePlayer2; //scorurile de pus in player
-	bool m_gameFinished;
+	GameState m_state;
+	int m_turn;
+	//bool m_gameFinished;
 
-	// structura pentru a stoca o miscare
 	struct Move {
 		std::string playerName;
 		Pilon::Position coordinates;
@@ -98,8 +83,5 @@ private:
 			: playerName(name), coordinates(pos) {}
 	};
 
-	std::vector<Move> moveHistory; // vector pentru a stoca istoricul miscarilor
-
-
-	//void DisplayScore();
+	std::vector<Move> moveHistory;
 };

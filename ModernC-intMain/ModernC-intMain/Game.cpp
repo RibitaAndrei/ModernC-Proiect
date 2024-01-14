@@ -2,61 +2,42 @@
 #include "Pilon.h"
 #include <conio.h>
 #include <iostream>
+#include <iomanip>
 
 Game::Game()
-    :m_player1{ IPiece::PlayerColor::Red },
-    m_player2{ IPiece::PlayerColor::Black },
-    m_scorePlayer1{ 0 },
-    m_scorePlayer2{ 0 },
-    m_gameFinished{ false },
-    m_activePlayer{ &m_player1 }
-{
-    m_player1.SetNextPlayer(m_player2);
-    m_player2.SetNextPlayer(m_player1);
-}
+    :m_player1Ptr{ std::make_unique<Player>(IPiece::PlayerColor::Red) },
+    m_player2Ptr{ std::make_unique<Player>(IPiece::PlayerColor::Blue) },
+    m_pickingPlayer{ *m_player1Ptr },
+    m_waitingPlayer{ *m_player2Ptr },
+    m_state{ GameState::None },
+    m_gameBoard{ 0 },
+    m_turn{ 1 }
+{}
 
 Game::Game(uint16_t boardSize)
-    :m_player1{ IPiece::PlayerColor::Red },
-    m_player2{ IPiece::PlayerColor::Black },
+    :m_player1Ptr{ std::make_unique<Player>(IPiece::PlayerColor::Red) },
+    m_player2Ptr{ std::make_unique<Player>(IPiece::PlayerColor::Blue) },
     m_gameBoard{ boardSize },
-    m_scorePlayer1{ 0 },
-    m_scorePlayer2{ 0 },
-    m_gameFinished{ false },
-    m_activePlayer{ &m_player1 }
-{
-    m_player1.SetNextPlayer(m_player2);
-    m_player2.SetNextPlayer(m_player1);
-}
-// Constructor cu parametri
-Game::Game(uint16_t boardSize, std::string playerName1, std::string playerName2) :
-    m_gameBoard{ boardSize }, m_player1{ playerName1, IPiece::PlayerColor::Red }, m_player2{ playerName2, IPiece::PlayerColor::Black }, m_gameFinished{ false } // Inițializarea scorurilor la zero
-{
-    m_player1.SetNextPlayer(m_player2);
-    m_player2.SetNextPlayer(m_player1);
-}
-// Constructor de copiere
-Game::Game(const Game& copy) :
-    Game(copy.GetBoardSize(), copy.m_player1.GetPlayerName(), copy.m_player2.GetPlayerName())
+    m_pickingPlayer{ *m_player1Ptr },
+    m_waitingPlayer{ *m_player2Ptr },
+    m_state{ GameState::None },
+    m_turn{ 1 }
 {}
-// Destructor
+
+Game::Game(uint16_t boardSize, std::string playerName1, std::string playerName2) :
+    m_gameBoard{ boardSize }, m_player1Ptr{ std::make_unique<Player>(playerName1, IPiece::PlayerColor::Red) },
+    m_player2Ptr{ std::make_unique<Player>(playerName2, IPiece::PlayerColor::Blue) }
+    , m_pickingPlayer{ *m_player1Ptr }, m_waitingPlayer{ *m_player2Ptr },
+    m_state{ GameState::None },
+    m_turn{ 1 }
+{}
+
+Game::Game(const Game& copy) :
+    Game(copy.GetBoardSize(), copy.m_player1Ptr->GetPlayerName(), copy.m_player2Ptr->GetPlayerName())
+{}
+
 Game::~Game()
-{
-}
-
-Player* Game::GetNextPlayer()
-{
-    return m_activePlayer->GetNextPlayer();
-}
-
-Player* Game::GetActivePlayer()
-{
-    return m_activePlayer;
-}
-
-void Game::SetNextPlayer()
-{
-    m_activePlayer = GetNextPlayer();
-}
+{}
 
 bool Game::IsPilon(const Pilon::Position& pos)
 {
@@ -83,84 +64,14 @@ int Game::GetBoardSize() const
     return m_gameBoard.GetBoard().size();
 }
 
-int Game::GetScorePlayer1() const
-{
-    return m_scorePlayer1;
-}
-
-int Game::GetScorePlayer2() const
-{
-    return m_scorePlayer2;
-}
-
-void Game::SetScorePlayer1(const int& score)
-{
-    m_scorePlayer1 = score;
-}
-
-void Game::SetScorePlayer2(const int& score)
-{
-    m_scorePlayer2 = score;
-}
-
 Player Game::GetFirstPlayer() const
 {
-    return m_player1;
+    return *m_player1Ptr;
 }
 
 Player Game::GetSecondPlayer() const
 {
-    return m_player2;
-}
-
-void Game::AddScorePlayer1()
-{
-    m_scorePlayer1++;
-}
-
-void Game::AddScorePlayer2()
-{
-    m_scorePlayer2++;
-}
-
-/*void Game::DisplayScore()
-{
-    system("CLS");
-    std::cout << "----- Score -----" << std::endl;
-    std::cout << m_player1.GetPlayerName() << ": " << GetScorePlayer1() << std::endl;
-    std::cout << m_player2.GetPlayerName() << ": " << GetScorePlayer2() << std::endl;
-    std::cout << "------------------" << std::endl;
-}*/
-
-void Game::PauseMenu()
-{
-    char choice;
-    do
-    {
-        system("CLS");
-        std::cout << kPause << kContinue << kReset << kQuit << kPauseChoice;
-        choice = _getch();
-        switch (choice)
-        {
-        case '1':
-            // Continue game
-            break;
-
-        case '2':
-            // Reset game
-            //ResetGame();
-            break;
-
-        case '3':
-            // Quit to main menu or exit the program
-            m_gameFinished = true;
-            break;
-
-        default:
-            std::cout << kInvalidChoice;
-            break;
-        }
-    } while (choice != '1' && choice != '3');
+    return *m_player2Ptr;
 }
 
 void Game::RecordMove(const std::string& playerName, const Pilon::Position& coordinates)
@@ -168,39 +79,24 @@ void Game::RecordMove(const std::string& playerName, const Pilon::Position& coor
     moveHistory.emplace_back(playerName, coordinates);
 }
 
-void Game::DisplayMoveHistory() const
+void Game::PlacePilon(const Pilon::Position& coordinates)
 {
-    system("CLS"); // curata ecranul pentru a afisa istoricul miscarilor
-
-    std::cout << "----- Move History -----" << std::endl;
-    for (const auto& move : moveHistory) {
-        std::cout << move.playerName << " moved to position (" << move.coordinates.first << ", " << move.coordinates.second << ")" << std::endl;
-    }
-    std::cout << "------------------------" << std::endl;
-    std::cout << "Press any key to return to the main menu." << std::endl;
-    _getch(); // asteapta apasarea unei taste pentru a reveni la meniu
+    int nBridges{ m_gameBoard.PlacePilon(coordinates, m_pickingPlayer) };
+    //m_pickingPlayer.get().DecrementPilons();
+    m_pickingPlayer.get().SubtractBridges(nBridges);
 }
 
-bool Game::PlacePilon(const Pilon::Position& coordinates)
+void Game::PlacePilon(Pilon* p, std::unique_ptr<Player>& player)
 {
-    return m_gameBoard.PlacePilon(coordinates, m_activePlayer);
+    int nBridges{ m_gameBoard.PlacePilon(p->GetPosition(), *player.get()) };
+    m_pickingPlayer.get().DecrementPilons();
+    m_pickingPlayer.get().SubtractBridges(nBridges);
 }
 
-void Game::DisplayRules() const
+void Game::SwapPlayers()
 {
-    system("CLS");
-    std::cout << "----- Rules of Twixt -----" << std::endl;
-    std::cout << kRule1 << kRule2 << kRule3 << kRule4 << kRule5 << kRule6;
-    std::cout << "---------------------------" << std::endl;
-    std::cout << "Press any key to return to the main menu." << std::endl;
-    _getch(); // Asteapta apasarea unei taste pentru a reveni la meniu
-}
-
-void Game::SwapPlayers() // nu vrea std::swap-ul sa mearga
-{
-    std::string temp = m_player1.GetPlayerName();
-    m_player1.SetPlayerName(m_player2.GetPlayerName());
-    m_player2.SetPlayerName(temp);
+    std::swap(m_pickingPlayer, m_waitingPlayer);
+    m_turn++;
 }
 
 void Game::ReadPlayersAndBoard(std::string playerName, int& boardSize)
@@ -208,236 +104,27 @@ void Game::ReadPlayersAndBoard(std::string playerName, int& boardSize)
 
     std::cout << kPlayer1Choice;
     std::cin >> playerName;
-    m_player1.SetPlayerName(playerName);
+    m_player1Ptr->SetPlayerName(playerName);
 
     std::cout << kPlayer2Choice;
     std::cin >> playerName;
-    m_player2.SetPlayerName(playerName);
+    m_player2Ptr->SetPlayerName(playerName);
 
     std::cout << kBoardChoice;
     std::cin >> boardSize;
     m_gameBoard.SetBoardSize(boardSize);
 }
 
-void Game::MainMenu()
-{
-    system("CLS");
-    std::cout << "----- Main Menu -----" << std::endl;
-    std::cout << "1. Start Game" << std::endl;
-    std::cout << "2. Display Rules" << std::endl;
-    std::cout << "3. Quit" << std::endl;
-    std::cout << "Enter your choice (1-3): ";
-}
-
-void Game::DisplayGame()
-{
-    system("CLS");
-    std::cout << "Player 1: " << m_player1.GetPlayerName() << '\n';
-    std::cout << "Player 2: " << m_player2.GetPlayerName() << '\n';
-    std::cout << "Score: " << '\n';
-    std::cout << m_gameBoard;
-}
-
-//void Game::StartGame()
-//{
-//    int turn = 1;
-//    int boardSize;
-//    std::string playerName;
-//    ReadPlayersAndBoard(playerName, boardSize);
-//
-//    char choice;
-//    do
-//    {
-//        MainMenu();
-//        choice = _getch();
-//        switch (choice - '0')
-//        {
-//        case 1:
-//            // Start game
-//            while (!m_gameFinished)
-//            {
-//                DisplayGame();
-//                if (m_activePlayer == ActivePlayer::Player1)
-//                {
-//
-//                    if (turn == 1)
-//                    {
-//                        FirstTurn();
-//                    }
-//                    else
-//                    {
-//                        ActionPlayer1();
-//                    }
-//                }
-//                else
-//                {
-//                    if (turn == 2)
-//                    {
-//                        FirstTurn();
-//                    }
-//                    else
-//                    {
-//                        ActionPlayer2();
-//                    }
-//                }
-//                turn++;
-//            }
-//            break;
-//
-//        case 2:
-//            // Display rules
-//            DisplayRules();
-//            break;
-//
-//        case 3:
-//            // Pause Game
-//            PauseMenu();
-//            break;
-//
-//        case 4:
-//            // Quit
-//            m_gameFinished = true;
-//            break;
-//
-//        default:
-//            std::cout << kInvalidChoice << std::endl;
-//            _getch();
-//            break;
-//        }
-//    } while (choice != 4);
-//}
-//
-//void Game::ActionPlayer1()
-//{
-//    Pilon::Position coordinates;
-//    auto& [row, col] = coordinates;
-//    bool correctMove = false;
-//    std::cout << m_player1.GetPlayerName() << kActionChoice;
-//    char option = _getch();
-//    switch (option - '0')
-//    {
-//    case 1:
-//        std::cout << m_player1.GetPlayerName() << kPlacePilon;
-//        std::cin >> row >> col;
-//        correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
-//        while (!correctMove)
-//        {
-//            DisplayGame();
-//            std::cout << kIncorrectMove;
-//            std::cout << m_player1.GetPlayerName() << kPlacePilon;
-//            std::cin >> row >> col;
-//            correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
-//        }
-//        break;
-//    case 2:
-//        std::cout << m_player1.GetPlayerName() << kRemovePilon;
-//        std::cin >> row >> col;
-//        correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Red);
-//        while (!correctMove)
-//        {
-//            DisplayGame();
-//            std::cout << kIncorrectMove;
-//            std::cout << m_player1.GetPlayerName() << kRemovePilon;
-//            std::cin >> row >> col;
-//            correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Red);
-//        }
-//        break;
-//    default:
-//        break;
-//    }
-//
-//    m_activePlayer = NextPlayer();
-//}
-//
-//void Game::ActionPlayer2()
-//{
-//    Pilon::Position coordinates;
-//    auto& [row, col] = coordinates;
-//    bool correctMove = false;
-//    std::cout << m_player2.GetPlayerName() << kActionChoice << '\n';
-//    char option = _getch();
-//    switch (option - '0')
-//    {
-//    case 1:
-//
-//        std::cout << m_player2.GetPlayerName() << kPlacePilon;
-//        std::cin >> row >> col;
-//        correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
-//        while (!correctMove)
-//        {
-//            DisplayGame();
-//            std::cout << kIncorrectMove;
-//            std::cout << m_player2.GetPlayerName() << kPlacePilon;
-//            std::cin >> row >> col;
-//            correctMove = m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
-//        }
-//        break;
-//    case 2:
-//        std::cout << m_player2.GetPlayerName() << kRemovePilon;
-//        std::cin >> row >> col;
-//        correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Black);
-//        while (!correctMove)
-//        {
-//            DisplayGame();
-//            std::cout << kIncorrectMove;
-//            std::cout << m_player2.GetPlayerName() << kRemovePilon;
-//            std::cin >> row >> col;
-//            correctMove = m_gameBoard.RemovePilon(coordinates, IPiece::PlayerColor::Black);
-//        }
-//        break;
-//    default:
-//        break;
-//    }
-//
-//    m_activePlayer = NextPlayer();
-//}
-//
-//void Game::FirstTurn()
-//{
-//    Pilon::Position coordinates;
-//    auto& [row, col] = coordinates;
-//
-//    if (m_activePlayer == ActivePlayer::Player2)
-//    {
-//        std::cout << m_player2.GetPlayerName() << kSwitchOption;
-//        char getChoice = _getch();
-//        if (getChoice == 's')
-//        {
-//            SwapPlayers();
-//            DisplayGame();
-//        }
-//        else {
-//            std::cout << m_player2.GetPlayerName() << kFirstAction;
-//            std::cin >> row >> col;
-//            while (!m_gameBoard.IsBlueBase(coordinates))
-//            {
-//                std::cout << "Try again: ";
-//                std::cin >> row >> col;
-//            }
-//            m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Black);
-//            // daca m_activePlayer ar fi un pointer catre un Player
-//            // codu asta s-ar generaliza pentru ambii playeri
-//            // nu s-ar mai repeta mai jos
-//        }
-//    }
-//    else
-//    {
-//        std::cout << m_player1.GetPlayerName() << kFirstAction;
-//        std::cin >> row >> col;
-//        while (!m_gameBoard.IsRedBase(coordinates))
-//        {
-//            std::cout << "Try again: ";
-//            std::cin >> row >> col;
-//        }
-//        m_gameBoard.PlacePilon(coordinates, IPiece::PlayerColor::Red);
-//    }
-//
-//    m_activePlayer = NextPlayer();
-//}
-
 bool Game::CheckWinCondition() const
 {
-    return m_gameBoard.HasConnection();
+    return m_pickingPlayer.get().Win(m_gameBoard.GetBoardSize());
+}
+
+bool Game::NoMorePilons() const
+{
+    if (m_pickingPlayer.get().GetPilonCounter() == 0 && m_waitingPlayer.get().GetPilonCounter() == 0)
+        return true;
+    return false;
 }
 
 std::vector<IPiece*> Game::GetBridges() const
@@ -445,13 +132,145 @@ std::vector<IPiece*> Game::GetBridges() const
     return m_gameBoard.GetBridges();
 }
 
-//void Game::GetMove(Player currentPlayer, int turn)
-//{
-//
-//}
+std::reference_wrapper<Player> Game::GetPickingPlayer() const
+{
+    return m_pickingPlayer;
+}
 
-//void Game::ResetGame()
-//{
-//    //ResetBoard();
-//    StartGame();
-//}
+std::reference_wrapper<Player> Game::GetWaitingPlayer() const
+{
+    return m_waitingPlayer;
+}
+
+void Game::SetPickingPlayer(const std::reference_wrapper<Player>& pickingPlayer)
+{
+    m_pickingPlayer = pickingPlayer;
+}
+
+void Game::SetWaitingPlayer(const std::reference_wrapper<Player>& waitingPlayer)
+{
+    m_waitingPlayer = waitingPlayer;
+}
+
+void Game::SaveGame(const std::string& fileName)
+{
+    std::ofstream fout(fileName);
+    fout << m_gameBoard.GetBoardSize() << std::endl;
+    fout << m_player1Ptr.get()->GetPlayerName() << std::endl;
+    std::vector<IPiece*> pilons = m_player1Ptr->GetPilons();
+    fout << pilons.size() << std::endl;
+    for (auto& pilon : pilons)
+    {
+        Pilon* p = dynamic_cast<Pilon*>(pilon);
+        fout << std::setw(2) << std::setfill('0') << p->GetRow();
+        fout << " " << std::setw(2) << std::setfill('0') << p->GetColumn() << std::endl;
+    }
+
+    fout << m_player1Ptr.get()->GetPlayerName() << std::endl;
+    pilons = m_player2Ptr->GetPilons();
+    fout << pilons.size() << std::endl;
+    for (auto& pilon : pilons)
+    {
+        Pilon* p = dynamic_cast<Pilon*>(pilon);
+        fout << std::setw(2) << std::setfill('0') << p->GetRow();
+        fout << " " << std::setw(2) << std::setfill('0') << p->GetColumn() << std::endl;
+    }
+}
+
+void Game::LoadGame(const std::string& fileName)
+{
+    std::ifstream fin(fileName);
+    std::vector<IPiece*> redPilons;
+    std::vector<IPiece*> bluePilons;
+    int index{ 0 };
+    std::string line;
+    std::getline(fin, line);
+    int boardSize{ std::stoi(line) };
+    m_gameBoard.SetBoardSize(boardSize);
+    std::getline(fin, line);
+    m_player1Ptr.get()->SetPlayerName(line);
+    std::getline(fin, line);
+    int nPilons{ std::stoi(line) };
+    for (int indexLine = 0; indexLine < nPilons; ++indexLine)
+    {
+        std::getline(fin, line);
+        int row = (line[0] - '0') * 10 + (line[1] - '0');
+        int col = (line[3] - '0') * 10 + (line[4] - '0');
+        Pilon* pilon = new Pilon(IPiece::PlayerColor::Red, std::make_pair(row, col), index);
+        PlacePilon(pilon, m_player1Ptr);
+        index++;
+    }
+
+    std::getline(fin, line);
+    m_player2Ptr.get()->SetPlayerName(line);
+    std::getline(fin, line);
+    nPilons = std::stoi(line);
+    for (int indexLine = 0; indexLine < nPilons; ++indexLine)
+    {
+        std::getline(fin, line);
+        int row{ (line[0] - '0') * 10 + (line[1] - '0') };
+        int col{ (line[3] - '0') * 10 + (line[4] - '0') };
+        Pilon* pilon = new Pilon(IPiece::PlayerColor::Blue, std::make_pair(row, col), index);
+        PlacePilon(pilon, m_player2Ptr);
+        index++;
+    }
+    //while (!fin.eof())
+    //{
+    //    std::getline(fin, line);
+    //    //char* currLine = (char*)line.c_str();
+    //    if (line.compare("Blue") == 0)
+    //    {
+    //        readsBlue = true;
+    //        index = 0;
+    //        std::getline(fin, line);
+    //        m_player2Ptr.get()->SetPlayerName(line);
+    //        continue;
+    //    }
+    //    if (!readsBlue)
+    //    {
+    //        int row = (line[0] - '0') * 10 + (line[1] - '0');
+    //        int col = (line[3] - '0') * 10 + (line[4] - '0');
+    //        Pilon* pilon = new Pilon(IPiece::PlayerColor::Red, std::make_pair(row, col), index);
+    //        PlacePilon(pilon, m_player1Ptr);
+    //        index++;
+    //    }
+    //    else
+    //    {
+    //        int row = (line[0] - '0') * 10 + (line[1] - '0');
+    //        int col = (line[3] - '0') * 10 + (line[4] - '0');
+    //        Pilon* pilon = new Pilon(IPiece::PlayerColor::Blue, std::make_pair(row, col), index);
+    //        PlacePilon(pilon, m_player2Ptr);
+    //        index++;
+    //        //vezi ca citeste ultima linie care e goala
+    //    }
+    //}
+}
+
+void Game::SetPilonsAndBridges(const int& nPilons, const int& nBridges)
+{
+    m_player1Ptr.get()->SetPilonCounter(nPilons);
+    m_player1Ptr.get()->SetBridgeCounter(nBridges);
+    m_player2Ptr.get()->SetPilonCounter(nPilons);
+    m_player2Ptr.get()->SetBridgeCounter(nBridges);
+}
+
+bool Game::IncorrectValues() const
+{
+    if (m_gameBoard.GetBoardSize() < 5 || m_player1Ptr.get()->GetPlayerName().size() == 0 || m_player2Ptr.get()->GetPlayerName().size() == 0
+        || m_player1Ptr.get()->GetPilonCounter() < 5 || m_player1Ptr.get()->GetBridgeCounter() < 5)
+        return true;
+
+}
+
+int Game::GetTurn() const
+{
+    return m_turn;
+}
+
+void Game::SwitchSides()
+{
+    std::string player1Name = m_player1Ptr.get()->GetPlayerName();
+    m_player1Ptr.get()->SetPlayerName(m_player2Ptr.get()->GetPlayerName());
+    m_player2Ptr.get()->SetPlayerName(player1Name);
+    m_turn++;
+}

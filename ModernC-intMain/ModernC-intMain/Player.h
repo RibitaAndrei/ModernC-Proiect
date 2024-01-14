@@ -4,17 +4,17 @@
 #include "IPiece.h"
 #include "Pilon.h"
 #include "Bridge.h"
-//import piece;
+#include <queue>
+
 class Player
 {
 private:
 	IPiece::PlayerColor m_teamColor;
-	uint8_t m_pilonCounter;
-	uint8_t m_bridgeCounter;
+	uint16_t m_pilonCounter;
+	uint16_t m_bridgeCounter;
 	std::string m_playerName;
 	std::vector <IPiece*> m_pilons;
 	std::vector <IPiece*> m_bridges;
-	Player* m_nextPlayer;
 
 public:
 	Player(IPiece::PlayerColor teamColor);
@@ -34,13 +34,16 @@ public:
 	void SetPilonCounter(const int& count);
 
 	void DecrementPilons();
-	void DecrementBridges();
+	void SubtractBridges(const int& nBridges);
 
 	void AddPilon(IPiece* pilon);
-	void AddBridge(IPiece* firstPilon, IPiece* secondPilon, Player* activePlayer);
+	void AddBridge(IPiece* firstPilon, IPiece* secondPilon);
+	void MakeAdjacent(const int& firstIndex, const int& secondIndex);
+
+	std::vector<IPiece*> GetPilons() const;
 
 	IPiece* GetLastBridge() const;
 
-	void SetNextPlayer(Player& player);
-	Player* GetNextPlayer() const;
+	bool Win(const int& boardSize = 24);
+	bool HasPilonsInBothBases(std::vector<int> pilonsInPath, const int& boardSize = 24);
 };

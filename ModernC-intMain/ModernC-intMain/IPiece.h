@@ -7,7 +7,7 @@ public:
 	{
 		NoColor,
 		Red,
-		Black
+		Blue
 	};
 
 	IPiece();
