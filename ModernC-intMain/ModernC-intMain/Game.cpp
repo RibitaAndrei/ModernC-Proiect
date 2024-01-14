@@ -214,36 +214,6 @@ void Game::LoadGame(const std::string& fileName)
         PlacePilon(pilon, m_player2Ptr);
         index++;
     }
-    //while (!fin.eof())
-    //{
-    //    std::getline(fin, line);
-    //    //char* currLine = (char*)line.c_str();
-    //    if (line.compare("Blue") == 0)
-    //    {
-    //        readsBlue = true;
-    //        index = 0;
-    //        std::getline(fin, line);
-    //        m_player2Ptr.get()->SetPlayerName(line);
-    //        continue;
-    //    }
-    //    if (!readsBlue)
-    //    {
-    //        int row = (line[0] - '0') * 10 + (line[1] - '0');
-    //        int col = (line[3] - '0') * 10 + (line[4] - '0');
-    //        Pilon* pilon = new Pilon(IPiece::PlayerColor::Red, std::make_pair(row, col), index);
-    //        PlacePilon(pilon, m_player1Ptr);
-    //        index++;
-    //    }
-    //    else
-    //    {
-    //        int row = (line[0] - '0') * 10 + (line[1] - '0');
-    //        int col = (line[3] - '0') * 10 + (line[4] - '0');
-    //        Pilon* pilon = new Pilon(IPiece::PlayerColor::Blue, std::make_pair(row, col), index);
-    //        PlacePilon(pilon, m_player2Ptr);
-    //        index++;
-    //        //vezi ca citeste ultima linie care e goala
-    //    }
-    //}
 }
 
 void Game::SetPilonsAndBridges(const int& nPilons, const int& nBridges)
