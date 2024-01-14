@@ -34,6 +34,8 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 					PromptDialog winDialog(this, Game::GameState::Win, m_game->GetPickingPlayer().get().GetPlayerName());
 					winDialog.exec();
 					m_gameStarted = false;
+					delete m_game;
+					m_game = new Game();
 				}
 
 				else if (m_game->NoMorePilons())
@@ -41,6 +43,8 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 					PromptDialog drawDialog(this, Game::GameState::Draw);
 					drawDialog.exec();
 					m_gameStarted = false;
+					delete m_game;
+					m_game = new Game();
 				}
 
 				m_game->SwapPlayers();
@@ -50,8 +54,7 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 			else if (backToMainButton.contains(e->x(), e->y()))
 			{
 				m_gameStarted = false;
-				if (m_game != nullptr)
-					delete m_game;
+				delete m_game;
 				m_game = new Game();
 				update();
 			}
@@ -72,26 +75,26 @@ void mainwindow::mouseReleaseEvent(QMouseEvent* e)
 					PromptDialog promptUserInfo(this);
 					if (promptUserInfo.exec() == QDialog::Rejected)
 						break;
-					m_game->GetPickingPlayer().get().SetPlayerName(promptUserInfo.GetPlayer1Name());
-					m_game->GetWaitingPlayer().get().SetPlayerName(promptUserInfo.GetPlayer2Name());
-					SetBoardSize(promptUserInfo.GetBoardSize());
-					m_game->SetPilonsAndBridges(promptUserInfo.GetNPilons(), promptUserInfo.GetNBridges());
-					promptUserInfo.close();
-					m_windowHeight = 2 * kVerticalMarginSize + m_game->GetBoardSize() * kSquareSize;
-					m_windowWidth = 2 * kHorizontalMarginSize + m_game->GetBoardSize() * kSquareSize;
-					this->setFixedSize(QSize(m_windowWidth, m_windowHeight));
-					m_gameStarted = true;
-					std::ofstream fout;
-					fout.open(m_saveFilePath, std::ofstream::out | std::ofstream::trunc);
-					fout.close();
+					else
+					{
+						m_game->GetPickingPlayer().get().SetPlayerName(promptUserInfo.GetPlayer1Name());
+						m_game->GetWaitingPlayer().get().SetPlayerName(promptUserInfo.GetPlayer2Name());
+						SetBoardSize(promptUserInfo.GetBoardSize());
+						m_game->SetPilonsAndBridges(promptUserInfo.GetNPilons(), promptUserInfo.GetNBridges());
+						promptUserInfo.close();
+						m_windowHeight = 2 * kVerticalMarginSize + m_game->GetBoardSize() * kSquareSize;
+						m_windowWidth = 2 * kHorizontalMarginSize + m_game->GetBoardSize() * kSquareSize;
+						this->setFixedSize(QSize(m_windowWidth, m_windowHeight));
+						m_gameStarted = true;
+						std::ofstream fout;
+						fout.open(m_saveFilePath, std::ofstream::out | std::ofstream::trunc);
+						fout.close();
+					}
 				}
 			}
 
 			else if (std::ifstream fin(m_saveFilePath); loadGameButton.contains(e->x(), e->y()) && fin.peek() != std::ifstream::traits_type::eof())
 			{
-				if (m_game != nullptr)
-					delete m_game;
-				m_game = new Game();
 				m_game->LoadGame(m_saveFilePath);
 				m_windowHeight = 2 * kVerticalMarginSize + m_game->GetBoardSize() * kSquareSize;
 				m_windowWidth = 2 * kHorizontalMarginSize + m_game->GetBoardSize() * kSquareSize;

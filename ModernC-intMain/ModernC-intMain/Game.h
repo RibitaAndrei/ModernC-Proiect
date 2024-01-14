@@ -73,7 +73,6 @@ private:
 	Board m_gameBoard;
 	GameState m_state;
 	int m_turn;
-	//bool m_gameFinished;
 
 	struct Move {
 		std::string playerName;

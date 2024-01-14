@@ -70,7 +70,6 @@ void Player::SetPilonCounter(const int& count)
 void Player::AddPilon(IPiece* pilon)
 {
 	Pilon* p = dynamic_cast<Pilon*>(pilon);
-	//p->SetIndex(m_pilons.size() - 1);
 	m_pilons.push_back(p);
 	DecrementPilons();
 }
@@ -112,7 +111,6 @@ bool Player::Win(const int& boardSize)
 		visited.push(0);
 		std::vector<int> pilonsInPath;
 		pilonsInPath.push_back(0);
-		//m_length.push_back(0);
 		while (verified < m_pilons.size())
 		{
 			while (!visited.empty())
@@ -126,9 +124,7 @@ bool Player::Win(const int& boardSize)
 					{
 						notVerified.erase(thisPilon);
 						visited.push(pilon);
-						//Pilon* p = dynamic_cast<Pilon*>(pilon);
 						pilonsInPath.push_back(pilon);
-						//m_length[node->GetPosition()] = m_length[currentNode->GetPosition()];
 					}
 				}
 				visited.pop();
