@@ -41,6 +41,7 @@ public:
 	void MakeAdjacent(const int& firstIndex, const int& secondIndex);
 
 	std::vector<IPiece*> GetPilons() const;
+	std::vector<IPiece*> GetBridges() const;
 
 	IPiece* GetLastBridge() const;
 

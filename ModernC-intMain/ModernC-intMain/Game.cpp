@@ -175,6 +175,9 @@ void Game::SaveGame(const std::string& fileName)
         fout << std::setw(2) << std::setfill('0') << p->GetRow();
         fout << " " << std::setw(2) << std::setfill('0') << p->GetColumn() << std::endl;
     }
+
+    fout << m_player1Ptr.get()->GetPilonCounter() + m_player1Ptr.get()->GetPilons().size() << std::endl;
+    fout << m_player1Ptr.get()->GetBridgeCounter() + m_player1Ptr.get()->GetBridges().size() << std::endl;
 }
 
 void Game::LoadGame(const std::string& fileName)
@@ -214,6 +217,17 @@ void Game::LoadGame(const std::string& fileName)
         PlacePilon(pilon, m_player2Ptr);
         index++;
     }
+
+    std::getline(fin, line);
+    int nTotalPilons = std::stoi(line);
+    std::getline(fin, line);
+    int nTotalBridges = std::stoi(line);
+    SetPilonsAndBridges(nTotalPilons, nTotalBridges);
+
+    m_player1Ptr.get()->SetPilonCounter(nTotalPilons - m_player1Ptr.get()->GetPilons().size());
+    m_player2Ptr.get()->SetPilonCounter(nTotalPilons - m_player2Ptr.get()->GetPilons().size());
+    m_player1Ptr.get()->SetBridgeCounter(nTotalBridges - m_player1Ptr.get()->GetBridges().size());
+    m_player2Ptr.get()->SetBridgeCounter(nTotalBridges - m_player2Ptr.get()->GetBridges().size());
 }
 
 void Game::SetPilonsAndBridges(const int& nPilons, const int& nBridges)

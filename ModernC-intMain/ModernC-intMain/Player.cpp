@@ -93,6 +93,11 @@ std::vector<IPiece*> Player::GetPilons() const
 	return m_pilons;
 }
 
+std::vector<IPiece*> Player::GetBridges() const
+{
+	return m_bridges;
+}
+
 IPiece* Player::GetLastBridge() const
 {
 	if (!m_bridges.empty())
